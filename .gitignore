@@ -37,6 +37,7 @@ artifacts/
 # dist/
 src/idls/
 keypairs
+src/createPool.ts
 
 site/
 
