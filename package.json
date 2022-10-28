@@ -1,6 +1,6 @@
 {
   "name": "cardinal-staking",
-  "version": "1.10.6",
+  "version": "1.10.7",
   "description": "Cardinal stake pool SDK",
   "keywords": [
     "solana",
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@cardinal/common": "^2.0.11",
-    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#c4a74012fb8377398be1de502989406d69cf0b36",
+    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#69a417169784b4e02cbb2c6b21a251de7ec4ffe8",
     "@metaplex-foundation/mpl-token-metadata": "^1.2.5",
     "node-fetch": "2"
   },
