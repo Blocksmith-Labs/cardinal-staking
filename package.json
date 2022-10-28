@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@cardinal/common": "^2.0.11",
-    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#32d749c71511cc29169124f30a6bea41ac08bb22",
+    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#0fa1e344c67cdd14717fc18b84e6ae6b390cbc2d",
     "@metaplex-foundation/mpl-token-metadata": "^1.2.5",
     "node-fetch": "2"
   },
