@@ -1,5 +1,5 @@
 {
-  "name": "@cardinal/staking",
+  "name": "cardinal-staking",
   "version": "1.10.6",
   "description": "Cardinal stake pool SDK",
   "keywords": [
@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@cardinal/common": "^2.0.11",
-    "@cardinal/token-manager": "^1.7.4",
+    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#c4a74012fb8377398be1de502989406d69cf0b36",
     "@metaplex-foundation/mpl-token-metadata": "^1.2.5",
     "node-fetch": "2"
   },

@@ -3,33 +3,26 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import { tokenManager } from "@cardinal/token-manager/dist/cjs/programs";
-import { getPaymentManager } from "@cardinal/token-manager/dist/cjs/programs/paymentManager/accounts";
-import { withRemainingAccountsForReturn } from "@cardinal/token-manager/dist/cjs/programs/tokenManager";
-import {
-  findMintManagerId,
-  findTokenManagerAddress,
-  tokenManagerAddressFromMint,
-} from "@cardinal/token-manager/dist/cjs/programs/tokenManager/pda";
 import * as metaplex from "@metaplex-foundation/mpl-token-metadata";
 import { BN } from "@project-serum/anchor";
 import type { Wallet } from "@saberhq/solana-contrib";
 import type * as web3 from "@solana/web3.js";
+import { tokenManager } from "cardinal-token-manager/dist/cjs/programs";
+import { withRemainingAccountsForReturn } from "cardinal-token-manager/dist/cjs/programs/tokenManager";
+import {
+  findMintManagerId,
+  findTokenManagerAddress,
+  tokenManagerAddressFromMint,
+} from "cardinal-token-manager/dist/cjs/programs/tokenManager/pda";
 
 import { getMintSupply } from "../../utils";
 import { getRewardDistributor } from "../rewardDistributor/accounts";
 import { findRewardDistributorId } from "../rewardDistributor/pda";
 import { withClaimRewards } from "../rewardDistributor/transaction";
-import {
-  getPoolIdentifier,
-  getStakeBooster,
-  getStakeEntry,
-  getStakePool,
-} from "./accounts";
+import { getPoolIdentifier, getStakeEntry, getStakePool } from "./accounts";
 import { ReceiptType } from "./constants";
 import {
   authorizeStakeEntry,
-  boostStakeEntry,
   claimReceiptMint,
   closeStakeBooster,
   closeStakeEntry,
@@ -48,7 +41,7 @@ import {
   updateStakePool,
   updateTotalStakeSeconds,
 } from "./instruction";
-import { findIdentifierId, findStakeBoosterId, findStakePoolId } from "./pda";
+import { findIdentifierId, findStakePoolId } from "./pda";
 import {
   findStakeEntryIdFromMint,
   withRemainingAccountsForUnstake,
@@ -703,57 +696,6 @@ export const withCloseStakeBooster = async (
   transaction.add(
     await closeStakeBooster(connection, wallet, {
       ...params,
-    })
-  );
-  return transaction;
-};
-
-export const withBoostStakeEntry = async (
-  transaction: web3.Transaction,
-  connection: web3.Connection,
-  wallet: Wallet,
-  params: {
-    stakePoolId: web3.PublicKey;
-    stakeBoosterIdentifier?: BN;
-    stakeEntryId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-    payerTokenAccount: web3.PublicKey;
-    payer?: web3.PublicKey;
-    secondsToBoost: BN;
-  }
-): Promise<web3.Transaction> => {
-  const [stakeBoosterId] = await findStakeBoosterId(
-    params.stakePoolId,
-    params.stakeBoosterIdentifier
-  );
-
-  const stakeBooster = await getStakeBooster(connection, stakeBoosterId);
-  const paymentManager = await getPaymentManager(
-    connection,
-    stakeBooster.parsed.paymentManager
-  );
-  const feeCollectorTokenAccount = await withFindOrInitAssociatedTokenAccount(
-    transaction,
-    connection,
-    stakeBooster.parsed.paymentMint,
-    paymentManager.parsed.feeCollector,
-    params.payer ?? wallet.publicKey
-  );
-  const paymentRecipientTokenAccount =
-    await withFindOrInitAssociatedTokenAccount(
-      transaction,
-      connection,
-      stakeBooster.parsed.paymentMint,
-      stakeBooster.parsed.paymentRecipient,
-      params.payer ?? wallet.publicKey
-    );
-  transaction.add(
-    await boostStakeEntry(connection, wallet, {
-      ...params,
-      paymentManager: stakeBooster.parsed.paymentManager,
-      paymentRecipientTokenAccount: paymentRecipientTokenAccount,
-      originalMintId: params.originalMintId,
-      feeCollectorTokenAccount: feeCollectorTokenAccount,
     })
   );
   return transaction;

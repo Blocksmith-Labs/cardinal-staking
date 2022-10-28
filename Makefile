@@ -8,8 +8,8 @@ install:
 	yarn install
 
 test-keys:
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/g" {} +
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/g" {} +
 	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E/$$(solana-keygen pubkey ./target/deploy/cardinal_receipt_manager-keypair.json)/g" {} +
 
 build:
@@ -33,8 +33,8 @@ test:
 	anchor test --skip-local-validator --skip-build --skip-deploy --provider.cluster localnet
 
 clean-test-keys:
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i/g" {} +
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN/g" {} +
 	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_receipt_manager-keypair.json)/rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E/g" {} +
 
 stop:

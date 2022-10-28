@@ -1,16 +1,4 @@
 import { findAta } from "@cardinal/common";
-import { PAYMENT_MANAGER_ADDRESS } from "@cardinal/token-manager/dist/cjs/programs/paymentManager";
-import {
-  CRANK_KEY,
-  getRemainingAccountsForKind,
-  TOKEN_MANAGER_ADDRESS,
-  TokenManagerKind,
-  TokenManagerState,
-} from "@cardinal/token-manager/dist/cjs/programs/tokenManager";
-import {
-  findMintCounterId,
-  findTokenManagerAddress,
-} from "@cardinal/token-manager/dist/cjs/programs/tokenManager/pda";
 import { MetadataProgram } from "@metaplex-foundation/mpl-token-metadata";
 import { AnchorProvider, BN, Program } from "@project-serum/anchor";
 import type { Wallet } from "@saberhq/solana-contrib";
@@ -25,6 +13,17 @@ import type {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
+import {
+  CRANK_KEY,
+  getRemainingAccountsForKind,
+  TOKEN_MANAGER_ADDRESS,
+  TokenManagerKind,
+  TokenManagerState,
+} from "cardinal-token-manager/dist/cjs/programs/tokenManager";
+import {
+  findMintCounterId,
+  findTokenManagerAddress,
+} from "cardinal-token-manager/dist/cjs/programs/tokenManager/pda";
 
 import type { STAKE_POOL_PROGRAM } from ".";
 import { STAKE_POOL_ADDRESS, STAKE_POOL_IDL } from ".";
@@ -680,51 +679,4 @@ export const closeStakeBooster = async (
       authority: provider.wallet.publicKey,
     },
   });
-};
-
-export const boostStakeEntry = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    stakePoolId: PublicKey;
-    stakeBoosterIdentifier?: BN;
-    stakeEntryId: PublicKey;
-    originalMintId: PublicKey;
-    payerTokenAccount: PublicKey;
-    paymentRecipientTokenAccount: PublicKey;
-    feeCollectorTokenAccount: PublicKey;
-    paymentManager: PublicKey;
-    payer?: PublicKey;
-    secondsToBoost: BN;
-  }
-) => {
-  const provider = new AnchorProvider(connection, wallet, {});
-  const stakePoolProgram = new Program<STAKE_POOL_PROGRAM>(
-    STAKE_POOL_IDL,
-    STAKE_POOL_ADDRESS,
-    provider
-  );
-  const [stakeBoosterId] = await findStakeBoosterId(
-    params.stakePoolId,
-    params.stakeBoosterIdentifier
-  );
-  return stakePoolProgram.instruction.boostStakeEntry(
-    { secondsToBoost: params.secondsToBoost },
-    {
-      accounts: {
-        stakePool: params.stakePoolId,
-        stakeBooster: stakeBoosterId,
-        stakeEntry: params.stakeEntryId,
-        originalMint: params.originalMintId,
-        payerTokenAccount: params.payerTokenAccount,
-        paymentRecipientTokenAccount: params.paymentRecipientTokenAccount,
-        payer: params.payer ?? wallet.publicKey,
-        feeCollectorTokenAccount: params.feeCollectorTokenAccount,
-        paymentManager: params.paymentManager,
-        cardinalPaymentManager: PAYMENT_MANAGER_ADDRESS,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-      },
-    }
-  );
 };

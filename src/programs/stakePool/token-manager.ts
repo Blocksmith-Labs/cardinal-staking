@@ -2,11 +2,11 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import { tokenManager } from "@cardinal/token-manager/dist/cjs/programs";
-import { withRemainingAccountsForReturn } from "@cardinal/token-manager/dist/cjs/programs/tokenManager";
-import { tokenManagerAddressFromMint } from "@cardinal/token-manager/dist/cjs/programs/tokenManager/pda";
 import type { Wallet } from "@saberhq/solana-contrib";
 import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { tokenManager } from "cardinal-token-manager/dist/cjs/programs";
+import { withRemainingAccountsForReturn } from "cardinal-token-manager/dist/cjs/programs/tokenManager";
+import { tokenManagerAddressFromMint } from "cardinal-token-manager/dist/cjs/programs/tokenManager/pda";
 
 export const withInvalidate = async (
   transaction: Transaction,

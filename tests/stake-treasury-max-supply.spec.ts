@@ -1,5 +1,4 @@
 import { findAta } from "@cardinal/common";
-import { withWrapSol } from "@cardinal/token-manager/dist/cjs/wrappedSol";
 import { BN } from "@project-serum/anchor";
 import { expectTXTable } from "@saberhq/chai-solana";
 import {
@@ -9,6 +8,7 @@ import {
 } from "@saberhq/solana-contrib";
 import * as splToken from "@solana/spl-token";
 import * as web3 from "@solana/web3.js";
+import { withWrapSol } from "cardinal-token-manager/dist/cjs/wrappedSol";
 import { expect } from "chai";
 
 import {
