@@ -21,13 +21,13 @@ exports.withCloseStakeBooster =
     void 0;
 const tslib_1 = require("tslib");
 const common_1 = require("@cardinal/common");
+const programs_1 = require("cardinal-token-manager/dist/cjs/programs");
+const tokenManager_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager");
+const pda_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager/pda");
 const metaplex = tslib_1.__importStar(
   require("@metaplex-foundation/mpl-token-metadata")
 );
 const anchor_1 = require("@project-serum/anchor");
-const programs_1 = require("cardinal-token-manager/dist/cjs/programs");
-const tokenManager_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager");
-const pda_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager/pda");
 const utils_1 = require("../../utils");
 const accounts_1 = require("../rewardDistributor/accounts");
 const pda_2 = require("../rewardDistributor/pda");

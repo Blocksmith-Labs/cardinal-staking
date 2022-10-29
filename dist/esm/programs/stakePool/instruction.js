@@ -1,11 +1,4 @@
 import { findAta } from "@cardinal/common";
-import { MetadataProgram } from "@metaplex-foundation/mpl-token-metadata";
-import { AnchorProvider, BN, Program } from "@project-serum/anchor";
-import {
-  ASSOCIATED_TOKEN_PROGRAM_ID,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
 import {
   CRANK_KEY,
   getRemainingAccountsForKind,
@@ -17,6 +10,13 @@ import {
   findMintCounterId,
   findTokenManagerAddress,
 } from "cardinal-token-manager/dist/cjs/programs/tokenManager/pda";
+import { MetadataProgram } from "@metaplex-foundation/mpl-token-metadata";
+import { AnchorProvider, BN, Program } from "@project-serum/anchor";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
+import { SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
 import { STAKE_POOL_ADDRESS, STAKE_POOL_IDL } from ".";
 import { ReceiptType, STAKE_BOOSTER_PAYMENT_MANAGER } from "./constants";
 import { findStakeAuthorizationId, findStakeBoosterId } from "./pda";

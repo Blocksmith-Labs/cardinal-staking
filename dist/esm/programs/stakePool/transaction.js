@@ -3,8 +3,6 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import * as metaplex from "@metaplex-foundation/mpl-token-metadata";
-import { BN } from "@project-serum/anchor";
 import { tokenManager } from "cardinal-token-manager/dist/cjs/programs";
 import { withRemainingAccountsForReturn } from "cardinal-token-manager/dist/cjs/programs/tokenManager";
 import {
@@ -12,6 +10,8 @@ import {
   findTokenManagerAddress,
   tokenManagerAddressFromMint,
 } from "cardinal-token-manager/dist/cjs/programs/tokenManager/pda";
+import * as metaplex from "@metaplex-foundation/mpl-token-metadata";
+import { BN } from "@project-serum/anchor";
 import { getMintSupply } from "../../utils";
 import { getRewardDistributor } from "../rewardDistributor/accounts";
 import { findRewardDistributorId } from "../rewardDistributor/pda";

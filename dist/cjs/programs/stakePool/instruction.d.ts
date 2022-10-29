@@ -1,7 +1,7 @@
+import { TokenManagerKind, TokenManagerState } from "cardinal-token-manager/dist/cjs/programs/tokenManager";
 import { BN } from "@project-serum/anchor";
 import type { Wallet } from "@saberhq/solana-contrib";
 import type { AccountMeta, Connection, PublicKey, TransactionInstruction } from "@solana/web3.js";
-import { TokenManagerKind, TokenManagerState } from "cardinal-token-manager/dist/cjs/programs/tokenManager";
 import { ReceiptType } from "./constants";
 export declare const initPoolIdentifier: (connection: Connection, wallet: Wallet, params: {
     identifierId: PublicKey;

@@ -20,12 +20,12 @@ exports.closeStakeBooster =
   exports.initPoolIdentifier =
     void 0;
 const common_1 = require("@cardinal/common");
+const tokenManager_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager");
+const pda_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager/pda");
 const mpl_token_metadata_1 = require("@metaplex-foundation/mpl-token-metadata");
 const anchor_1 = require("@project-serum/anchor");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
-const tokenManager_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager");
-const pda_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager/pda");
 const _1 = require(".");
 const constants_1 = require("./constants");
 const pda_2 = require("./pda");
