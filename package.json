@@ -33,20 +33,18 @@
     "src/"
   ],
   "scripts": {
-    "build": "tsc -P tsconfig.cjs.json && tsc -P tsconfig.esm.json",
+    "build-prod": "tsc -P tsconfig.cjs.json && tsc -P tsconfig.esm.json",
     "clean": "rm -fr dist/",
     "idl:generate": "./scripts/generate-idls-types.sh",
     "typecheck": "tsc",
     "lint": "eslint . --cache",
     "lint:ci": "eslint . --max-warnings=0",
     "test:e2e": "anchor test --skip-build 'tests/**/*.ts'",
-    "docs:generate": "typedoc --excludePrivate --includeVersion --out site/ src/index.ts",
-    "prepare": "husky install",
-    "postinstall": "yarn build"
+    "docs:generate": "typedoc --excludePrivate --includeVersion --out site/ src/index.ts"
   },
   "dependencies": {
     "@cardinal/common": "^2.0.11",
-    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#dc9f74e30c5dbef1d0859d67913fe720bfa4e7aa",
+    "cardinal-token-manager": "git+https://github.com/wozgun/cardinal-token-manager.git#9126a3df65cb044a65016413b9b6ca9d231834ad",
     "@metaplex-foundation/mpl-token-metadata": "^1.2.5",
     "node-fetch": "2"
   },
@@ -90,6 +88,5 @@
     "@solana/web3.js": "^1",
     "bn.js": "^5.2.0",
     "jsbi": "^3 || ^4"
-  },
-  "packageManager": "yarn@3.1.1"
+  }
 }

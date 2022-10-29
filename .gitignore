@@ -20,7 +20,7 @@ docker-target
 .anchor
 yarn-error.log
 lerna-debug.log
-dist/
+# dist/
 # Ignore node modules
 node_modules
 .eslintcache
