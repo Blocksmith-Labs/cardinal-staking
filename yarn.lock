@@ -874,9 +874,9 @@ camelcase@^6.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
-"cardinal-token-manager@git+https://github.com/wozgun/cardinal-token-manager.git#cc643fc22e061803e91c2c23f8e2a319ee035f47":
+"cardinal-token-manager@git+https://github.com/wozgun/cardinal-token-manager.git#dc9f74e30c5dbef1d0859d67913fe720bfa4e7aa":
   version "1.7.8"
-  resolved "git+https://github.com/wozgun/cardinal-token-manager.git#cc643fc22e061803e91c2c23f8e2a319ee035f47"
+  resolved "git+https://github.com/wozgun/cardinal-token-manager.git#dc9f74e30c5dbef1d0859d67913fe720bfa4e7aa"
   dependencies:
     "@cardinal/common" "^2.0.12"
     "@cardinal/payment-manager" "^1.7.9"
