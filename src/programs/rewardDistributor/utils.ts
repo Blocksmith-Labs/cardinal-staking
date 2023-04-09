@@ -2,7 +2,7 @@ import {
   findAta,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import type { Wallet } from "@saberhq/solana-contrib";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import type {
   AccountMeta,
   Connection,

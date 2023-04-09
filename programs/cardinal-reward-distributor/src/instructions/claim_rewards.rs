@@ -1,13 +1,16 @@
-use {
-    crate::{errors::ErrorCode, state::*},
-    anchor_lang::{
-        prelude::*,
-        solana_program::{program::invoke, system_instruction::transfer},
-    },
-    anchor_spl::token::{self, Mint, Token, TokenAccount},
-    cardinal_stake_pool::state::{StakeEntry, StakeEntryKind, StakePool},
-    std::cmp::min,
-};
+use crate::errors::ErrorCode;
+use crate::state::*;
+use anchor_lang::prelude::*;
+use anchor_lang::solana_program::program::invoke;
+use anchor_lang::solana_program::system_instruction::transfer;
+use anchor_spl::token::Mint;
+use anchor_spl::token::Token;
+use anchor_spl::token::TokenAccount;
+use anchor_spl::token::{self};
+use cardinal_stake_pool::state::StakeEntry;
+use cardinal_stake_pool::state::StakeEntryKind;
+use cardinal_stake_pool::state::StakePool;
+use std::cmp::min;
 
 #[derive(Accounts)]
 pub struct ClaimRewardsCtx<'info> {
@@ -63,6 +66,10 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
         if let Some(max_reward_seconds) = reward_distributor.max_reward_seconds_received {
             reward_seconds = min(reward_seconds, max_reward_seconds)
         };
+        if reward_distributor.max_reward_seconds_received.is_some() && reward_seconds_received >= reward_seconds {
+            return Err(error!(ErrorCode::MaxRewardSecondsClaimed));
+        }
+
         let mut reward_amount_to_receive = reward_seconds
             .checked_sub(reward_seconds_received)
             .unwrap()

@@ -1,13 +1,16 @@
 pub mod errors;
 pub mod instructions;
 pub mod state;
+pub mod utils;
 
-use {anchor_lang::prelude::*, instructions::*};
+use anchor_lang::prelude::*;
+use instructions::*;
 
 declare_id!("GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2");
 
 #[program]
 pub mod cardinal_stake_pool {
+
     use super::*;
 
     pub fn init_identifier(ctx: Context<InitIdentifierCtx>) -> Result<()> {
@@ -66,12 +69,45 @@ pub mod cardinal_stake_pool {
         close_stake_entry::handler(ctx)
     }
 
+    pub fn stake_entry_fill_zeros(ctx: Context<StakeEntryFillZeros>) -> Result<()> {
+        stake_entry_fill_zeros::handler(ctx)
+    }
+
+    pub fn stake_entry_resize(ctx: Context<StakeEntryResize>) -> Result<()> {
+        stake_entry_resize::handler(ctx)
+    }
+
     pub fn stake_pool_fill_zeros(ctx: Context<StakePoolFillZeros>) -> Result<()> {
         stake_pool_fill_zeros::handler(ctx)
     }
 
-    pub fn reasssign_stake_entry(ctx: Context<ReassignStakeEntryCtx>, ix: ReassignStakeEntryIx) -> Result<()> {
+    pub fn reassign_stake_entry(ctx: Context<ReassignStakeEntryCtx>, ix: ReassignStakeEntryIx) -> Result<()> {
         reassign_stake_entry::handler(ctx, ix)
+    }
+
+    pub fn double_or_reset_total_stake_seconds(ctx: Context<DoubleOrResetTotalStakeSecondsCtx>) -> Result<()> {
+        double_or_reset_total_stake_seconds::handler(ctx)
+    }
+
+    pub fn claim_stake_entry_funds(ctx: Context<ClaimStakeEntryFundsCtx>) -> Result<()> {
+        claim_stake_entry_funds::handler(ctx)
+    }
+
+    pub fn reset_stake_entry_bump(ctx: Context<ResetStakeEntryBumpCtx>) -> Result<()> {
+        reset_stake_entry_bump::handler(ctx)
+    }
+
+    //// programmable ////
+    pub fn stake_programmable(ctx: Context<StakeProgrammableCtx>, amount: u64) -> Result<()> {
+        programmable::stake_programmable::handler(ctx, amount)
+    }
+
+    pub fn unstake_programmable(ctx: Context<UnstakeProgrammableCtx>) -> Result<()> {
+        programmable::unstake_programmable::handler(ctx)
+    }
+
+    pub fn unstake_custodial_programmable(ctx: Context<UnstakeCustodialProgrammableCtx>) -> Result<()> {
+        programmable::unstake_custodial_programmable::handler(ctx)
     }
 
     //// stake_booster ////
@@ -89,5 +125,22 @@ pub mod cardinal_stake_pool {
 
     pub fn close_stake_booster(ctx: Context<CloseStakeBoosterCtx>) -> Result<()> {
         stake_booster::close_stake_booster::handler(ctx)
+    }
+
+    //// groups ////
+    pub fn init_group_entry(ctx: Context<InitGroupEntryCtx>, ix: InitGroupEntryIx) -> Result<()> {
+        groups::init_group_entry::handler(ctx, ix)
+    }
+
+    pub fn add_to_group_entry(ctx: Context<AddToGroupEntryCtx>) -> Result<()> {
+        groups::add_to_group_entry::handler(ctx)
+    }
+
+    pub fn remove_from_group_entry(ctx: Context<RemoveFromGroupEntryCtx>) -> Result<()> {
+        groups::remove_from_group_entry::handler(ctx)
+    }
+
+    pub fn init_ungrouping(ctx: Context<InitUngroupingCtx>) -> Result<()> {
+        groups::init_ungrouping::handler(ctx)
     }
 }

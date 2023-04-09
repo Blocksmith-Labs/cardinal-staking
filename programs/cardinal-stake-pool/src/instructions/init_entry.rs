@@ -1,12 +1,11 @@
 use mpl_token_metadata::utils::assert_derivation;
 
-use {
-    crate::{errors::ErrorCode, state::*},
-    anchor_lang::prelude::*,
-    anchor_spl::token::Mint,
-    mpl_token_metadata::state::Metadata,
-    mpl_token_metadata::{self},
-};
+use crate::errors::ErrorCode;
+use crate::state::*;
+use anchor_lang::prelude::*;
+use anchor_spl::token::Mint;
+use mpl_token_metadata::state::Metadata;
+use mpl_token_metadata::{self};
 
 #[derive(Accounts)]
 #[instruction(user: Pubkey)]

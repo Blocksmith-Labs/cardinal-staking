@@ -1,8 +1,10 @@
-use {
-    crate::{errors::ErrorCode, state::*},
-    anchor_lang::prelude::*,
-    anchor_spl::token::{self, Mint, Token, TokenAccount},
-};
+use crate::errors::ErrorCode;
+use crate::state::*;
+use anchor_lang::prelude::*;
+use anchor_spl::token::Mint;
+use anchor_spl::token::Token;
+use anchor_spl::token::TokenAccount;
+use anchor_spl::token::{self};
 
 #[derive(Accounts)]
 pub struct UnstakeCtx<'info> {
@@ -38,13 +40,15 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
     let stake_pool = &mut ctx.accounts.stake_pool;
     let stake_entry = &mut ctx.accounts.stake_entry;
 
+    let seed = get_stake_seed(ctx.accounts.original_mint.supply, ctx.accounts.user.key());
     let original_mint = stake_entry.original_mint;
-    let user = ctx.accounts.user.key();
-    let stake_pool_key = stake_pool.key();
-    let seed = get_stake_seed(ctx.accounts.original_mint.supply, user);
-
-    let stake_entry_seed = [STAKE_ENTRY_PREFIX.as_bytes(), stake_pool_key.as_ref(), original_mint.as_ref(), seed.as_ref(), &[stake_entry.bump]];
+    let stake_pool_id = stake_pool.key();
+    let stake_entry_seed = [STAKE_ENTRY_PREFIX.as_bytes(), stake_pool_id.as_ref(), original_mint.as_ref(), seed.as_ref(), &[stake_entry.bump]];
     let stake_entry_signer = &[&stake_entry_seed[..]];
+
+    if stake_entry.grouped == Some(true) {
+        return Err(error!(ErrorCode::GroupedStakeEntry));
+    }
 
     if stake_pool.min_stake_seconds.is_some()
         && stake_pool.min_stake_seconds.unwrap() > 0
@@ -88,10 +92,11 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
     stake_entry.total_stake_seconds = stake_entry.total_stake_seconds.saturating_add(
         (u128::try_from(stake_entry.cooldown_start_seconds.unwrap_or(Clock::get().unwrap().unix_timestamp))
             .unwrap()
-            .saturating_sub(u128::try_from(stake_entry.last_staked_at).unwrap()))
+            .saturating_sub(u128::try_from(stake_entry.last_updated_at.unwrap_or(stake_entry.last_staked_at)).unwrap()))
         .checked_mul(u128::try_from(stake_entry.amount).unwrap())
         .unwrap(),
     );
+    stake_entry.last_updated_at = Some(Clock::get().unwrap().unix_timestamp);
     stake_entry.last_staker = Pubkey::default();
     stake_entry.original_mint_claimed = false;
     stake_entry.stake_mint_claimed = false;
@@ -99,6 +104,7 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
     stake_entry.cooldown_start_seconds = None;
     stake_pool.total_staked = stake_pool.total_staked.checked_sub(1).expect("Sub error");
     stake_entry.kind = StakeEntryKind::Permissionless as u8;
+    stake_entry_fill_zeros(stake_entry)?;
 
     Ok(())
 }
