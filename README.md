@@ -4,7 +4,7 @@
 [![Release](https://github.com/cardinal-labs/cardinal-staking/actions/workflows/release.yml/badge.svg?branch=v0.0.27)](https://github.com/cardinal-labs/cardinal-staking/actions/workflows/release.yml)
 
 <p align="center">
-    <img src="./images/banner.png" />
+    <img src="./doc-assets/banner.png" />
 </p>
 
 <p align="center">
@@ -13,22 +13,26 @@
 
 ## Background
 
-Cardinal staking encompasses a suite of contracts for issuing and staking NFTs and FTs. The simple program is a stake pool that tracks total stake duration. In addition, there is an implementation of a token minting reward distributor. Cardinal staking works well with any standard NFT collection and also composes with other programs in the Cardinal NFT infrastructure ecosystem.
+Cardinal staking encompasses a suite of contracts for issuing and staking non-fungible and fungible tokens on solana. The simple program is a stake pool that tracks total stake duration of the tokens. The tokens can be staked in a custodial or non-custodial fashion. In addition, there is an implementation of a token minting reward distributor, group reward distributor and a way to distribute single non-token based rewards. Cardinal staking works well with any standard NFT collection and also composes with other programs in the Cardinal NFT infrastructure ecosystem.
 
 ## Packages
 
-| Package                       | Description                              | Version                                                                                                                           | Docs                                                                                                             |
-| :---------------------------- | :--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
-| `cardinal-stake-pool`         | Stake pool tracking total stake duration | [![Crates.io](https://img.shields.io/crates/v/cardinal-stake-pool)](https://crates.io/crates/cardinal-stake-pool)                 | [![Docs.rs](https://docs.rs/cardinal-stake-pool/badge.svg)](https://docs.rs/cardinal-stake-pool)                 |
-| `cardinal-reward-distributor` | Simple token minting rewards distributor | [![Crates.io](https://img.shields.io/crates/v/cardinal-reward-distributor)](https://crates.io/crates/cardinal-reward-distributor) | [![Docs.rs](https://docs.rs/cardinal-reward-distributor/badge.svg)](https://docs.rs/cardinal-reward-distributor) |
-| `@cardinal/staking`           | TypeScript SDK for staking               | [![npm](https://img.shields.io/npm/v/@cardinal/staking.svg)](https://www.npmjs.com/package/@cardinal/staking)                     | [![Docs](https://img.shields.io/badge/docs-typedoc-blue)](https://cardinal-labs.github.io/cardinal-staking/)     |
+| Package                             | Description                                                                             | Version                                                                                                                                       | Docs                                                                                                                         |
+| :---------------------------------- | :-------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| `cardinal-stake-pool`               | Stake pool tracking total stake duration                                                | [![Crates.io](https://img.shields.io/crates/v/cardinal-stake-pool)](https://crates.io/crates/cardinal-stake-pool)                             | [![Docs.rs](https://docs.rs/cardinal-stake-pool/badge.svg)](https://docs.rs/cardinal-stake-pool)                             |
+| `cardinal-reward-distributor`       | Simple token minting rewards distributor                                                | [![Crates.io](https://img.shields.io/crates/v/cardinal-reward-distributor)](https://crates.io/crates/cardinal-reward-distributor)             | [![Docs.rs](https://docs.rs/cardinal-reward-distributor/badge.svg)](https://docs.rs/cardinal-reward-distributor)             |
+| `cardinal-group-reward-distributor` | Plugin for minting tokens to a collection of grouped tokens across multiple stake pools | [![Crates.io](https://img.shields.io/crates/v/cardinal-group-reward-distributor)](https://crates.io/crates/cardinal-group-reward-distributor) | [![Docs.rs](https://docs.rs/cardinal-group-reward-distributor/badge.svg)](https://docs.rs/cardinal-group-reward-distributor) |
+| `cardinal-receipt-manager`          | Plugin for one-off rewards based on total stake time                                    | [![Crates.io](https://img.shields.io/crates/v/cardinal-receipt-manager)](https://crates.io/crates/cardinal-receipt-manager)                   | [![Docs.rs](https://docs.rs/cardinal-receipt-manager/badge.svg)](https://docs.rs/cardinal-receipt-manager)                   |
+| `@cardinal/staking`                 | TypeScript SDK for staking                                                              | [![npm](https://img.shields.io/npm/v/@cardinal/staking.svg)](https://www.npmjs.com/package/@cardinal/staking)                                 | [![Docs](https://img.shields.io/badge/docs-typedoc-blue)](https://cardinal-labs.github.io/cardinal-staking/)                 |
 
 ## Addresses
 
 Program addresses are the same on devnet, testnet, and mainnet-beta.
 
-- StakePool: [`GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2`](https://explorer.solana.com/address/GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2)
-- RewardDistributor: [`6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN`](https://explorer.solana.com/address/6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN)
+- StakePool: [`stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i`](https://explorer.solana.com/address/stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i)
+- RewardDistributor: [`rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp`](https://explorer.solana.com/address/rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp)
+- GroupRewardDistributor: [`grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL`](https://explorer.solana.com/address/grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL)
+- ReceiptManager: [`rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E`](https://explorer.solana.com/address/rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E)
 
 ## Plugins
 
@@ -93,7 +97,7 @@ Reset_on_stake, cooldown_period and min_stake_seconds are three additional funct
 - min_stake_seconds.
   - Number of seconds a mint has to stay in the pool once staked before being able to be unstaked.
 
-**Stake Entry**
+## Stake Entry
 
 Stake pools are a collection of stake entries. Each stake entry stores information related to a specific NFT and how long it has been staked.
 
@@ -122,7 +126,7 @@ pub struct StakeEntry {
 }
 ```
 
-**Stake Receipts**
+## Stake Receipts
 
 Stake pool is designed to support general staking as well as a enable the concept of stake receipts.
 
@@ -142,7 +146,7 @@ Stake pool is designed to support general staking as well as a enable the concep
   - The current staker can unstake at any time which increments the stake timer for that mint.
   - Any unstaking requires returning the receipt before the unstake instruction can be called. This can be done via the Cardinal Token Manager with 'InvalidationType::Return'. Similar to how returning locked tokens works, this will is handled automatically by the client unstake api.
 
-**Reward Distributors**
+## Reward Distributors
 
 While just using the `stake_pool` can be sufficient to keep track of total stake duration and lock the NFT in the user's wallet, a reward distributor can be optionally added to distribute rewards to staked NFTs.
 
@@ -193,7 +197,7 @@ In both kinds of reward distributors, if the `max_supply` is hit, or the treasur
 
 Because reward distributor is modeled separately from the stake_pool, a user can optionally claim their rewards at any time for the amount of time they have staked. Typically, this is done automatically when calling `unstake` by the client.
 
-**Reward Distributor Multipliers**
+## Reward Distributor Multipliers
 
 Multipliers is a feature that can set a given token (via its reward_entry) to receive more rewards than the others. A reward distributor has two fields one for the `default_multiplier`, defaults to `1`, and another for the `multiplier_decimals`, defaults to `0`. Every time a reward entry is initialized, its multiplier gets set to the `default_multiplier` of its reward distributor. Only the authority of the pool can change the multiplier by calling `update_reward_entry` instruction. In the calculation of the claimable rewards for an entry, the `multiplier` is divided by ten to the power of the distributor's `multiplier_decimals`, achieving the outcome of decimal multipliers.
 

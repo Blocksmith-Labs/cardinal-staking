@@ -1,5 +1,5 @@
-export declare type CardinalReceiptManager = {
-    version: "1.10.5";
+export type CardinalReceiptManager = {
+    version: "2.2.1";
     name: "cardinal_receipt_manager";
     instructions: [
         {

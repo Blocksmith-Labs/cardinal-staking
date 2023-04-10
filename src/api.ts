@@ -10,18 +10,6 @@ import {
   tryGetAccount,
   tryNull,
 } from "@cardinal/common";
-import { tokenManager } from "@cardinal/token-manager/dist/cjs/programs";
-import {
-  CRANK_KEY,
-  getRemainingAccountsForKind,
-  TOKEN_MANAGER_ADDRESS,
-  TokenManagerKind,
-  withRemainingAccountsForInvalidate,
-} from "@cardinal/token-manager/dist/cjs/programs/tokenManager";
-import {
-  findMintCounterId,
-  findTokenManagerAddress,
-} from "@cardinal/token-manager/dist/cjs/programs/tokenManager/pda";
 import { BN } from "@coral-xyz/anchor";
 import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import { PROGRAM_ID as TOKEN_AUTH_RULES_ID } from "@metaplex-foundation/mpl-token-auth-rules";
@@ -48,6 +36,18 @@ import {
   SYSVAR_RENT_PUBKEY,
   Transaction,
 } from "@solana/web3.js";
+import { tokenManager } from "cardinal-token-manager/dist/cjs/programs";
+import {
+  CRANK_KEY,
+  getRemainingAccountsForKind,
+  TOKEN_MANAGER_ADDRESS,
+  TokenManagerKind,
+  withRemainingAccountsForInvalidate,
+} from "cardinal-token-manager/dist/cjs/programs/tokenManager";
+import {
+  findMintCounterId,
+  findTokenManagerAddress,
+} from "cardinal-token-manager/dist/cjs/programs/tokenManager/pda";
 
 import type { CardinalRewardDistributor } from "./idl/cardinal_reward_distributor";
 import type { CardinalStakePool } from "./idl/cardinal_stake_pool";

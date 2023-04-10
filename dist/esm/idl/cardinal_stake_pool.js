@@ -1,5 +1,5 @@
 export const IDL = {
-  version: "1.10.5",
+  version: "2.2.1",
   name: "cardinal_stake_pool",
   instructions: [
     {
@@ -533,6 +533,38 @@ export const IDL = {
       args: [],
     },
     {
+      name: "stakeEntryFillZeros",
+      accounts: [
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "stakeEntryResize",
+      accounts: [
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
       name: "stakePoolFillZeros",
       accounts: [
         {
@@ -544,7 +576,7 @@ export const IDL = {
       args: [],
     },
     {
-      name: "reasssignStakeEntry",
+      name: "reassignStakeEntry",
       accounts: [
         {
           name: "stakePool",
@@ -570,6 +602,352 @@ export const IDL = {
           },
         },
       ],
+    },
+    {
+      name: "doubleOrResetTotalStakeSeconds",
+      accounts: [
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakePool",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "lastStaker",
+          isMut: false,
+          isSigner: true,
+        },
+        {
+          name: "recentSlothashes",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "claimStakeEntryFunds",
+      accounts: [
+        {
+          name: "fundsMint",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntryFundsMintTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "userFundsMintTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakePool",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "originalMint",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "resetStakeEntryBump",
+      accounts: [
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakePool",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "user",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "originalMint",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "stakeProgrammable",
+      accounts: [
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakePool",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "originalMint",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "user",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "userOriginalMintTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "userOriginalMintTokenRecord",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mintMetadata",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mintEdition",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "authorizationRules",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "sysvarInstructions",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenMetadataProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "authorizationRulesProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "amount",
+          type: "u64",
+        },
+      ],
+    },
+    {
+      name: "unstakeProgrammable",
+      accounts: [
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakePool",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "originalMint",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "user",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "userOriginalMintTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "userOriginalMintTokenRecord",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mintMetadata",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mintEdition",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "authorizationRules",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "sysvarInstructions",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenMetadataProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "authorizationRulesProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "unstakeCustodialProgrammable",
+      accounts: [
+        {
+          name: "stakePool",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "originalMint",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntryOriginalMintTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "user",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "userOriginalMintTokenAccount",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntryOriginalMintTokenRecord",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "userOriginalMintTokenRecord",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mintMetadata",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "mintEdition",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "authorizationRules",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "sysvarInstructions",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "associatedTokenProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "tokenMetadataProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "authorizationRulesProgram",
+          isMut: false,
+          isSigner: false,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
     },
     {
       name: "initStakeBooster",
@@ -731,8 +1109,168 @@ export const IDL = {
       ],
       args: [],
     },
+    {
+      name: "initGroupEntry",
+      accounts: [
+        {
+          name: "groupEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "ix",
+          type: {
+            defined: "InitGroupEntryIx",
+          },
+        },
+      ],
+    },
+    {
+      name: "addToGroupEntry",
+      accounts: [
+        {
+          name: "groupEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "removeFromGroupEntry",
+      accounts: [
+        {
+          name: "groupEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "stakeEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
+    {
+      name: "initUngrouping",
+      accounts: [
+        {
+          name: "groupEntry",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [],
+    },
   ],
   accounts: [
+    {
+      name: "groupStakeEntry",
+      type: {
+        kind: "struct",
+        fields: [
+          {
+            name: "bump",
+            type: "u8",
+          },
+          {
+            name: "groupId",
+            type: "publicKey",
+          },
+          {
+            name: "authority",
+            type: "publicKey",
+          },
+          {
+            name: "stakeEntries",
+            type: {
+              vec: "publicKey",
+            },
+          },
+          {
+            name: "changedAt",
+            type: "i64",
+          },
+          {
+            name: "groupCooldownSeconds",
+            type: "u32",
+          },
+          {
+            name: "groupStakeSeconds",
+            type: "u32",
+          },
+          {
+            name: "groupCooldownStartSeconds",
+            type: {
+              option: "i64",
+            },
+          },
+        ],
+      },
+    },
     {
       name: "stakeEntry",
       type: {
@@ -788,6 +1326,18 @@ export const IDL = {
             name: "cooldownStartSeconds",
             type: {
               option: "i64",
+            },
+          },
+          {
+            name: "lastUpdatedAt",
+            type: {
+              option: "i64",
+            },
+          },
+          {
+            name: "grouped",
+            type: {
+              option: "bool",
             },
           },
         ],
@@ -858,6 +1408,12 @@ export const IDL = {
             name: "endDate",
             type: {
               option: "i64",
+            },
+          },
+          {
+            name: "doubleOrResetEnabled",
+            type: {
+              option: "bool",
             },
           },
         ],
@@ -946,6 +1502,30 @@ export const IDL = {
   ],
   types: [
     {
+      name: "InitGroupEntryIx",
+      type: {
+        kind: "struct",
+        fields: [
+          {
+            name: "groupId",
+            type: "publicKey",
+          },
+          {
+            name: "groupCooldownSeconds",
+            type: {
+              option: "u32",
+            },
+          },
+          {
+            name: "groupStakeSeconds",
+            type: {
+              option: "u32",
+            },
+          },
+        ],
+      },
+    },
+    {
       name: "InitPoolIx",
       type: {
         kind: "struct",
@@ -998,6 +1578,12 @@ export const IDL = {
             name: "endDate",
             type: {
               option: "i64",
+            },
+          },
+          {
+            name: "doubleOrResetEnabled",
+            type: {
+              option: "bool",
             },
           },
         ],
@@ -1164,6 +1750,12 @@ export const IDL = {
               option: "i64",
             },
           },
+          {
+            name: "doubleOrResetEnabled",
+            type: {
+              option: "bool",
+            },
+          },
         ],
       },
     },
@@ -1325,33 +1917,78 @@ export const IDL = {
     },
     {
       code: 6028,
+      name: "CannotUpdateUnstakedEntry",
+      msg: "Cannot update unstaked entry",
+    },
+    {
+      code: 6100,
       name: "CannotBoostUnstakedToken",
       msg: "Cannot boost unstaked token",
     },
     {
-      code: 6029,
+      code: 6101,
       name: "CannotBoostMoreThanCurrentTime",
       msg: "Cannot boost past current time less than start time",
     },
     {
-      code: 6030,
+      code: 6102,
       name: "InvalidBoostPayerTokenAccount",
       msg: "Invalid boost payer token account",
     },
     {
-      code: 6031,
+      code: 6103,
       name: "InvalidBoostPaymentRecipientTokenAccount",
       msg: "Invalid boost payment recipient token account",
     },
     {
-      code: 6032,
+      code: 6104,
       name: "InvalidPaymentManager",
       msg: "Invalid payment manager",
     },
     {
-      code: 6033,
+      code: 6105,
       name: "CannotBoostFungibleToken",
       msg: "Cannot boost a fungible token stake entry",
+    },
+    {
+      code: 6120,
+      name: "GroupedStakeEntry",
+      msg: "Grouped stake entry",
+    },
+    {
+      code: 6121,
+      name: "UngroupedStakeEntry",
+      msg: "Ungrouped stake entry",
+    },
+    {
+      code: 6122,
+      name: "MinGroupSecondsNotSatisfied",
+      msg: "Minimum group seconds not satisfied",
+    },
+    {
+      code: 6123,
+      name: "ActiveGroupEntry",
+      msg: "Active group entry",
+    },
+    {
+      code: 6124,
+      name: "StakeEntryNotFoundInGroup",
+      msg: "Stake entry not found in group",
+    },
+    {
+      code: 6130,
+      name: "InvalidFundsMint",
+      msg: "Invalid funds mint",
+    },
+    {
+      code: 6131,
+      name: "InvalidMintForTokenAccount",
+      msg: "Invalid mint for token account",
+    },
+    {
+      code: 6132,
+      name: "StakeEntryFundsTokenAccountEmpty",
+      msg: "Stake entry funds token account is empty",
     },
   ],
 };

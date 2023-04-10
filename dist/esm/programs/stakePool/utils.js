@@ -1,5 +1,5 @@
 import { withFindOrInitAssociatedTokenAccount } from "@cardinal/common";
-import { AnchorProvider, BN, Program } from "@project-serum/anchor";
+import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
 import { getMintSupply } from "../../utils";
 import {
   REWARD_DISTRIBUTOR_ADDRESS,
@@ -8,11 +8,11 @@ import {
 import { findRewardDistributorId } from "../rewardDistributor/pda";
 import { STAKE_POOL_ADDRESS, STAKE_POOL_IDL } from ".";
 import { findStakeAuthorizationId, findStakeEntryId } from "./pda";
-export const remainingAccountsForInitStakeEntry = async (
+export const remainingAccountsForInitStakeEntry = (
   stakePoolId,
   originalMintId
 ) => {
-  const [stakeAuthorizationRecordId] = await findStakeAuthorizationId(
+  const stakeAuthorizationRecordId = findStakeAuthorizationId(
     stakePoolId,
     originalMintId
   );
@@ -106,7 +106,7 @@ export const getUnclaimedRewards = async (connection, stakePoolId) => {
     REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const [rewardDistributorId] = await findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(stakePoolId);
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
@@ -127,10 +127,19 @@ export const getClaimedRewards = async (connection, stakePoolId) => {
     REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const [rewardDistributorId] = await findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(stakePoolId);
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
   return parsed.rewardsIssued;
 };
+export const shouldReturnReceipt = (stakePoolData, stakeEntryData) =>
+  // no cooldown
+  !stakePoolData.cooldownSeconds ||
+  stakePoolData.cooldownSeconds === 0 ||
+  (!!(stakeEntryData === null || stakeEntryData === void 0
+    ? void 0
+    : stakeEntryData.cooldownStartSeconds) &&
+    Date.now() / 1000 - stakeEntryData.cooldownStartSeconds.toNumber() >=
+      stakePoolData.cooldownSeconds);
 //# sourceMappingURL=utils.js.map

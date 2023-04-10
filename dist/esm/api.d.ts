@@ -1,7 +1,8 @@
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
-import type { Connection, PublicKey } from "@solana/web3.js";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { Connection, PublicKey, Signer } from "@solana/web3.js";
 import { Keypair, Transaction } from "@solana/web3.js";
+import type { GroupRewardDistributorKind, GroupRewardDistributorMetadataKind, GroupRewardDistributorPoolKind } from "./programs/groupRewardDistributor";
 import type { RewardDistributorKind } from "./programs/rewardDistributor";
 import { ReceiptType } from "./programs/stakePool";
 /**
@@ -28,6 +29,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
     cooldownSeconds?: number;
     minStakeSeconds?: number;
     endDate?: BN;
+    doubleOrResetEnabled?: boolean;
     rewardDistributor?: {
         rewardMintId: PublicKey;
         rewardAmount?: BN;
@@ -121,10 +123,25 @@ export declare const createStakeEntryAndStakeMint: (connection: Connection, wall
  */
 export declare const claimRewards: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
-    stakeEntryId: PublicKey;
+    stakeEntryIds: PublicKey[];
     lastStaker?: PublicKey;
     payer?: PublicKey;
-    skipRewardMintTokenAccount?: boolean;
+}) => Promise<Transaction[]>;
+export declare const claimRewardsAll: (connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryIds: PublicKey[];
+    lastStaker?: PublicKey;
+    payer?: PublicKey;
+}) => Promise<{
+    tx: Transaction;
+}[][]>;
+export declare const stake: (connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    originalMintId: PublicKey;
+    userOriginalMintTokenAccountId: PublicKey;
+    amount?: BN;
+    fungible?: boolean;
+    receiptType?: ReceiptType;
 }) => Promise<Transaction>;
 /**
  * Convenience method to stake tokens
@@ -139,12 +156,24 @@ export declare const claimRewards: (connection: Connection, wallet: Wallet, para
  * @param amount - (Optional) Amount of tokens to be staked, defaults to 1
  * @returns
  */
-export declare const stake: (connection: Connection, wallet: Wallet, params: {
+export declare const stakeAll: (connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    mintInfos: {
+        mintId: PublicKey;
+        tokenAccountId: PublicKey;
+        fungible?: boolean;
+        amount?: BN;
+        receiptType?: ReceiptType;
+    }[];
+}) => Promise<{
+    tx: Transaction;
+    signers?: Signer[];
+}[][]>;
+export declare const unstake: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
-    userOriginalMintTokenAccountId: PublicKey;
-    receiptType?: ReceiptType;
-    amount?: BN;
+    fungible?: boolean;
+    stakeEntryId?: PublicKey;
 }) => Promise<Transaction>;
 /**
  * Convenience method to unstake tokens
@@ -154,9 +183,168 @@ export declare const stake: (connection: Connection, wallet: Wallet, params: {
  * @param originalMintId - Original mint ID
  * @returns
  */
-export declare const unstake: (connection: Connection, wallet: Wallet, params: {
+export declare const unstakeAll: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
-    originalMintId: PublicKey;
-    skipRewardMintTokenAccount?: boolean;
+    mintInfos: {
+        mintId: PublicKey;
+        stakeEntryId?: PublicKey;
+        fungible?: boolean;
+    }[];
+}) => Promise<{
+    tx: Transaction;
+    signers?: Signer[];
+}[][]>;
+/**
+ * Convenience call to create a group entry
+ * @param connection - Connection to use
+ * @param wallet - Wallet to use
+ * @param params
+ * stakePoolId - Stake pool ID
+ * originalMintId - Original mint ID
+ * user - (Optional) User pubkey in case the person paying for the transaction and
+ * stake entry owner are different
+ * @returns
+ */
+export declare const createGroupEntry: (connection: Connection, wallet: Wallet, params: {
+    stakeEntryIds: PublicKey[];
+    groupCooldownSeconds?: number;
+    groupStakeSeconds?: number;
+}) => Promise<[Transaction, PublicKey]>;
+/**
+ * Convenience call to create a group reward distributor
+ * @param connection - Connection to use
+ * @param wallet - Wallet to use
+ * @param params
+ *  rewardMintId - (Optional) Reward mint id
+ *  authorizedPools - Authorized stake pool ids
+ *  rewardAmount - (Optional) Reward amount
+ *  rewardDurationSeconds - (Optional) Reward duration in seconds
+ *  rewardKind - (Optional) Reward distributor kind Mint or Treasury
+ *  poolKind - (Optional) Reward distributor pool validation kind NoRestriction, AllFromSinglePool or EachFromSeparatePool
+ *  metadataKind - (Optional) Reward distributor metadata validation kind NoRestriction, UniqueNames or UniqueSymbols
+ *  supply - (Optional) Supply
+ *  baseAdder - (Optional) Base adder value that will be add to the calculated multiplier
+ *  baseAdderDecimals - (Optional) Base adder decimals
+ *  baseMultiplier - (Optional) Base multiplier value that will be multiplied by the calculated multiplier
+ *  baseMultiplierDecimals - (Optional) Base multiplier decimals
+ *  multiplierDecimals - (Optional) Multiplier decimals
+ *  maxSupply - (Optional) Max supply
+ *  minCooldownSeconds - (Optional) number;
+ *  minStakeSeconds - (Optional) number;
+ *  groupCountMultiplier - (Optional) Group Count Multiplier if provided will multiplied the total reward to this number and total groups that this user has
+ *  groupCountMultiplierDecimals - (Optional) Group Count Multiplier decimals
+ *  minGroupSize - (Optional) min group size
+ *  maxRewardSecondsReceived - (Optional) max reward seconds received
+ * @returns
+ */
+export declare const createGroupRewardDistributor: (connection: Connection, wallet: Wallet, params: {
+    rewardMintId: PublicKey;
+    authorizedPools: PublicKey[];
+    rewardAmount?: BN;
+    rewardDurationSeconds?: BN;
+    rewardKind?: GroupRewardDistributorKind;
+    poolKind?: GroupRewardDistributorPoolKind;
+    metadataKind?: GroupRewardDistributorMetadataKind;
+    supply?: BN;
+    baseAdder?: BN;
+    baseAdderDecimals?: number;
+    baseMultiplier?: BN;
+    baseMultiplierDecimals?: number;
+    multiplierDecimals?: number;
+    maxSupply?: BN;
+    minCooldownSeconds?: number;
+    minStakeSeconds?: number;
+    groupCountMultiplier?: BN;
+    groupCountMultiplierDecimals?: number;
+    minGroupSize?: number;
+    maxRewardSecondsReceived?: BN;
+}) => Promise<[Transaction, PublicKey]>;
+/**
+ * Convenience call to update a group reward distributor
+ * @param connection - Connection to use
+ * @param wallet - Wallet to use
+ * @param params
+ * groupRewardDistributorId - Group reward distributor id
+ * authorizedPools - Authorized stake pool ids
+ * rewardAmount - (Optional) Reward amount
+ * rewardDurationSeconds - (Optional) Reward duration in seconds
+ * poolKind - (Optional) Reward distributor pool validation kind NoRestriction, AllFromSinglePool or EachFromSeparatePool
+ * metadataKind - (Optional) Reward distributor metadata validation kind NoRestriction, UniqueNames or UniqueSymbols
+ * baseAdder - (Optional) Base adder value that will be add to the calculated multiplier
+ * baseAdderDecimals - (Optional) Base adder decimals
+ * baseMultiplier - (Optional) Base multiplier value that will be multiplied by the calculated multiplier
+ * baseMultiplierDecimals - (Optional) Base multiplier decimals
+ * multiplierDecimals - (Optional) Multiplier decimals
+ * maxSupply - (Optional) Max supply
+ * minCooldownSeconds - (Optional) number;
+ * minStakeSeconds - (Optional) number;
+ * groupCountMultiplier - (Optional) Group Count Multiplier if provided will multiplied the total reward to this number and total groups that this user has
+ * groupCountMultiplierDecimals - (Optional) Group Count Multiplier decimals
+ * minGroupSize - (Optional) min group size
+ * maxRewardSecondsReceived - (Optional) max reward seconds received
+ * @returns
+ */
+export declare const updateGroupRewardDistributor: (connection: Connection, wallet: Wallet, params: {
+    groupRewardDistributorId: PublicKey;
+    authorizedPools: PublicKey[];
+    rewardAmount?: BN;
+    rewardDurationSeconds?: BN;
+    poolKind?: GroupRewardDistributorPoolKind;
+    metadataKind?: GroupRewardDistributorMetadataKind;
+    baseAdder?: BN;
+    baseAdderDecimals?: number;
+    baseMultiplier?: BN;
+    baseMultiplierDecimals?: number;
+    multiplierDecimals?: number;
+    maxSupply?: BN;
+    minCooldownSeconds?: number;
+    minStakeSeconds?: number;
+    groupCountMultiplier?: BN;
+    groupCountMultiplierDecimals?: number;
+    minGroupSize?: number;
+    maxRewardSecondsReceived?: BN;
 }) => Promise<Transaction>;
+/**
+ * Convenience method to claim rewards
+ * @param connection - Connection to use
+ * @param wallet - Wallet to use
+ * @param params
+ * groupRewardDistributorId - Group reward distributor ID
+ * groupEntryId - Group entry ID
+ * stakeEntryIds - Stake entry IDs
+ * @returns
+ */
+export declare const claimGroupRewards: (connection: Connection, wallet: Wallet, params: {
+    groupRewardDistributorId: PublicKey;
+    groupEntryId: PublicKey;
+    stakeEntryIds: PublicKey[];
+}) => Promise<[Transaction]>;
+/**
+ * Convenience method to close group stake entry
+ * @param connection - Connection to use
+ * @param wallet - Wallet to use
+ * @param params
+ * groupRewardDistributorId - Group reward distributor ID
+ * groupEntryId - Group entry ID
+ * stakeEntryIds - Stake entry IDs
+ * @returns
+ */
+export declare const closeGroupEntry: (connection: Connection, wallet: Wallet, params: {
+    groupRewardDistributorId: PublicKey;
+    groupEntryId: PublicKey;
+    stakeEntryIds: PublicKey[];
+}) => Promise<[Transaction]>;
+/**
+ * Convenience method to init ungrouping
+ * @param connection - Connection to use
+ * @param wallet - Wallet to use
+ * @param params
+ * groupRewardDistributorId - Group reward distributor ID
+ * groupEntryId - Group entry ID
+ * stakeEntryIds - Stake entry IDs
+ * @returns
+ */
+export declare const initUngrouping: (connection: Connection, wallet: Wallet, params: {
+    groupEntryId: PublicKey;
+}) => Promise<[Transaction]>;
 //# sourceMappingURL=api.d.ts.map

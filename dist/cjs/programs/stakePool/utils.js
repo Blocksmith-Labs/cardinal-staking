@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getClaimedRewards =
+exports.shouldReturnReceipt =
+  exports.getClaimedRewards =
   exports.getUnclaimedRewards =
   exports.getActiveStakeSeconds =
   exports.getTotalStakeSeconds =
@@ -9,18 +10,17 @@ exports.getClaimedRewards =
   exports.remainingAccountsForInitStakeEntry =
     void 0;
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const utils_1 = require("../../utils");
 const rewardDistributor_1 = require("../rewardDistributor");
 const pda_1 = require("../rewardDistributor/pda");
 const _1 = require(".");
 const pda_2 = require("./pda");
-const remainingAccountsForInitStakeEntry = async (
-  stakePoolId,
-  originalMintId
-) => {
-  const [stakeAuthorizationRecordId] = await (0,
-  pda_2.findStakeAuthorizationId)(stakePoolId, originalMintId);
+const remainingAccountsForInitStakeEntry = (stakePoolId, originalMintId) => {
+  const stakeAuthorizationRecordId = (0, pda_2.findStakeAuthorizationId)(
+    stakePoolId,
+    originalMintId
+  );
   return [
     {
       pubkey: stakeAuthorizationRecordId,
@@ -123,9 +123,7 @@ const getUnclaimedRewards = async (connection, stakePoolId) => {
     rewardDistributor_1.REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const [rewardDistributorId] = await (0, pda_1.findRewardDistributorId)(
-    stakePoolId
-  );
+  const rewardDistributorId = (0, pda_1.findRewardDistributorId)(stakePoolId);
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
@@ -147,13 +145,21 @@ const getClaimedRewards = async (connection, stakePoolId) => {
     rewardDistributor_1.REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const [rewardDistributorId] = await (0, pda_1.findRewardDistributorId)(
-    stakePoolId
-  );
+  const rewardDistributorId = (0, pda_1.findRewardDistributorId)(stakePoolId);
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
   return parsed.rewardsIssued;
 };
 exports.getClaimedRewards = getClaimedRewards;
+const shouldReturnReceipt = (stakePoolData, stakeEntryData) =>
+  // no cooldown
+  !stakePoolData.cooldownSeconds ||
+  stakePoolData.cooldownSeconds === 0 ||
+  (!!(stakeEntryData === null || stakeEntryData === void 0
+    ? void 0
+    : stakeEntryData.cooldownStartSeconds) &&
+    Date.now() / 1000 - stakeEntryData.cooldownStartSeconds.toNumber() >=
+      stakePoolData.cooldownSeconds);
+exports.shouldReturnReceipt = shouldReturnReceipt;
 //# sourceMappingURL=utils.js.map

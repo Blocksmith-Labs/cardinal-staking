@@ -1,6 +1,6 @@
-import type { web3 } from "@project-serum/anchor";
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
+import type { web3 } from "@coral-xyz/anchor";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { RewardDistributorKind } from "./constants";
 export declare const withInitRewardDistributor: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {

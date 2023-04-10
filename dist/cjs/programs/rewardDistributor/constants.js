@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RewardDistributorKind =
+exports.rewardDistributorProgram =
+  exports.RewardDistributorKind =
   exports.REWARD_DISTRIBUTOR_IDL =
   exports.REWARD_DISTRIBUTOR_SEED =
   exports.REWARD_ENTRY_SEED =
@@ -8,12 +9,14 @@ exports.RewardDistributorKind =
   exports.REWARD_DISTRIBUTOR_ADDRESS =
     void 0;
 const tslib_1 = require("tslib");
+const common_1 = require("@cardinal/common");
+const anchor_1 = require("@coral-xyz/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(
   require("../../idl/cardinal_reward_distributor")
 );
 exports.REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey(
-  "6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN"
+  "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
 );
 exports.REWARD_MANAGER = new web3_js_1.PublicKey(
   "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"
@@ -29,4 +32,18 @@ var RewardDistributorKind;
   (RewardDistributorKind =
     exports.RewardDistributorKind || (exports.RewardDistributorKind = {}))
 );
+const rewardDistributorProgram = (connection, wallet, confirmOptions) => {
+  return new anchor_1.Program(
+    exports.REWARD_DISTRIBUTOR_IDL,
+    exports.REWARD_DISTRIBUTOR_ADDRESS,
+    new anchor_1.AnchorProvider(
+      connection,
+      wallet !== null && wallet !== void 0
+        ? wallet
+        : (0, common_1.emptyWallet)(web3_js_1.Keypair.generate().publicKey),
+      confirmOptions !== null && confirmOptions !== void 0 ? confirmOptions : {}
+    )
+  );
+};
+exports.rewardDistributorProgram = rewardDistributorProgram;
 //# sourceMappingURL=constants.js.map

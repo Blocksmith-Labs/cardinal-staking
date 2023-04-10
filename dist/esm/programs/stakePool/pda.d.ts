@@ -1,28 +1,33 @@
-import { BN } from "@project-serum/anchor";
-import * as web3 from "@solana/web3.js";
+import { BN } from "@coral-xyz/anchor";
+import { PublicKey } from "@solana/web3.js";
 /**
  * Finds the stake pool id.
  * @returns
  */
-export declare const findStakePoolId: (identifier: BN) => Promise<[web3.PublicKey, number]>;
+export declare const findStakePoolId: (identifier: BN) => PublicKey;
 /**
  * Convenience method to find the stake entry id.
  * @returns
  */
-export declare const findStakeEntryId: (wallet: web3.PublicKey, stakePoolId: web3.PublicKey, originalMintId: web3.PublicKey, isFungible: boolean) => Promise<[web3.PublicKey, number]>;
+export declare const findStakeEntryId: (wallet: PublicKey, stakePoolId: PublicKey, originalMintId: PublicKey, isFungible: boolean) => PublicKey;
 /**
  * Finds the identifier id.
  * @returns
  */
-export declare const findIdentifierId: () => Promise<[web3.PublicKey, number]>;
+export declare const findIdentifierId: () => PublicKey;
 /**
  * Find stake authorization id.
  * @returns
  */
-export declare const findStakeAuthorizationId: (stakePoolId: web3.PublicKey, mintId: web3.PublicKey) => Promise<[web3.PublicKey, number]>;
+export declare const findStakeAuthorizationId: (stakePoolId: PublicKey, mintId: PublicKey) => PublicKey;
 /**
  * Find stake booster id.
  * @returns
  */
-export declare const findStakeBoosterId: (stakePoolId: web3.PublicKey, identifier?: BN) => Promise<[web3.PublicKey, number]>;
+export declare const findStakeBoosterId: (stakePoolId: PublicKey, identifier?: BN) => PublicKey;
+/**
+ * Convenience method to find the stake entry id.
+ * @returns
+ */
+export declare const findGroupEntryId: (id: PublicKey) => PublicKey;
 //# sourceMappingURL=pda.d.ts.map

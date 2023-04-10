@@ -1,10 +1,11 @@
 import type { AccountData } from "@cardinal/common";
-import type { web3 } from "@project-serum/anchor";
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
+import type { web3 } from "@coral-xyz/anchor";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import type { ConfirmOptions, Connection, PublicKey, Signer, Transaction } from "@solana/web3.js";
+import type { GroupRewardCounterData, GroupRewardDistributorData, GroupRewardEntryData } from "./programs/groupRewardDistributor";
 import type { RewardDistributorData, RewardEntryData } from "./programs/rewardDistributor";
-import type { StakeEntryData } from "./programs/stakePool";
+import type { GroupStakeEntryData, StakeEntryData } from "./programs/stakePool";
 export declare const executeTransaction: (connection: Connection, wallet: Wallet, transaction: Transaction, config: {
     silent?: boolean | undefined;
     signers?: web3.Signer[] | undefined;
@@ -63,4 +64,14 @@ export declare const getRewardMap: (stakeEntries: AccountData<StakeEntryData>[],
  * @returns
  */
 export declare const calculatePendingRewards: (rewardDistributor: AccountData<RewardDistributorData>, stakeEntry: AccountData<StakeEntryData>, rewardEntry: AccountData<RewardEntryData> | undefined, remainingRewardAmount: BN, UTCNow: number) => [BN, BN];
+/**
+ * Calculate claimable groupRewards and next groupReward time for a give mint and groupReward and stake entry
+ * @param groupRewardDistributor
+ * @param groupEntry
+ * @param groupRewardEntry
+ * @param remainingGroupRewardAmount
+ * @param UTCNow
+ * @returns
+ */
+export declare const calculatePendingGroupRewards: (groupRewardDistributor: AccountData<GroupRewardDistributorData>, groupEntry: AccountData<GroupStakeEntryData>, groupRewardEntry: AccountData<GroupRewardEntryData> | undefined, groupRewardCounter: AccountData<GroupRewardCounterData> | undefined, remainingGroupRewardAmount: BN, UTCNow: number) => [BN, BN];
 //# sourceMappingURL=utils.d.ts.map

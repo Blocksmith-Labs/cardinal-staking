@@ -1,7 +1,8 @@
-import { BN, utils } from "@project-serum/anchor";
-import * as web3 from "@solana/web3.js";
+import { BN, utils } from "@coral-xyz/anchor";
+import { PublicKey } from "@solana/web3.js";
 import { STAKE_ENTRY_SEED, STAKE_POOL_ADDRESS, STAKE_POOL_SEED } from ".";
 import {
+  GROUP_ENTRY_SEED,
   IDENTIFIER_SEED,
   STAKE_AUTHORIZATION_SEED,
   STAKE_BOOSTER_SEED,
@@ -10,65 +11,65 @@ import {
  * Finds the stake pool id.
  * @returns
  */
-export const findStakePoolId = async (identifier) => {
-  return web3.PublicKey.findProgramAddress(
+export const findStakePoolId = (identifier) => {
+  return PublicKey.findProgramAddressSync(
     [
       utils.bytes.utf8.encode(STAKE_POOL_SEED),
       identifier.toArrayLike(Buffer, "le", 8),
     ],
     STAKE_POOL_ADDRESS
-  );
+  )[0];
 };
 /**
  * Convenience method to find the stake entry id.
  * @returns
  */
-export const findStakeEntryId = async (
+export const findStakeEntryId = (
   wallet,
   stakePoolId,
   originalMintId,
   isFungible
 ) => {
-  return web3.PublicKey.findProgramAddress(
+  return PublicKey.findProgramAddressSync(
     [
       utils.bytes.utf8.encode(STAKE_ENTRY_SEED),
       stakePoolId.toBuffer(),
       originalMintId.toBuffer(),
-      isFungible ? wallet.toBuffer() : web3.PublicKey.default.toBuffer(),
+      isFungible ? wallet.toBuffer() : PublicKey.default.toBuffer(),
     ],
     STAKE_POOL_ADDRESS
-  );
+  )[0];
 };
 /**
  * Finds the identifier id.
  * @returns
  */
-export const findIdentifierId = async () => {
-  return web3.PublicKey.findProgramAddress(
+export const findIdentifierId = () => {
+  return PublicKey.findProgramAddressSync(
     [utils.bytes.utf8.encode(IDENTIFIER_SEED)],
     STAKE_POOL_ADDRESS
-  );
+  )[0];
 };
 /**
  * Find stake authorization id.
  * @returns
  */
-export const findStakeAuthorizationId = async (stakePoolId, mintId) => {
-  return web3.PublicKey.findProgramAddress(
+export const findStakeAuthorizationId = (stakePoolId, mintId) => {
+  return PublicKey.findProgramAddressSync(
     [
       utils.bytes.utf8.encode(STAKE_AUTHORIZATION_SEED),
       stakePoolId.toBuffer(),
       mintId.toBuffer(),
     ],
     STAKE_POOL_ADDRESS
-  );
+  )[0];
 };
 /**
  * Find stake booster id.
  * @returns
  */
-export const findStakeBoosterId = async (stakePoolId, identifier) => {
-  return web3.PublicKey.findProgramAddress(
+export const findStakeBoosterId = (stakePoolId, identifier) => {
+  return PublicKey.findProgramAddressSync(
     [
       utils.bytes.utf8.encode(STAKE_BOOSTER_SEED),
       stakePoolId.toBuffer(),
@@ -78,6 +79,16 @@ export const findStakeBoosterId = async (stakePoolId, identifier) => {
       ).toArrayLike(Buffer, "le", 8),
     ],
     STAKE_POOL_ADDRESS
-  );
+  )[0];
+};
+/**
+ * Convenience method to find the stake entry id.
+ * @returns
+ */
+export const findGroupEntryId = (id) => {
+  return PublicKey.findProgramAddressSync(
+    [utils.bytes.utf8.encode(GROUP_ENTRY_SEED), id.toBuffer()],
+    STAKE_POOL_ADDRESS
+  )[0];
 };
 //# sourceMappingURL=pda.js.map
