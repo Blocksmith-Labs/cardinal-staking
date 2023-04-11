@@ -977,9 +977,12 @@ export const unstakeAll = async (connection, wallet, params) => {
         : mintMetadata.tokenStandard) ===
         TokenStandard.ProgrammableNonFungible &&
       // mintMetadata.programmableConfig?.ruleSet &&
-      (tokenRecordData === null || tokenRecordData === void 0
+      ((tokenRecordData === null || tokenRecordData === void 0
         ? void 0
-        : tokenRecordData.delegateRole) === TokenDelegateRole.Staking
+        : tokenRecordData.delegateRole) === TokenDelegateRole.Staking ||
+        (tokenRecordData === null || tokenRecordData === void 0
+          ? void 0
+          : tokenRecordData.delegateRole) === TokenDelegateRole.Migration)
     ) {
       /////// programmable ///////
       tx.add(
