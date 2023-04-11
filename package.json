@@ -46,7 +46,9 @@
     "@metaplex-foundation/mpl-token-metadata": "^2.8.1",
     "@solana/spl-token": "^0.3.6",
     "@solana/web3.js": "^1.34.0",
-    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#43b10afcc708bf8c03c75c05d633d432225754a5"
+    "@types/mocha": "^10.0.1",
+    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#43b10afcc708bf8c03c75c05d633d432225754a5",
+    "mocha": "^10.2.0"
   },
   "devDependencies": {
     "@msgpack/msgpack": "^2.8.0",

@@ -22,7 +22,7 @@ const GROUP_REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(
   require("../../idl/cardinal_group_reward_distributor")
 );
 exports.GROUP_REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey(
-  "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
+  "DUJxPunmSUTsMpCPd6wwHZMMySaXiSAiTjwoyQe9ABYQ"
 );
 exports.GROUP_REWARD_MANAGER = new web3_js_1.PublicKey(
   "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"

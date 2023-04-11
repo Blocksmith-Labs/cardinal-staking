@@ -16,7 +16,7 @@ const REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(
   require("../../idl/cardinal_reward_distributor")
 );
 exports.REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey(
-  "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
+  "2R6VtKUMcw9G2kwnM2Kimuu1rTMC9DgRgBW8ppUiacGV"
 );
 exports.REWARD_MANAGER = new web3_js_1.PublicKey(
   "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"

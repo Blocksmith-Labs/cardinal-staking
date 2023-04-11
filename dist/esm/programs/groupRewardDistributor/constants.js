@@ -3,7 +3,7 @@ import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as GROUP_REWARD_DISTRIBUTOR_TYPES from "../../idl/cardinal_group_reward_distributor";
 export const GROUP_REWARD_DISTRIBUTOR_ADDRESS = new PublicKey(
-  "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
+  "DUJxPunmSUTsMpCPd6wwHZMMySaXiSAiTjwoyQe9ABYQ"
 );
 export const GROUP_REWARD_MANAGER = new PublicKey(
   "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"
