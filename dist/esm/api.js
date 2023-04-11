@@ -74,6 +74,7 @@ import {
 } from "./programs/rewardDistributor/transaction";
 import {
   ReceiptType,
+  STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
   stakePoolProgram,
 } from "./programs/stakePool";
@@ -609,11 +610,8 @@ export const stakeAll = async (connection, wallet, params) => {
     if (
       (mintMetadata === null || mintMetadata === void 0
         ? void 0
-        : mintMetadata.tokenStandard) ===
-        TokenStandard.ProgrammableNonFungible &&
-      ((_f = mintMetadata.programmableConfig) === null || _f === void 0
-        ? void 0
-        : _f.ruleSet)
+        : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
+      // && mintMetadata.programmableConfig?.ruleSet
     ) {
       transaction.add(
         ComputeBudgetProgram.setComputeUnitLimit({
@@ -641,11 +639,15 @@ export const stakeAll = async (connection, wallet, params) => {
             ),
             mintMetadata: mintMetadataId,
             mintEdition: findMintEditionId(originalMintId),
-            authorizationRules:
-              (_g = mintMetadata.programmableConfig) === null || _g === void 0
-                ? void 0
-                : _g.ruleSet,
+            // authorizationRules: mintMetadata.programmableConfig?.ruleSet,
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
+            authorizationRules:
+              (_g =
+                (_f = mintMetadata.programmableConfig) === null || _f === void 0
+                  ? void 0
+                  : _f.ruleSet) !== null && _g !== void 0
+                ? _g
+                : STAKE_POOL_ADDRESS,
             authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
           })
           .instruction()

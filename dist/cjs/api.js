@@ -630,10 +630,8 @@ const stakeAll = async (connection, wallet, params) => {
       (mintMetadata === null || mintMetadata === void 0
         ? void 0
         : mintMetadata.tokenStandard) ===
-        mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible &&
-      ((_f = mintMetadata.programmableConfig) === null || _f === void 0
-        ? void 0
-        : _f.ruleSet)
+      mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible
+      // && mintMetadata.programmableConfig?.ruleSet
     ) {
       transaction.add(
         web3_js_1.ComputeBudgetProgram.setComputeUnitLimit({
@@ -661,11 +659,15 @@ const stakeAll = async (connection, wallet, params) => {
             ),
             mintMetadata: mintMetadataId,
             mintEdition: (0, common_1.findMintEditionId)(originalMintId),
-            authorizationRules:
-              (_g = mintMetadata.programmableConfig) === null || _g === void 0
-                ? void 0
-                : _g.ruleSet,
+            // authorizationRules: mintMetadata.programmableConfig?.ruleSet,
             sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
+            authorizationRules:
+              (_g =
+                (_f = mintMetadata.programmableConfig) === null || _f === void 0
+                  ? void 0
+                  : _f.ruleSet) !== null && _g !== void 0
+                ? _g
+                : stakePool_1.STAKE_POOL_ADDRESS,
             authorizationRulesProgram: mpl_token_auth_rules_1.PROGRAM_ID,
           })
           .instruction()
