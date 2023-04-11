@@ -977,9 +977,12 @@ export const unstakeAll = async (connection, wallet, params) => {
         : mintMetadata.tokenStandard) ===
         TokenStandard.ProgrammableNonFungible &&
       // mintMetadata.programmableConfig?.ruleSet &&
-      (tokenRecordData === null || tokenRecordData === void 0
+      ((tokenRecordData === null || tokenRecordData === void 0
         ? void 0
-        : tokenRecordData.delegateRole) === TokenDelegateRole.Staking
+        : tokenRecordData.delegateRole) === TokenDelegateRole.Staking ||
+        (tokenRecordData === null || tokenRecordData === void 0
+          ? void 0
+          : tokenRecordData.delegateRole) === TokenDelegateRole.Migration)
     ) {
       /////// programmable ///////
       tx.add(
@@ -987,35 +990,88 @@ export const unstakeAll = async (connection, wallet, params) => {
           units: 100000000,
         })
       );
-      const ix = await stakePoolProgram(connection, wallet)
-        .methods.unstakeProgrammable()
-        .accountsStrict({
-          stakeEntry: stakeEntryId,
-          stakePool: params.stakePoolId,
-          originalMint: originalMintId,
-          systemProgram: SystemProgram.programId,
-          user: wallet.publicKey,
-          tokenProgram: TOKEN_PROGRAM_ID,
-          tokenMetadataProgram: METADATA_PROGRAM_ID,
-          userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
-          userOriginalMintTokenRecord: findTokenRecordId(
-            originalMintId,
-            userOriginalMintTokenAccountId
-          ),
-          mintMetadata: mintMetadataId,
-          mintEdition: findMintEditionId(originalMintId),
-          authorizationRules:
-            (_c =
-              (_b = mintMetadata.programmableConfig) === null || _b === void 0
-                ? void 0
-                : _b.ruleSet) !== null && _c !== void 0
-              ? _c
-              : STAKE_POOL_ADDRESS,
-          sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-          authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
-        })
-        .instruction();
-      tx.add(ix);
+      const program = stakePoolProgram(connection, wallet);
+      if (
+        (tokenRecordData === null || tokenRecordData === void 0
+          ? void 0
+          : tokenRecordData.delegateRole) === TokenDelegateRole.Staking
+      ) {
+        const ix = await program.methods
+          .unstakeProgrammable()
+          .accountsStrict({
+            stakeEntry: stakeEntryId,
+            stakePool: params.stakePoolId,
+            originalMint: originalMintId,
+            systemProgram: SystemProgram.programId,
+            user: wallet.publicKey,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            tokenMetadataProgram: METADATA_PROGRAM_ID,
+            userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
+            userOriginalMintTokenRecord: findTokenRecordId(
+              originalMintId,
+              userOriginalMintTokenAccountId
+            ),
+            mintMetadata: mintMetadataId,
+            mintEdition: findMintEditionId(originalMintId),
+            authorizationRules:
+              (_c =
+                (_b = mintMetadata.programmableConfig) === null || _b === void 0
+                  ? void 0
+                  : _b.ruleSet) !== null && _c !== void 0
+                ? _c
+                : STAKE_POOL_ADDRESS,
+            sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
+            authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
+          })
+          .instruction();
+        tx.add(ix);
+      } else if (
+        (tokenRecordData === null || tokenRecordData === void 0
+          ? void 0
+          : tokenRecordData.delegateRole) === TokenDelegateRole.Migration
+      ) {
+        const stakeEntryOriginalMintTokenAccountId =
+          getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
+        const ix = await program.methods
+          .unstakeCustodialProgrammable()
+          .accountsStrict({
+            stakePool: params.stakePoolId,
+            stakeEntry: stakeEntryId,
+            originalMint: originalMintId,
+            stakeEntryOriginalMintTokenAccount:
+              stakeEntryOriginalMintTokenAccountId,
+            user: wallet.publicKey,
+            userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
+            stakeEntryOriginalMintTokenRecord: findTokenRecordId(
+              originalMintId,
+              stakeEntryOriginalMintTokenAccountId
+            ),
+            userOriginalMintTokenRecord: findTokenRecordId(
+              originalMintId,
+              userOriginalMintTokenAccountId
+            ),
+            mintMetadata: mintMetadataId,
+            mintEdition: findMintEditionId(originalMintId),
+            authorizationRules:
+              (_e =
+                (_d =
+                  mintMetadata === null || mintMetadata === void 0
+                    ? void 0
+                    : mintMetadata.programmableConfig) === null || _d === void 0
+                  ? void 0
+                  : _d.ruleSet) !== null && _e !== void 0
+                ? _e
+                : STAKE_POOL_ADDRESS,
+            sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+            tokenMetadataProgram: METADATA_PROGRAM_ID,
+            authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
+            systemProgram: SystemProgram.programId,
+          })
+          .instruction();
+        tx.add(ix);
+      }
     } else {
       /////// non-programmable ///////
       const stakeEntryInfo = accountData[stakeEntryId.toString()];
@@ -1082,51 +1138,8 @@ export const unstakeAll = async (connection, wallet, params) => {
       const stakeEntryOriginalMintTokenAccountId =
         getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
       const program = stakePoolProgram(connection, wallet);
-      if (
-        (tokenRecordData === null || tokenRecordData === void 0
-          ? void 0
-          : tokenRecordData.delegateRole) === TokenDelegateRole.Migration
-      ) {
-        const ix = await program.methods
-          .unstakeCustodialProgrammable()
-          .accountsStrict({
-            stakePool: params.stakePoolId,
-            stakeEntry: stakeEntryId,
-            originalMint: originalMintId,
-            stakeEntryOriginalMintTokenAccount:
-              stakeEntryOriginalMintTokenAccountId,
-            user: wallet.publicKey,
-            userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
-            stakeEntryOriginalMintTokenRecord: findTokenRecordId(
-              originalMintId,
-              stakeEntryOriginalMintTokenAccountId
-            ),
-            userOriginalMintTokenRecord: findTokenRecordId(
-              originalMintId,
-              userOriginalMintTokenAccountId
-            ),
-            mintMetadata: mintMetadataId,
-            mintEdition: findMintEditionId(originalMintId),
-            authorizationRules:
-              (_e =
-                (_d =
-                  mintMetadata === null || mintMetadata === void 0
-                    ? void 0
-                    : mintMetadata.programmableConfig) === null || _d === void 0
-                  ? void 0
-                  : _d.ruleSet) !== null && _e !== void 0
-                ? _e
-                : STAKE_POOL_ADDRESS,
-            sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-            tokenProgram: TOKEN_PROGRAM_ID,
-            associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-            tokenMetadataProgram: METADATA_PROGRAM_ID,
-            authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
-            systemProgram: SystemProgram.programId,
-          })
-          .instruction();
-        tx.add(ix);
-      } else {
+      // Check migration case
+      {
         const ix = await program.methods
           .unstake()
           .accountsStrict({
