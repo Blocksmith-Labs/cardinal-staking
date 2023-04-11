@@ -1027,14 +1027,10 @@ const unstakeAll = async (connection, wallet, params) => {
         : mintMetadata.tokenStandard) ===
         mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible &&
       // mintMetadata.programmableConfig?.ruleSet &&
-      ((tokenRecordData === null || tokenRecordData === void 0
+      (tokenRecordData === null || tokenRecordData === void 0
         ? void 0
         : tokenRecordData.delegateRole) ===
-        mpl_token_metadata_1.TokenDelegateRole.Staking ||
-        (tokenRecordData === null || tokenRecordData === void 0
-          ? void 0
-          : tokenRecordData.delegateRole) ===
-          mpl_token_metadata_1.TokenDelegateRole.Migration)
+        mpl_token_metadata_1.TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
       tx.add(
@@ -1151,12 +1147,10 @@ const unstakeAll = async (connection, wallet, params) => {
       );
       const program = (0, stakePool_1.stakePoolProgram)(connection, wallet);
       if (
-        (_d =
-          mintMetadata === null || mintMetadata === void 0
-            ? void 0
-            : mintMetadata.programmableConfig) === null || _d === void 0
+        (tokenRecordData === null || tokenRecordData === void 0
           ? void 0
-          : _d.ruleSet
+          : tokenRecordData.delegateRole) ===
+        mpl_token_metadata_1.TokenDelegateRole.Migration
       ) {
         const ix = await program.methods
           .unstakeCustodialProgrammable()
@@ -1179,9 +1173,15 @@ const unstakeAll = async (connection, wallet, params) => {
             mintMetadata: mintMetadataId,
             mintEdition: (0, common_1.findMintEditionId)(originalMintId),
             authorizationRules:
-              (_e = mintMetadata.programmableConfig) === null || _e === void 0
-                ? void 0
-                : _e.ruleSet,
+              (_e =
+                (_d =
+                  mintMetadata === null || mintMetadata === void 0
+                    ? void 0
+                    : mintMetadata.programmableConfig) === null || _d === void 0
+                  ? void 0
+                  : _d.ruleSet) !== null && _e !== void 0
+                ? _e
+                : stakePool_1.STAKE_POOL_ADDRESS,
             sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
             tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
             associatedTokenProgram: spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID,

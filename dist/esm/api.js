@@ -977,12 +977,9 @@ export const unstakeAll = async (connection, wallet, params) => {
         : mintMetadata.tokenStandard) ===
         TokenStandard.ProgrammableNonFungible &&
       // mintMetadata.programmableConfig?.ruleSet &&
-      ((tokenRecordData === null || tokenRecordData === void 0
+      (tokenRecordData === null || tokenRecordData === void 0
         ? void 0
-        : tokenRecordData.delegateRole) === TokenDelegateRole.Staking ||
-        (tokenRecordData === null || tokenRecordData === void 0
-          ? void 0
-          : tokenRecordData.delegateRole) === TokenDelegateRole.Migration)
+        : tokenRecordData.delegateRole) === TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
       tx.add(
@@ -1086,12 +1083,9 @@ export const unstakeAll = async (connection, wallet, params) => {
         getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
       const program = stakePoolProgram(connection, wallet);
       if (
-        (_d =
-          mintMetadata === null || mintMetadata === void 0
-            ? void 0
-            : mintMetadata.programmableConfig) === null || _d === void 0
+        (tokenRecordData === null || tokenRecordData === void 0
           ? void 0
-          : _d.ruleSet
+          : tokenRecordData.delegateRole) === TokenDelegateRole.Migration
       ) {
         const ix = await program.methods
           .unstakeCustodialProgrammable()
@@ -1114,9 +1108,15 @@ export const unstakeAll = async (connection, wallet, params) => {
             mintMetadata: mintMetadataId,
             mintEdition: findMintEditionId(originalMintId),
             authorizationRules:
-              (_e = mintMetadata.programmableConfig) === null || _e === void 0
-                ? void 0
-                : _e.ruleSet,
+              (_e =
+                (_d =
+                  mintMetadata === null || mintMetadata === void 0
+                    ? void 0
+                    : mintMetadata.programmableConfig) === null || _d === void 0
+                  ? void 0
+                  : _d.ruleSet) !== null && _e !== void 0
+                ? _e
+                : STAKE_POOL_ADDRESS,
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
             tokenProgram: TOKEN_PROGRAM_ID,
             associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
