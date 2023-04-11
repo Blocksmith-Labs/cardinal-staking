@@ -659,7 +659,6 @@ const stakeAll = async (connection, wallet, params) => {
             ),
             mintMetadata: mintMetadataId,
             mintEdition: (0, common_1.findMintEditionId)(originalMintId),
-            // authorizationRules: mintMetadata.programmableConfig?.ruleSet,
             sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
             authorizationRules:
               (_g =
@@ -1027,9 +1026,7 @@ const unstakeAll = async (connection, wallet, params) => {
         ? void 0
         : mintMetadata.tokenStandard) ===
         mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible &&
-      ((_b = mintMetadata.programmableConfig) === null || _b === void 0
-        ? void 0
-        : _b.ruleSet) &&
+      // mintMetadata.programmableConfig?.ruleSet &&
       (tokenRecordData === null || tokenRecordData === void 0
         ? void 0
         : tokenRecordData.delegateRole) ===
@@ -1059,9 +1056,12 @@ const unstakeAll = async (connection, wallet, params) => {
           mintMetadata: mintMetadataId,
           mintEdition: (0, common_1.findMintEditionId)(originalMintId),
           authorizationRules:
-            (_c = mintMetadata.programmableConfig) === null || _c === void 0
-              ? void 0
-              : _c.ruleSet,
+            (_c =
+              (_b = mintMetadata.programmableConfig) === null || _b === void 0
+                ? void 0
+                : _b.ruleSet) !== null && _c !== void 0
+              ? _c
+              : stakePool_1.STAKE_POOL_ADDRESS,
           sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
           authorizationRulesProgram: mpl_token_auth_rules_1.PROGRAM_ID,
         })

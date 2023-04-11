@@ -639,7 +639,6 @@ export const stakeAll = async (connection, wallet, params) => {
             ),
             mintMetadata: mintMetadataId,
             mintEdition: findMintEditionId(originalMintId),
-            // authorizationRules: mintMetadata.programmableConfig?.ruleSet,
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
             authorizationRules:
               (_g =
@@ -977,9 +976,7 @@ export const unstakeAll = async (connection, wallet, params) => {
         ? void 0
         : mintMetadata.tokenStandard) ===
         TokenStandard.ProgrammableNonFungible &&
-      ((_b = mintMetadata.programmableConfig) === null || _b === void 0
-        ? void 0
-        : _b.ruleSet) &&
+      // mintMetadata.programmableConfig?.ruleSet &&
       (tokenRecordData === null || tokenRecordData === void 0
         ? void 0
         : tokenRecordData.delegateRole) === TokenDelegateRole.Staking
@@ -1008,9 +1005,12 @@ export const unstakeAll = async (connection, wallet, params) => {
           mintMetadata: mintMetadataId,
           mintEdition: findMintEditionId(originalMintId),
           authorizationRules:
-            (_c = mintMetadata.programmableConfig) === null || _c === void 0
-              ? void 0
-              : _c.ruleSet,
+            (_c =
+              (_b = mintMetadata.programmableConfig) === null || _b === void 0
+                ? void 0
+                : _b.ruleSet) !== null && _c !== void 0
+              ? _c
+              : STAKE_POOL_ADDRESS,
           sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
           authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
         })

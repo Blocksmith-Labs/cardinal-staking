@@ -1065,7 +1065,7 @@ export const unstakeAll = async (
     }
     if (
       mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible &&
-      mintMetadata.programmableConfig?.ruleSet &&
+      // mintMetadata.programmableConfig?.ruleSet &&
       tokenRecordData?.delegateRole === TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
@@ -1091,7 +1091,8 @@ export const unstakeAll = async (
           ),
           mintMetadata: mintMetadataId,
           mintEdition: findMintEditionId(originalMintId),
-          authorizationRules: mintMetadata.programmableConfig?.ruleSet,
+          authorizationRules:
+            mintMetadata.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
           sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
           authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
         })
