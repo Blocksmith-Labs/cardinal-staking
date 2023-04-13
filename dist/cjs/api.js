@@ -1027,14 +1027,10 @@ const unstakeAll = async (connection, wallet, params) => {
         : mintMetadata.tokenStandard) ===
         mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible &&
       // mintMetadata.programmableConfig?.ruleSet &&
-      ((tokenRecordData === null || tokenRecordData === void 0
+      (tokenRecordData === null || tokenRecordData === void 0
         ? void 0
         : tokenRecordData.delegateRole) ===
-        mpl_token_metadata_1.TokenDelegateRole.Staking ||
-        (tokenRecordData === null || tokenRecordData === void 0
-          ? void 0
-          : tokenRecordData.delegateRole) ===
-          mpl_token_metadata_1.TokenDelegateRole.Migration)
+        mpl_token_metadata_1.TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
       tx.add(
@@ -1042,94 +1038,35 @@ const unstakeAll = async (connection, wallet, params) => {
           units: 100000000,
         })
       );
-      const program = (0, stakePool_1.stakePoolProgram)(connection, wallet);
-      if (
-        (tokenRecordData === null || tokenRecordData === void 0
-          ? void 0
-          : tokenRecordData.delegateRole) ===
-        mpl_token_metadata_1.TokenDelegateRole.Staking
-      ) {
-        const ix = await program.methods
-          .unstakeProgrammable()
-          .accountsStrict({
-            stakeEntry: stakeEntryId,
-            stakePool: params.stakePoolId,
-            originalMint: originalMintId,
-            systemProgram: web3_js_1.SystemProgram.programId,
-            user: wallet.publicKey,
-            tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
-            tokenMetadataProgram: common_1.METADATA_PROGRAM_ID,
-            userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
-            userOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(
-              originalMintId,
-              userOriginalMintTokenAccountId
-            ),
-            mintMetadata: mintMetadataId,
-            mintEdition: (0, common_1.findMintEditionId)(originalMintId),
-            authorizationRules:
-              (_c =
-                (_b = mintMetadata.programmableConfig) === null || _b === void 0
-                  ? void 0
-                  : _b.ruleSet) !== null && _c !== void 0
-                ? _c
-                : stakePool_1.STAKE_POOL_ADDRESS,
-            sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
-            authorizationRulesProgram: mpl_token_auth_rules_1.PROGRAM_ID,
-          })
-          .instruction();
-        tx.add(ix);
-      } else if (
-        (tokenRecordData === null || tokenRecordData === void 0
-          ? void 0
-          : tokenRecordData.delegateRole) ===
-        mpl_token_metadata_1.TokenDelegateRole.Migration
-      ) {
-        const stakeEntryOriginalMintTokenAccountId = (0,
-        spl_token_1.getAssociatedTokenAddressSync)(
-          originalMintId,
-          stakeEntryId,
-          true
-        );
-        const ix = await program.methods
-          .unstakeCustodialProgrammable()
-          .accountsStrict({
-            stakePool: params.stakePoolId,
-            stakeEntry: stakeEntryId,
-            originalMint: originalMintId,
-            stakeEntryOriginalMintTokenAccount:
-              stakeEntryOriginalMintTokenAccountId,
-            user: wallet.publicKey,
-            userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
-            stakeEntryOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(
-              originalMintId,
-              stakeEntryOriginalMintTokenAccountId
-            ),
-            userOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(
-              originalMintId,
-              userOriginalMintTokenAccountId
-            ),
-            mintMetadata: mintMetadataId,
-            mintEdition: (0, common_1.findMintEditionId)(originalMintId),
-            authorizationRules:
-              (_e =
-                (_d =
-                  mintMetadata === null || mintMetadata === void 0
-                    ? void 0
-                    : mintMetadata.programmableConfig) === null || _d === void 0
-                  ? void 0
-                  : _d.ruleSet) !== null && _e !== void 0
-                ? _e
-                : stakePool_1.STAKE_POOL_ADDRESS,
-            sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
-            tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
-            associatedTokenProgram: spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID,
-            tokenMetadataProgram: common_1.METADATA_PROGRAM_ID,
-            authorizationRulesProgram: mpl_token_auth_rules_1.PROGRAM_ID,
-            systemProgram: web3_js_1.SystemProgram.programId,
-          })
-          .instruction();
-        tx.add(ix);
-      }
+      const ix = await (0, stakePool_1.stakePoolProgram)(connection, wallet)
+        .methods.unstakeProgrammable()
+        .accountsStrict({
+          stakeEntry: stakeEntryId,
+          stakePool: params.stakePoolId,
+          originalMint: originalMintId,
+          systemProgram: web3_js_1.SystemProgram.programId,
+          user: wallet.publicKey,
+          tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
+          tokenMetadataProgram: common_1.METADATA_PROGRAM_ID,
+          userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
+          userOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(
+            originalMintId,
+            userOriginalMintTokenAccountId
+          ),
+          mintMetadata: mintMetadataId,
+          mintEdition: (0, common_1.findMintEditionId)(originalMintId),
+          authorizationRules:
+            (_c =
+              (_b = mintMetadata.programmableConfig) === null || _b === void 0
+                ? void 0
+                : _b.ruleSet) !== null && _c !== void 0
+              ? _c
+              : stakePool_1.STAKE_POOL_ADDRESS,
+          sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
+          authorizationRulesProgram: mpl_token_auth_rules_1.PROGRAM_ID,
+        })
+        .instruction();
+      tx.add(ix);
     } else {
       /////// non-programmable ///////
       const stakeEntryInfo = accountData[stakeEntryId.toString()];
@@ -1209,8 +1146,52 @@ const unstakeAll = async (connection, wallet, params) => {
         true
       );
       const program = (0, stakePool_1.stakePoolProgram)(connection, wallet);
-      // Check migration case
-      {
+      if (
+        (tokenRecordData === null || tokenRecordData === void 0
+          ? void 0
+          : tokenRecordData.delegateRole) ===
+        mpl_token_metadata_1.TokenDelegateRole.Migration
+      ) {
+        const ix = await program.methods
+          .unstakeCustodialProgrammable()
+          .accountsStrict({
+            stakePool: params.stakePoolId,
+            stakeEntry: stakeEntryId,
+            originalMint: originalMintId,
+            stakeEntryOriginalMintTokenAccount:
+              stakeEntryOriginalMintTokenAccountId,
+            user: wallet.publicKey,
+            userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
+            stakeEntryOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(
+              originalMintId,
+              stakeEntryOriginalMintTokenAccountId
+            ),
+            userOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(
+              originalMintId,
+              userOriginalMintTokenAccountId
+            ),
+            mintMetadata: mintMetadataId,
+            mintEdition: (0, common_1.findMintEditionId)(originalMintId),
+            authorizationRules:
+              (_e =
+                (_d =
+                  mintMetadata === null || mintMetadata === void 0
+                    ? void 0
+                    : mintMetadata.programmableConfig) === null || _d === void 0
+                  ? void 0
+                  : _d.ruleSet) !== null && _e !== void 0
+                ? _e
+                : stakePool_1.STAKE_POOL_ADDRESS,
+            sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
+            tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
+            associatedTokenProgram: spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID,
+            tokenMetadataProgram: common_1.METADATA_PROGRAM_ID,
+            authorizationRulesProgram: mpl_token_auth_rules_1.PROGRAM_ID,
+            systemProgram: web3_js_1.SystemProgram.programId,
+          })
+          .instruction();
+        tx.add(ix);
+      } else {
         const ix = await program.methods
           .unstake()
           .accountsStrict({
