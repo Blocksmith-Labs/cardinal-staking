@@ -28,33 +28,6 @@
     tiny-invariant "^1.2.0"
     tslib "^2.3.1"
 
-"@cardinal/common@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-3.0.1.tgz#7e5c00d6493a1457f487eb7dfc09b8a8894fa7ed"
-  integrity sha512-ldJbG9WYTA+fwwu/AkiW0iqTV7Z5h0VycSStcXpikPbqRtZMDWZOz0br2QZWMJCnzec6UWWYqIOae4hEh+2ADQ==
-  dependencies:
-    "@project-serum/anchor" "^0.24.2"
-    "@solana/buffer-layout" "^4.0.0"
-    "@solana/spl-token" "^0.3.5"
-    bignumber.js "^9.1.0"
-    bn.js "^5.2.1"
-    polished "^4.2.2"
-    tslib "^2.4.0"
-
-"@cardinal/payment-manager@^1.7.9":
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/@cardinal/payment-manager/-/payment-manager-1.7.9.tgz#47d894ccfbce5a40d90006e243d7b31e33524a89"
-  integrity sha512-saI8EOLwDeF41uVimBIRnDmR2RtWUWatWbYR1exAOjqrQn1D6WfrUPmmz5AoVsXmsIqQQfjydyuAYwQllIA8cw==
-  dependencies:
-    "@cardinal/common" "^3.0.1"
-    "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
-    "@project-serum/anchor" "^0.25.0"
-    "@saberhq/anchor-contrib" "^1.14.9"
-    "@saberhq/chai-solana" "^1.14.9"
-    "@saberhq/solana-contrib" "^1.14.9"
-    "@solana/spl-token" "^0.1.8"
-    "@solana/web3.js" "^1.66.2"
-
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.8.1.tgz#00629c35a688e05a88b1cda684fb9d5e73f000a1"
@@ -232,7 +205,7 @@
     lodash.mapvalues "^4.6.0"
     tslib "^2.4.0"
 
-"@saberhq/chai-solana@^1.12.44", "@saberhq/chai-solana@^1.14.9":
+"@saberhq/chai-solana@^1.12.44":
   version "1.14.9"
   resolved "https://registry.yarnpkg.com/@saberhq/chai-solana/-/chai-solana-1.14.9.tgz#a1d2a0e8ac4567d1804485544e9f5d816ed93011"
   integrity sha512-T8Djd4EmGtlppq9ebWMmpyJ1NNBt+m4xQ8moWt08pRDlpBhJocRqj1Y3/NEA6IdWSNpTrYfFJRfPPQuYRKeOlA==
@@ -331,16 +304,7 @@
     buffer-layout "^1.2.0"
     dotenv "10.0.0"
 
-"@solana/spl-token@^0.3.5":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.6.tgz#35473ad2ed71fe91e5754a2ac72901e1b8b26a42"
-  integrity sha512-P9pTXjDIRvVbjr3J0mCnSamYqLnICeds7IoH1/Ro2R9OBuOHdp5pqKZoscfZ3UYrgnCWUc1bc9M2m/YPHjw+1g==
-  dependencies:
-    "@solana/buffer-layout" "^4.0.0"
-    "@solana/buffer-layout-utils" "^0.2.0"
-    buffer "^6.0.3"
-
-"@solana/web3.js@^1.21.0", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.34.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.66.2":
+"@solana/web3.js@^1.21.0", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.34.0", "@solana/web3.js@^1.36.0":
   version "1.66.2"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.66.2.tgz#80b43c5868b846124fe3ebac7d3943930c3fa60c"
   integrity sha512-RyaHMR2jGmaesnYP045VLeBGfR/gAW3cvZHzMFGg7bkO+WOYOYp1nEllf0/la4U4qsYGKCsO9eEevR5fhHiVHg==
@@ -836,7 +800,7 @@ buffer@6.0.1:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
 
-buffer@6.0.3, buffer@^6.0.3, buffer@~6.0.3:
+buffer@6.0.3, buffer@~6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
   integrity sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
@@ -874,12 +838,11 @@ camelcase@^6.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
-"cardinal-token-manager@git+https://github.com/wozgun/cardinal-token-manager.git#9126a3df65cb044a65016413b9b6ca9d231834ad":
-  version "1.7.8"
-  resolved "git+https://github.com/wozgun/cardinal-token-manager.git#9126a3df65cb044a65016413b9b6ca9d231834ad"
+"cardinal-token-manager@git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#119e7e971d8c0d67bcc84344585f13fc47fc3575":
+  version "1.7.4"
+  resolved "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#119e7e971d8c0d67bcc84344585f13fc47fc3575"
   dependencies:
     "@cardinal/common" "^2.0.12"
-    "@cardinal/payment-manager" "^1.7.9"
     "@metaplex-foundation/mpl-token-metadata" "^1.2.5"
     "@solana/buffer-layout" "^4.0.0"
     "@solana/buffer-layout-utils" "^0.2.0"
