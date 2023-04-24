@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@cardinal/common": "^2.0.11",
-    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#119e7e971d8c0d67bcc84344585f13fc47fc3575",
+    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#14b38a088ec96ce51a3bed3a29cf788b41059e41",
     "@metaplex-foundation/mpl-token-metadata": "^1.2.5",
     "node-fetch": "2"
   },

@@ -9,14 +9,11 @@ const _1 = require(".");
  * @returns
  */
 const findRewardEntryId = async (rewardDistributorId, stakeEntryId) => {
-  return web3_js_1.PublicKey.findProgramAddress(
-    [
-      anchor_1.utils.bytes.utf8.encode(_1.REWARD_ENTRY_SEED),
-      rewardDistributorId.toBuffer(),
-      stakeEntryId.toBuffer(),
-    ],
-    _1.REWARD_DISTRIBUTOR_ADDRESS
-  );
+    return web3_js_1.PublicKey.findProgramAddress([
+        anchor_1.utils.bytes.utf8.encode(_1.REWARD_ENTRY_SEED),
+        rewardDistributorId.toBuffer(),
+        stakeEntryId.toBuffer(),
+    ], _1.REWARD_DISTRIBUTOR_ADDRESS);
 };
 exports.findRewardEntryId = findRewardEntryId;
 /**
@@ -24,13 +21,7 @@ exports.findRewardEntryId = findRewardEntryId;
  * @returns
  */
 const findRewardDistributorId = async (stakePoolId) => {
-  return web3_js_1.PublicKey.findProgramAddress(
-    [
-      anchor_1.utils.bytes.utf8.encode(_1.REWARD_DISTRIBUTOR_SEED),
-      stakePoolId.toBuffer(),
-    ],
-    _1.REWARD_DISTRIBUTOR_ADDRESS
-  );
+    return web3_js_1.PublicKey.findProgramAddress([anchor_1.utils.bytes.utf8.encode(_1.REWARD_DISTRIBUTOR_SEED), stakePoolId.toBuffer()], _1.REWARD_DISTRIBUTOR_ADDRESS);
 };
 exports.findRewardDistributorId = findRewardDistributorId;
 //# sourceMappingURL=pda.js.map

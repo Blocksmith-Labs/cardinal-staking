@@ -4,7 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import * as REWARD_DISTRIBUTOR_TYPES from "../../idl/cardinal_reward_distributor";
 
 export const REWARD_DISTRIBUTOR_ADDRESS = new PublicKey(
-  "6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN"
+  "ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8"
 );
 export const REWARD_MANAGER = new PublicKey(
   "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"
