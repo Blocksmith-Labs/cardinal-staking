@@ -6,7 +6,7 @@ test = "yarn mocha tests/*.spec.ts"
 
 [provider]
 cluster = "localnet"
-wallet = "./tests/test-key.json"
+wallet = "~/.config/solana/id.json"
 
 [programs.mainnet]
 cardinal_stake_pool = "GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2"
