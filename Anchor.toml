@@ -3,29 +3,9 @@ test = "yarn mocha tests/**/*.spec.ts"
 
 [provider]
 cluster = "localnet"
-# wallet = "./tests/test-key.json"
 wallet = "~/.config/solana/id.json"
 
-[programs.mainnet]
-cardinal_stake_pool = "B8YPU81FXbC4iicBhbfniTEzeYYXgHnCMsjADJ9agcoy"
-cardinal_reward_distributor = "2R6VtKUMcw9G2kwnM2Kimuu1rTMC9DgRgBW8ppUiacGV"
-cardinal_group_reward_distributor = "DUJxPunmSUTsMpCPd6wwHZMMySaXiSAiTjwoyQe9ABYQ"
-cardinal_receipt_manager = "6pthUZjVSGS3tS4Tz8e826RjqANPzpmpMbW86JcYwH15"
-
-[programs.devnet]
-cardinal_stake_pool = "B8YPU81FXbC4iicBhbfniTEzeYYXgHnCMsjADJ9agcoy"
-cardinal_reward_distributor = "2R6VtKUMcw9G2kwnM2Kimuu1rTMC9DgRgBW8ppUiacGV"
-cardinal_group_reward_distributor = "DUJxPunmSUTsMpCPd6wwHZMMySaXiSAiTjwoyQe9ABYQ"
-cardinal_receipt_manager = "6pthUZjVSGS3tS4Tz8e826RjqANPzpmpMbW86JcYwH15"
-
-[programs.testnet]
-cardinal_stake_pool = "B8YPU81FXbC4iicBhbfniTEzeYYXgHnCMsjADJ9agcoy"
-cardinal_reward_distributor = "2R6VtKUMcw9G2kwnM2Kimuu1rTMC9DgRgBW8ppUiacGV"
-cardinal_group_reward_distributor = "DUJxPunmSUTsMpCPd6wwHZMMySaXiSAiTjwoyQe9ABYQ"
-cardinal_receipt_manager = "6pthUZjVSGS3tS4Tz8e826RjqANPzpmpMbW86JcYwH15"
-
 [programs.localnet]
-cardinal_stake_pool = "B8YPU81FXbC4iicBhbfniTEzeYYXgHnCMsjADJ9agcoy"
-cardinal_reward_distributor = "2R6VtKUMcw9G2kwnM2Kimuu1rTMC9DgRgBW8ppUiacGV"
-cardinal_group_reward_distributor = "DUJxPunmSUTsMpCPd6wwHZMMySaXiSAiTjwoyQe9ABYQ"
-cardinal_receipt_manager = "6pthUZjVSGS3tS4Tz8e826RjqANPzpmpMbW86JcYwH15"
+cardinal_stake_pool = "GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2"
+cardinal_reward_distributor = "6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN"
+cardinal_receipt_manager = "znkZtiB14LyaNono9YiSupAf9EsWkPuFT6NzFB9F4MA"

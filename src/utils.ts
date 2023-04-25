@@ -18,17 +18,12 @@ import type {
 import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 
 import type {
-  GroupRewardCounterData,
-  GroupRewardDistributorData,
-  GroupRewardEntryData,
-} from "./programs/groupRewardDistributor";
-import type {
   RewardDistributorData,
   RewardEntryData,
 } from "./programs/rewardDistributor";
 import { getRewardEntries } from "./programs/rewardDistributor/accounts";
 import { findRewardEntryId } from "./programs/rewardDistributor/pda";
-import type { GroupStakeEntryData, StakeEntryData } from "./programs/stakePool";
+import type { StakeEntryData } from "./programs/stakePool";
 import { getStakeEntries } from "./programs/stakePool/accounts";
 import { findStakeEntryIdFromMint } from "./programs/stakePool/utils";
 
@@ -228,7 +223,7 @@ export const calculatePendingRewards = (
   if (
     !stakeEntry ||
     stakeEntry.parsed.pool.toString() !==
-      rewardDistributor.parsed.stakePool.toString()
+    rewardDistributor.parsed.stakePool.toString()
   ) {
     return [new BN(0), new BN(0)];
   }
@@ -279,98 +274,4 @@ export const calculatePendingRewards = (
   );
 
   return [rewardAmountToReceive, nextRewardsIn];
-};
-
-/**
- * Calculate claimable groupRewards and next groupReward time for a give mint and groupReward and stake entry
- * @param groupRewardDistributor
- * @param groupEntry
- * @param groupRewardEntry
- * @param remainingGroupRewardAmount
- * @param UTCNow
- * @returns
- */
-export const calculatePendingGroupRewards = (
-  groupRewardDistributor: AccountData<GroupRewardDistributorData>,
-  groupEntry: AccountData<GroupStakeEntryData>,
-  groupRewardEntry: AccountData<GroupRewardEntryData> | undefined,
-  groupRewardCounter: AccountData<GroupRewardCounterData> | undefined,
-  remainingGroupRewardAmount: BN,
-  UTCNow: number
-): [BN, BN] => {
-  const rewardSecondsReceived =
-    groupRewardEntry?.parsed.rewardSecondsReceived || new BN(0);
-  const multiplier = groupRewardEntry?.parsed?.multiplier || new BN(1);
-
-  let groupRewardSeconds = (
-    groupEntry.parsed.groupCooldownStartSeconds || new BN(UTCNow)
-  ).sub(groupEntry.parsed.changedAt);
-  if (groupRewardDistributor.parsed.maxRewardSecondsReceived) {
-    groupRewardSeconds = BN.min(
-      groupRewardSeconds,
-      groupRewardDistributor.parsed.maxRewardSecondsReceived
-    );
-  }
-  let groupRewardAmountToReceive = groupRewardSeconds
-    .sub(rewardSecondsReceived)
-    .div(groupRewardDistributor.parsed.rewardDurationSeconds)
-    .mul(groupRewardDistributor.parsed.rewardAmount)
-    .mul(
-      multiplier
-        .mul(groupRewardDistributor.parsed.baseMultiplier)
-        .div(
-          new BN(10).pow(
-            new BN(groupRewardDistributor.parsed.baseMultiplierDecimals)
-          )
-        )
-        .add(
-          groupRewardDistributor.parsed.baseAdder.div(
-            new BN(10).pow(
-              new BN(groupRewardDistributor.parsed.baseAdderDecimals)
-            )
-          )
-        )
-    )
-    .div(
-      new BN(10).pow(new BN(groupRewardDistributor.parsed.multiplierDecimals))
-    );
-
-  if (
-    groupRewardDistributor.parsed.groupCountMultiplier &&
-    groupRewardCounter
-  ) {
-    groupRewardAmountToReceive = groupRewardAmountToReceive
-      .mul(groupRewardCounter.parsed.count)
-      .div(groupRewardDistributor.parsed.groupCountMultiplier)
-      .div(
-        new BN(10).pow(
-          new BN(
-            groupRewardDistributor.parsed.groupCountMultiplierDecimals || 0
-          )
-        )
-      );
-  }
-
-  if (
-    groupRewardDistributor.parsed.maxSupply &&
-    groupRewardDistributor.parsed.rewardsIssued
-      .add(groupRewardAmountToReceive)
-      .gte(groupRewardDistributor.parsed.maxSupply)
-  ) {
-    groupRewardAmountToReceive = groupRewardDistributor.parsed.maxSupply.sub(
-      groupRewardDistributor.parsed.rewardsIssued
-    );
-  }
-
-  if (groupRewardAmountToReceive.gt(remainingGroupRewardAmount)) {
-    groupRewardAmountToReceive = remainingGroupRewardAmount;
-  }
-
-  const nextRewardsIn = groupRewardDistributor.parsed.rewardDurationSeconds.sub(
-    (groupEntry.parsed.groupCooldownStartSeconds || new BN(UTCNow))
-      .sub(groupEntry.parsed.changedAt)
-      .mod(groupRewardDistributor.parsed.rewardDurationSeconds)
-  );
-
-  return [groupRewardAmountToReceive, nextRewardsIn];
 };

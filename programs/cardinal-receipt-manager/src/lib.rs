@@ -5,7 +5,7 @@ pub mod state;
 use anchor_lang::prelude::*;
 use instructions::*;
 
-declare_id!("6pthUZjVSGS3tS4Tz8e826RjqANPzpmpMbW86JcYwH15");
+declare_id!("znkZtiB14LyaNono9YiSupAf9EsWkPuFT6NzFB9F4MA");
 
 #[program]
 pub mod cardinal_receipt_manager {

@@ -51,20 +51,6 @@ import {
 
 import type { CardinalRewardDistributor } from "./idl/cardinal_reward_distributor";
 import type { CardinalStakePool } from "./idl/cardinal_stake_pool";
-import type {
-  GroupRewardDistributorKind,
-  GroupRewardDistributorMetadataKind,
-  GroupRewardDistributorPoolKind,
-} from "./programs/groupRewardDistributor";
-import { getGroupRewardEntry } from "./programs/groupRewardDistributor/accounts";
-import { findGroupRewardEntryId } from "./programs/groupRewardDistributor/pda";
-import {
-  withClaimGroupRewards,
-  withCloseGroupRewardEntry,
-  withInitGroupRewardDistributor,
-  withInitGroupRewardEntry,
-  withUpdateGroupRewardDistributor,
-} from "./programs/groupRewardDistributor/transaction";
 import type { RewardDistributorKind } from "./programs/rewardDistributor";
 import {
   REWARD_DISTRIBUTOR_IDL,
@@ -86,25 +72,20 @@ import {
 } from "./programs/rewardDistributor/transaction";
 import {
   ReceiptType,
-  STAKE_POOL_ADDRESS,
+  // STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
   stakePoolProgram,
 } from "./programs/stakePool";
 import {
-  getStakeEntries,
   getStakeEntry,
   getStakePool,
 } from "./programs/stakePool/accounts";
 import { findStakeEntryId } from "./programs/stakePool/pda";
 import {
-  withAddToGroupEntry,
   withAuthorizeStakeEntry,
-  withInitGroupStakeEntry,
   withInitStakeEntry,
   withInitStakeMint,
   withInitStakePool,
-  withInitUngrouping,
-  withRemoveFromGroupEntry,
   withUpdateTotalStakeSeconds,
 } from "./programs/stakePool/transaction";
 import {
@@ -508,20 +489,20 @@ export const claimRewardsAll = async (
   });
   return !rewardTokenAccount
     ? [
-        txs.slice(0, 1).map((tx) => {
-          tx.instructions = [
-            createAssociatedTokenAccountIdempotentInstruction(
-              wallet.publicKey,
-              userRewardTokenAccountId,
-              wallet.publicKey,
-              rewardMintId
-            ),
-            ...tx.instructions,
-          ];
-          return { tx };
-        }),
-        txs.slice(1).map((tx) => ({ tx })),
-      ]
+      txs.slice(0, 1).map((tx) => {
+        tx.instructions = [
+          createAssociatedTokenAccountIdempotentInstruction(
+            wallet.publicKey,
+            userRewardTokenAccountId,
+            wallet.publicKey,
+            rewardMintId
+          ),
+          ...tx.instructions,
+        ];
+        return { tx };
+      }),
+      txs.slice(1).map((tx) => ({ tx })),
+    ]
     : [txs.map((tx) => ({ tx }))];
 };
 
@@ -619,10 +600,10 @@ export const stakeAll = async (
       const stakeEntryInfo = accountData[stakeEntryId.toString()] ?? null;
       const stakeEntryData = stakeEntryInfo
         ? tryDecodeIdlAccount<"stakeEntry", CardinalStakePool>(
-            stakeEntryInfo,
-            "stakeEntry",
-            STAKE_POOL_IDL
-          )
+          stakeEntryInfo,
+          "stakeEntry",
+          STAKE_POOL_IDL
+        )
         : null;
 
       const stakePoolInfo = accountData[params.stakePoolId.toString()] ?? null;
@@ -686,10 +667,10 @@ export const stakeAll = async (
     const stakeEntryInfo = accountData[stakeEntryId.toString()] ?? null;
     const stakeEntryData = stakeEntryInfo
       ? tryDecodeIdlAccount<"stakeEntry", CardinalStakePool>(
-          stakeEntryInfo,
-          "stakeEntry",
-          STAKE_POOL_IDL
-        )
+        stakeEntryInfo,
+        "stakeEntry",
+        STAKE_POOL_IDL
+      )
       : null;
     /////// start transaction ///////
     const transaction = new Transaction();
@@ -743,7 +724,7 @@ export const stakeAll = async (
             mintEdition: findMintEditionId(originalMintId),
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
             authorizationRules:
-              mintMetadata.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
+              mintMetadata.programmableConfig?.ruleSet ?? METADATA_PROGRAM_ID,
             authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
           })
           .instruction()
@@ -780,7 +761,7 @@ export const stakeAll = async (
         const receiptMintId =
           receiptType === ReceiptType.Receipt
             ? mintReceiptIds[originalMintId.toString()] ??
-              stakeEntryData?.parsed?.stakeMint
+            stakeEntryData?.parsed?.stakeMint
             : originalMintId;
         if (!receiptMintId) {
           throw "Stake entry has no receipt mint and you are trying to stake using receipts. Initialize receipt mint first.";
@@ -941,10 +922,10 @@ export const unstakeAll = async (
   const rewardDistributorInfo = accountData[rewardDistributorId.toString()];
   const rewardDistributorData = rewardDistributorInfo
     ? tryDecodeIdlAccount<"rewardDistributor", CardinalRewardDistributor>(
-        rewardDistributorInfo,
-        "rewardDistributor",
-        REWARD_DISTRIBUTOR_IDL
-      )
+      rewardDistributorInfo,
+      "rewardDistributor",
+      REWARD_DISTRIBUTOR_IDL
+    )
     : null;
   const rewardMintId = rewardDistributorData?.parsed?.rewardMint;
   const userRewardTokenAccountId = rewardMintId
@@ -965,10 +946,10 @@ export const unstakeAll = async (
       : null;
     const tokenRecordInfo =
       accountData[
-        findTokenRecordId(
-          originalMintId,
-          userOriginalMintTokenAccountId
-        ).toString()
+      findTokenRecordId(
+        originalMintId,
+        userOriginalMintTokenAccountId
+      ).toString()
       ];
     const tokenRecordData = tokenRecordInfo
       ? TokenRecord.fromAccountInfo(tokenRecordInfo)[0]
@@ -1057,7 +1038,7 @@ export const unstakeAll = async (
         !(
           rewardDistributorData.parsed.maxRewardSecondsReceived &&
           stakeEntryData.parsed.totalStakeSeconds >
-            rewardDistributorData.parsed.maxRewardSecondsReceived
+          rewardDistributorData.parsed.maxRewardSecondsReceived
         )
       ) {
         tx.add(ix);
@@ -1092,7 +1073,7 @@ export const unstakeAll = async (
           mintMetadata: mintMetadataId,
           mintEdition: findMintEditionId(originalMintId),
           authorizationRules:
-            mintMetadata.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
+            mintMetadata.programmableConfig?.ruleSet ?? METADATA_PROGRAM_ID,
           sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
           authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
         })
@@ -1190,7 +1171,7 @@ export const unstakeAll = async (
             mintMetadata: mintMetadataId,
             mintEdition: findMintEditionId(originalMintId),
             authorizationRules:
-              mintMetadata?.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
+              mintMetadata?.programmableConfig?.ruleSet ?? METADATA_PROGRAM_ID,
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
             tokenProgram: TOKEN_PROGRAM_ID,
             associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -1216,16 +1197,16 @@ export const unstakeAll = async (
           .remainingAccounts(
             stakeEntry.parsed.stakeMint
               ? [
-                  {
-                    pubkey: getAssociatedTokenAddressSync(
-                      stakeEntry.parsed.stakeMint,
-                      stakeEntryId,
-                      true
-                    ),
-                    isSigner: false,
-                    isWritable: false,
-                  },
-                ]
+                {
+                  pubkey: getAssociatedTokenAddressSync(
+                    stakeEntry.parsed.stakeMint,
+                    stakeEntryId,
+                    true
+                  ),
+                  isSigner: false,
+                  isWritable: false,
+                },
+              ]
               : []
           )
           .instruction();
@@ -1244,299 +1225,19 @@ export const unstakeAll = async (
   }
   return !rewardTokenAccount && userRewardTokenAccountId && rewardMintId
     ? [
-        txs.slice(0, 1).map(({ tx }) => {
-          tx.instructions = [
-            createAssociatedTokenAccountIdempotentInstruction(
-              wallet.publicKey,
-              userRewardTokenAccountId,
-              wallet.publicKey,
-              rewardMintId
-            ),
-            ...tx.instructions,
-          ];
-          return { tx };
-        }),
-        txs.slice(1),
-      ]
+      txs.slice(0, 1).map(({ tx }) => {
+        tx.instructions = [
+          createAssociatedTokenAccountIdempotentInstruction(
+            wallet.publicKey,
+            userRewardTokenAccountId,
+            wallet.publicKey,
+            rewardMintId
+          ),
+          ...tx.instructions,
+        ];
+        return { tx };
+      }),
+      txs.slice(1),
+    ]
     : [txs];
-};
-
-/**
- * Convenience call to create a group entry
- * @param connection - Connection to use
- * @param wallet - Wallet to use
- * @param params
- * stakePoolId - Stake pool ID
- * originalMintId - Original mint ID
- * user - (Optional) User pubkey in case the person paying for the transaction and
- * stake entry owner are different
- * @returns
- */
-export const createGroupEntry = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    stakeEntryIds: PublicKey[];
-    groupCooldownSeconds?: number;
-    groupStakeSeconds?: number;
-  }
-): Promise<[Transaction, PublicKey]> => {
-  if (!params.stakeEntryIds.length) throw new Error("No stake entry found");
-  const [transaction, groupEntryId] = await withInitGroupStakeEntry(
-    new Transaction(),
-    connection,
-    wallet,
-    {
-      groupCooldownSeconds: params.groupCooldownSeconds,
-      groupStakeSeconds: params.groupStakeSeconds,
-    }
-  );
-
-  await Promise.all(
-    params.stakeEntryIds.map((stakeEntryId) =>
-      withAddToGroupEntry(transaction, connection, wallet, {
-        groupEntryId,
-        stakeEntryId,
-      })
-    )
-  );
-
-  return [transaction, groupEntryId];
-};
-
-/**
- * Convenience call to create a group reward distributor
- * @param connection - Connection to use
- * @param wallet - Wallet to use
- * @param params
- *  rewardMintId - (Optional) Reward mint id
- *  authorizedPools - Authorized stake pool ids
- *  rewardAmount - (Optional) Reward amount
- *  rewardDurationSeconds - (Optional) Reward duration in seconds
- *  rewardKind - (Optional) Reward distributor kind Mint or Treasury
- *  poolKind - (Optional) Reward distributor pool validation kind NoRestriction, AllFromSinglePool or EachFromSeparatePool
- *  metadataKind - (Optional) Reward distributor metadata validation kind NoRestriction, UniqueNames or UniqueSymbols
- *  supply - (Optional) Supply
- *  baseAdder - (Optional) Base adder value that will be add to the calculated multiplier
- *  baseAdderDecimals - (Optional) Base adder decimals
- *  baseMultiplier - (Optional) Base multiplier value that will be multiplied by the calculated multiplier
- *  baseMultiplierDecimals - (Optional) Base multiplier decimals
- *  multiplierDecimals - (Optional) Multiplier decimals
- *  maxSupply - (Optional) Max supply
- *  minCooldownSeconds - (Optional) number;
- *  minStakeSeconds - (Optional) number;
- *  groupCountMultiplier - (Optional) Group Count Multiplier if provided will multiplied the total reward to this number and total groups that this user has
- *  groupCountMultiplierDecimals - (Optional) Group Count Multiplier decimals
- *  minGroupSize - (Optional) min group size
- *  maxRewardSecondsReceived - (Optional) max reward seconds received
- * @returns
- */
-export const createGroupRewardDistributor = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    rewardMintId: PublicKey;
-    authorizedPools: PublicKey[];
-    rewardAmount?: BN;
-    rewardDurationSeconds?: BN;
-    rewardKind?: GroupRewardDistributorKind;
-    poolKind?: GroupRewardDistributorPoolKind;
-    metadataKind?: GroupRewardDistributorMetadataKind;
-    supply?: BN;
-    baseAdder?: BN;
-    baseAdderDecimals?: number;
-    baseMultiplier?: BN;
-    baseMultiplierDecimals?: number;
-    multiplierDecimals?: number;
-    maxSupply?: BN;
-    minCooldownSeconds?: number;
-    minStakeSeconds?: number;
-    groupCountMultiplier?: BN;
-    groupCountMultiplierDecimals?: number;
-    minGroupSize?: number;
-    maxRewardSecondsReceived?: BN;
-  }
-): Promise<[Transaction, PublicKey]> =>
-  withInitGroupRewardDistributor(new Transaction(), connection, wallet, params);
-
-/**
- * Convenience call to update a group reward distributor
- * @param connection - Connection to use
- * @param wallet - Wallet to use
- * @param params
- * groupRewardDistributorId - Group reward distributor id
- * authorizedPools - Authorized stake pool ids
- * rewardAmount - (Optional) Reward amount
- * rewardDurationSeconds - (Optional) Reward duration in seconds
- * poolKind - (Optional) Reward distributor pool validation kind NoRestriction, AllFromSinglePool or EachFromSeparatePool
- * metadataKind - (Optional) Reward distributor metadata validation kind NoRestriction, UniqueNames or UniqueSymbols
- * baseAdder - (Optional) Base adder value that will be add to the calculated multiplier
- * baseAdderDecimals - (Optional) Base adder decimals
- * baseMultiplier - (Optional) Base multiplier value that will be multiplied by the calculated multiplier
- * baseMultiplierDecimals - (Optional) Base multiplier decimals
- * multiplierDecimals - (Optional) Multiplier decimals
- * maxSupply - (Optional) Max supply
- * minCooldownSeconds - (Optional) number;
- * minStakeSeconds - (Optional) number;
- * groupCountMultiplier - (Optional) Group Count Multiplier if provided will multiplied the total reward to this number and total groups that this user has
- * groupCountMultiplierDecimals - (Optional) Group Count Multiplier decimals
- * minGroupSize - (Optional) min group size
- * maxRewardSecondsReceived - (Optional) max reward seconds received
- * @returns
- */
-export const updateGroupRewardDistributor = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    groupRewardDistributorId: PublicKey;
-    authorizedPools: PublicKey[];
-    rewardAmount?: BN;
-    rewardDurationSeconds?: BN;
-    poolKind?: GroupRewardDistributorPoolKind;
-    metadataKind?: GroupRewardDistributorMetadataKind;
-    baseAdder?: BN;
-    baseAdderDecimals?: number;
-    baseMultiplier?: BN;
-    baseMultiplierDecimals?: number;
-    multiplierDecimals?: number;
-    maxSupply?: BN;
-    minCooldownSeconds?: number;
-    minStakeSeconds?: number;
-    groupCountMultiplier?: BN;
-    groupCountMultiplierDecimals?: number;
-    minGroupSize?: number;
-    maxRewardSecondsReceived?: BN;
-  }
-): Promise<Transaction> =>
-  withUpdateGroupRewardDistributor(
-    new Transaction(),
-    connection,
-    wallet,
-    params
-  );
-
-/**
- * Convenience method to claim rewards
- * @param connection - Connection to use
- * @param wallet - Wallet to use
- * @param params
- * groupRewardDistributorId - Group reward distributor ID
- * groupEntryId - Group entry ID
- * stakeEntryIds - Stake entry IDs
- * @returns
- */
-export const claimGroupRewards = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    groupRewardDistributorId: PublicKey;
-    groupEntryId: PublicKey;
-    stakeEntryIds: PublicKey[];
-  }
-): Promise<[Transaction]> => {
-  const transaction = new Transaction();
-
-  const groupRewardEntryId = findGroupRewardEntryId(
-    params.groupRewardDistributorId,
-    params.groupEntryId
-  );
-
-  const groupRewardEntry = await tryGetAccount(() =>
-    getGroupRewardEntry(connection, groupRewardEntryId)
-  );
-  if (!groupRewardEntry) {
-    const stakeEntriesData = await getStakeEntries(
-      connection,
-      params.stakeEntryIds
-    );
-
-    const stakeEntries = await Promise.all(
-      stakeEntriesData.map((stakeEntry) => {
-        const rewardDistributorId = findRewardDistributorId(
-          stakeEntry.parsed.pool
-        );
-        return {
-          stakeEntryId: stakeEntry.pubkey,
-          originalMint: stakeEntry.parsed.originalMint,
-          rewardDistributorId,
-        };
-      })
-    );
-
-    await withInitGroupRewardEntry(transaction, connection, wallet, {
-      groupRewardDistributorId: params.groupRewardDistributorId,
-      groupEntryId: params.groupEntryId,
-      stakeEntries,
-    });
-  }
-
-  await withClaimGroupRewards(transaction, connection, wallet, {
-    groupRewardDistributorId: params.groupRewardDistributorId,
-    groupEntryId: params.groupEntryId,
-  });
-
-  return [transaction];
-};
-
-/**
- * Convenience method to close group stake entry
- * @param connection - Connection to use
- * @param wallet - Wallet to use
- * @param params
- * groupRewardDistributorId - Group reward distributor ID
- * groupEntryId - Group entry ID
- * stakeEntryIds - Stake entry IDs
- * @returns
- */
-export const closeGroupEntry = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    groupRewardDistributorId: PublicKey;
-    groupEntryId: PublicKey;
-    stakeEntryIds: PublicKey[];
-  }
-): Promise<[Transaction]> => {
-  const [transaction] = await claimGroupRewards(connection, wallet, params);
-
-  await withCloseGroupRewardEntry(transaction, connection, wallet, {
-    groupEntryId: params.groupEntryId,
-    groupRewardDistributorId: params.groupRewardDistributorId,
-  });
-
-  await Promise.all(
-    params.stakeEntryIds.map((stakeEntryId) =>
-      withRemoveFromGroupEntry(transaction, connection, wallet, {
-        groupEntryId: params.groupEntryId,
-        stakeEntryId,
-      })
-    )
-  );
-  return [transaction];
-};
-
-/**
- * Convenience method to init ungrouping
- * @param connection - Connection to use
- * @param wallet - Wallet to use
- * @param params
- * groupRewardDistributorId - Group reward distributor ID
- * groupEntryId - Group entry ID
- * stakeEntryIds - Stake entry IDs
- * @returns
- */
-export const initUngrouping = async (
-  connection: Connection,
-  wallet: Wallet,
-  params: {
-    groupEntryId: PublicKey;
-  }
-): Promise<[Transaction]> => {
-  const transaction = new Transaction();
-
-  await withInitUngrouping(transaction, connection, wallet, {
-    groupEntryId: params.groupEntryId,
-  });
-
-  return [transaction];
 };
