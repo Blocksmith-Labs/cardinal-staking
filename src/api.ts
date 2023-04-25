@@ -72,7 +72,7 @@ import {
 } from "./programs/rewardDistributor/transaction";
 import {
   ReceiptType,
-  STAKE_POOL_ADDRESS,
+  // STAKE_POOL_ADDRESS,
   STAKE_POOL_IDL,
   stakePoolProgram,
 } from "./programs/stakePool";
@@ -724,7 +724,7 @@ export const stakeAll = async (
             mintEdition: findMintEditionId(originalMintId),
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
             authorizationRules:
-              mintMetadata.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
+              mintMetadata.programmableConfig?.ruleSet ?? METADATA_PROGRAM_ID,
             authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
           })
           .instruction()
@@ -1073,7 +1073,7 @@ export const unstakeAll = async (
           mintMetadata: mintMetadataId,
           mintEdition: findMintEditionId(originalMintId),
           authorizationRules:
-            mintMetadata.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
+            mintMetadata.programmableConfig?.ruleSet ?? METADATA_PROGRAM_ID,
           sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
           authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
         })

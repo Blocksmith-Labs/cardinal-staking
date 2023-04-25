@@ -11,7 +11,9 @@ import { REWARD_DISTRIBUTOR_IDL, REWARD_MANAGER, rewardDistributorProgram, } fro
 import { getRewardDistributor, getRewardEntry, } from "./programs/rewardDistributor/accounts";
 import { findRewardDistributorId, findRewardEntryId, } from "./programs/rewardDistributor/pda";
 import { withInitRewardDistributor, withInitRewardEntry, withUpdateRewardEntry, } from "./programs/rewardDistributor/transaction";
-import { ReceiptType, STAKE_POOL_ADDRESS, STAKE_POOL_IDL, stakePoolProgram, } from "./programs/stakePool";
+import { ReceiptType, 
+// STAKE_POOL_ADDRESS,
+STAKE_POOL_IDL, stakePoolProgram, } from "./programs/stakePool";
 import { getStakeEntry, getStakePool, } from "./programs/stakePool/accounts";
 import { findStakeEntryId } from "./programs/stakePool/pda";
 import { withAuthorizeStakeEntry, withInitStakeEntry, withInitStakeMint, withInitStakePool, withUpdateTotalStakeSeconds, } from "./programs/stakePool/transaction";
@@ -415,7 +417,7 @@ export const stakeAll = async (connection, wallet, params) => {
                 mintMetadata: mintMetadataId,
                 mintEdition: findMintEditionId(originalMintId),
                 sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
-                authorizationRules: (_g = (_f = mintMetadata.programmableConfig) === null || _f === void 0 ? void 0 : _f.ruleSet) !== null && _g !== void 0 ? _g : STAKE_POOL_ADDRESS,
+                authorizationRules: (_g = (_f = mintMetadata.programmableConfig) === null || _f === void 0 ? void 0 : _f.ruleSet) !== null && _g !== void 0 ? _g : METADATA_PROGRAM_ID,
                 authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
             })
                 .instruction());
@@ -634,7 +636,7 @@ export const unstakeAll = async (connection, wallet, params) => {
                 userOriginalMintTokenRecord: findTokenRecordId(originalMintId, userOriginalMintTokenAccountId),
                 mintMetadata: mintMetadataId,
                 mintEdition: findMintEditionId(originalMintId),
-                authorizationRules: (_c = (_b = mintMetadata.programmableConfig) === null || _b === void 0 ? void 0 : _b.ruleSet) !== null && _c !== void 0 ? _c : STAKE_POOL_ADDRESS,
+                authorizationRules: (_c = (_b = mintMetadata.programmableConfig) === null || _b === void 0 ? void 0 : _b.ruleSet) !== null && _c !== void 0 ? _c : METADATA_PROGRAM_ID,
                 sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
                 authorizationRulesProgram: TOKEN_AUTH_RULES_ID,
             })
