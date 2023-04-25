@@ -1,6 +1,6 @@
 import type { ParsedIdlAccountData } from "@cardinal/common";
-import { BN } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import { BN } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import type { AccountMeta, Connection, PublicKey, Transaction } from "@solana/web3.js";
 import type { CardinalStakePool } from "../../idl/cardinal_stake_pool";
 export declare const remainingAccountsForInitStakeEntry: (stakePoolId: PublicKey, originalMintId: PublicKey) => AccountMeta[];

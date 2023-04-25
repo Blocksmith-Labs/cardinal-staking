@@ -1,5 +1,5 @@
 import { decodeIdlAccount, fetchAccountDataById, findMintEditionId, findMintMetadataId, findTokenRecordId, getBatchedMultipleAccounts, METADATA_PROGRAM_ID, tryDecodeIdlAccount, tryGetAccount, tryNull, } from "@cardinal/common";
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "@project-serum/anchor";
 import { PROGRAM_ID as TOKEN_AUTH_RULES_ID } from "@metaplex-foundation/mpl-token-auth-rules";
 import { Metadata, TokenDelegateRole, TokenRecord, TokenStandard, } from "@metaplex-foundation/mpl-token-metadata";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, createAssociatedTokenAccountIdempotentInstruction, getAccount, getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID, } from "@solana/spl-token";

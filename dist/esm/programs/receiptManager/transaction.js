@@ -1,12 +1,12 @@
 import { tryGetAccount, withFindOrInitAssociatedTokenAccount, } from "@cardinal/common";
-import { PAYMENT_MANAGER_ADDRESS } from "@cardinal/payment-manager";
-import { getPaymentManager } from "@cardinal/payment-manager/dist/cjs/accounts";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { SystemProgram } from "@solana/web3.js";
 import { withUpdateTotalStakeSeconds } from "../stakePool/transaction";
 import { getReceiptManager } from "./accounts";
 import { RECEIPT_MANAGER_PAYMENT_MANAGER, receiptManagerProgram, } from "./constants";
 import { findReceiptEntryId, findReceiptManagerId, findRewardReceiptId, } from "./pda";
+import { PAYMENT_MANAGER_ADDRESS } from "cardinal-token-manager/dist/cjs/programs/paymentManager";
+import { getPaymentManager } from "cardinal-token-manager/dist/cjs/programs/paymentManager/accounts";
 export const withInitReceiptManager = async (transaction, connection, wallet, params) => {
     var _a;
     const receiptManagerId = findReceiptManagerId(params.stakePoolId, params.name);

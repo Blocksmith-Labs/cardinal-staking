@@ -3,7 +3,7 @@ import {
   getBatchedMultipleAccounts,
   tryPublicKey,
 } from "@cardinal/common";
-import type { Wallet } from "@coral-xyz/anchor";
+import type { Wallet } from "@project-serum/anchor";
 import {
   getAssociatedTokenAddressSync,
   getMint,

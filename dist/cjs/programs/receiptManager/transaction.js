@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.withSetRewardReceiptAllowed = exports.withCloseRewardReceipt = exports.withCloseReceiptEntry = exports.withCloseReceiptManager = exports.withClaimRewardReceipt = exports.withUpdateReceiptManager = exports.withInitRewardReceipt = exports.withInitReceiptEntry = exports.withInitReceiptManager = void 0;
 const common_1 = require("@cardinal/common");
-const payment_manager_1 = require("@cardinal/payment-manager");
-const accounts_1 = require("@cardinal/payment-manager/dist/cjs/accounts");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const transaction_1 = require("../stakePool/transaction");
-const accounts_2 = require("./accounts");
+const accounts_1 = require("./accounts");
 const constants_1 = require("./constants");
 const pda_1 = require("./pda");
+const paymentManager_1 = require("cardinal-token-manager/dist/cjs/programs/paymentManager");
+const accounts_2 = require("cardinal-token-manager/dist/cjs/programs/paymentManager/accounts");
 const withInitReceiptManager = async (transaction, connection, wallet, params) => {
     var _a;
     const receiptManagerId = (0, pda_1.findReceiptManagerId)(params.stakePoolId, params.name);
@@ -73,7 +73,7 @@ const withInitRewardReceipt = async (transaction, connection, wallet, params) =>
 exports.withInitRewardReceipt = withInitRewardReceipt;
 const withUpdateReceiptManager = async (transaction, connection, wallet, params) => {
     const receiptManagerId = (0, pda_1.findReceiptManagerId)(params.stakePoolId, params.name);
-    const receiptManagerData = await (0, accounts_2.getReceiptManager)(connection, receiptManagerId);
+    const receiptManagerData = await (0, accounts_1.getReceiptManager)(connection, receiptManagerId);
     const program = (0, constants_1.receiptManagerProgram)(connection, wallet);
     const ix = await program.methods
         .updateReceiptManager({
@@ -101,13 +101,13 @@ exports.withUpdateReceiptManager = withUpdateReceiptManager;
 const withClaimRewardReceipt = async (transaction, connection, wallet, params) => {
     var _a;
     const receiptManagerId = (0, pda_1.findReceiptManagerId)(params.stakePoolId, params.receiptManagerName);
-    const checkReceiptManager = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getReceiptManager)(connection, receiptManagerId));
+    const checkReceiptManager = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getReceiptManager)(connection, receiptManagerId));
     if (!checkReceiptManager) {
         throw `No reward receipt manager found with name ${params.receiptManagerName} for pool ${params.stakePoolId.toString()}`;
     }
     const receiptEntryId = (0, pda_1.findReceiptEntryId)(params.stakeEntryId);
     const rewardReceiptId = (0, pda_1.findRewardReceiptId)(receiptManagerId, receiptEntryId);
-    const checkPaymentManager = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getPaymentManager)(connection, checkReceiptManager.parsed.paymentManager));
+    const checkPaymentManager = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getPaymentManager)(connection, checkReceiptManager.parsed.paymentManager));
     if (!checkPaymentManager) {
         throw `Could not find payment manager with address ${checkReceiptManager.parsed.paymentManager.toString()}`;
     }
@@ -132,7 +132,7 @@ const withClaimRewardReceipt = async (transaction, connection, wallet, params) =
         payerTokenAccount: payerTokenAccountId,
         payer: wallet.publicKey,
         claimer: params.claimer,
-        cardinalPaymentManager: payment_manager_1.PAYMENT_MANAGER_ADDRESS,
+        cardinalPaymentManager: paymentManager_1.PAYMENT_MANAGER_ADDRESS,
         tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
         systemProgram: web3_js_1.SystemProgram.programId,
     })

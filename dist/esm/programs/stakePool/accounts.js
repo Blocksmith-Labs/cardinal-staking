@@ -1,4 +1,4 @@
-import { BorshAccountsCoder, utils } from "@coral-xyz/anchor";
+import { BorshAccountsCoder, utils } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { STAKE_POOL_ADDRESS, STAKE_POOL_IDL } from ".";
 import { AUTHORITY_OFFSET, GROUP_STAKER_OFFSET, POOL_OFFSET, stakePoolProgram, STAKER_OFFSET, } from "./constants";

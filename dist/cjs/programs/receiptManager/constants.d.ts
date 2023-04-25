@@ -1,6 +1,6 @@
 import type { ParsedIdlAccountData } from "@cardinal/common";
-import { Program } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import { Program } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import type { ConfirmOptions, Connection } from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
 import * as RECEIPT_MANAGER_TYPES from "../../idl/cardinal_receipt_manager";

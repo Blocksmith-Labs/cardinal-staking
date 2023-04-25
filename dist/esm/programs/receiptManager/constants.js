@@ -1,5 +1,5 @@
 import { emptyWallet } from "@cardinal/common";
-import { AnchorProvider, Program } from "@coral-xyz/anchor";
+import { AnchorProvider, Program } from "@project-serum/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as RECEIPT_MANAGER_TYPES from "../../idl/cardinal_receipt_manager";
 export const RECEIPT_MANAGER_ADDRESS = new PublicKey("znkZtiB14LyaNono9YiSupAf9EsWkPuFT6NzFB9F4MA");

@@ -1,5 +1,5 @@
 import { emptyWallet } from "@cardinal/common";
-import { AnchorProvider, Program } from "@coral-xyz/anchor";
+import { AnchorProvider, Program } from "@project-serum/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as STAKE_POOL_TYPES from "../../idl/cardinal_stake_pool";
 export const STAKE_POOL_ADDRESS = new PublicKey("GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2");

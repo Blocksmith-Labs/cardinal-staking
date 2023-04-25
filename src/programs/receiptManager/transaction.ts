@@ -2,10 +2,8 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import { PAYMENT_MANAGER_ADDRESS } from "@cardinal/payment-manager";
-import { getPaymentManager } from "@cardinal/payment-manager/dist/cjs/accounts";
-import type { BN } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { BN } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";
@@ -21,6 +19,8 @@ import {
   findReceiptManagerId,
   findRewardReceiptId,
 } from "./pda";
+import { PAYMENT_MANAGER_ADDRESS } from "cardinal-token-manager/dist/cjs/programs/paymentManager";
+import { getPaymentManager } from "cardinal-token-manager/dist/cjs/programs/paymentManager/accounts";
 
 export const withInitReceiptManager = async (
   transaction: Transaction,
@@ -198,8 +198,7 @@ export const withClaimRewardReceipt = async (
     getReceiptManager(connection, receiptManagerId)
   );
   if (!checkReceiptManager) {
-    throw `No reward receipt manager found with name ${
-      params.receiptManagerName
+    throw `No reward receipt manager found with name ${params.receiptManagerName
     } for pool ${params.stakePoolId.toString()}`;
   }
   const receiptEntryId = findReceiptEntryId(params.stakeEntryId);

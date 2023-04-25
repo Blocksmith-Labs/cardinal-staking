@@ -312,19 +312,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cardinal/common@^5.0.2":
-  version "5.0.7"
-  resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-5.0.7.tgz#f225b9eb4a8e7d780a14d80a1c0ba4c495be2d06"
-  integrity sha512-7sZDczfvNFq9uSiYO94Mfjhf8GIk/644xTFawNtCau127GBK2BBsu06TEGLwfELc9dc0b22g4MWQJC0yoU90ow==
-  dependencies:
-    "@project-serum/anchor" "^0.25.0"
-    "@solana/buffer-layout" "^4.0.0"
-    "@solana/spl-token" "^0.3.5"
-    "@solana/web3.js" "^1.66.2"
-    bignumber.js "^9.1.0"
-    polished "^4.2.2"
-    tslib "^2.4.0"
-
 "@cardinal/common@^7.1.3", "@cardinal/common@^7.2.3":
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/@cardinal/common/-/common-7.2.3.tgz#0a335684e0317eb90b41bdb567b8149b27a9ba14"
@@ -352,29 +339,7 @@
     "@solana/spl-token" "^0.3.5"
     "@solana/web3.js" "^1.66.2"
 
-"@cardinal/payment-manager@^2.1.1":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@cardinal/payment-manager/-/payment-manager-2.2.0.tgz#37272351b0af637c2658619f5c23554d356c1577"
-  integrity sha512-1W28Eg3qCjiNqib+UWpuM5D7GvKS9wsO6QcrnJvxqJbYgSRYH+C0A8OwkgRxhVwJsVfHYN7OThYcUBCqZTdLBA==
-  dependencies:
-    "@cardinal/common" "^5.0.2"
-    "@metaplex-foundation/mpl-token-metadata" "^2.5.2"
-    "@project-serum/anchor" "^0.25.0"
-    "@solana/spl-token" "^0.3.6"
-    "@solana/web3.js" "^1.66.2"
-
-"@cardinal/payment-manager@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@cardinal/payment-manager/-/payment-manager-4.0.1.tgz#8f3dde29998f1a3cfb51530f90221e378367aacc"
-  integrity sha512-vPenOu9frkMRXmnL11Iqim0WjBc+El5MGmJVguQev81BOTSOgQ1uGH60fapFvNsYS263xNID8MRgzkACtoUjeA==
-  dependencies:
-    "@cardinal/common" "^7.1.3"
-    "@metaplex-foundation/mpl-token-metadata" "^2.8.3"
-    "@project-serum/anchor" "^0.26.0"
-    "@solana/spl-token" "^0.3.6"
-    "@solana/web3.js" "^1.66.2"
-
-"@coral-xyz/anchor@0.27.0", "@coral-xyz/anchor@^0.27.0":
+"@coral-xyz/anchor@^0.27.0":
   version "0.27.0"
   resolved "https://registry.yarnpkg.com/@coral-xyz/anchor/-/anchor-0.27.0.tgz#621e5ef123d05811b97e49973b4ed7ede27c705c"
   integrity sha512-+P/vPdORawvg3A9Wj02iquxb4T0C5m4P6aZBVYysKl4Amk+r6aMPZkUhilBkD6E4Nuxnoajv3CFykUfkGE0n5g==
@@ -763,19 +728,6 @@
     "@solana/spl-token" "^0.3.6"
     "@solana/web3.js" "^1.66.2"
 
-"@metaplex-foundation/mpl-token-metadata@^2.5.2":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.10.0.tgz#87785d305a23bd68075919ce995b3160408ddedc"
-  integrity sha512-oCAzs4Wl7m+8ZeW6VVX8NDNbMBNDbH0vbysBmY8Eh9Moq0inSjm2dtojzQGEFTpVSAEFEzinRLXtkeWqiiI3ug==
-  dependencies:
-    "@metaplex-foundation/beet" "^0.7.1"
-    "@metaplex-foundation/beet-solana" "^0.4.0"
-    "@metaplex-foundation/cusper" "^0.0.2"
-    "@solana/spl-token" "^0.3.6"
-    "@solana/web3.js" "^1.66.2"
-    bn.js "^5.2.0"
-    debug "^4.3.4"
-
 "@metaplex-foundation/mpl-token-metadata@^2.8.1":
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/@metaplex-foundation/mpl-token-metadata/-/mpl-token-metadata-2.8.1.tgz#c4b137b7d7bfb8e7594a3cecb0a91fab05fe6e57"
@@ -869,6 +821,27 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@project-serum/anchor@0.26.0", "@project-serum/anchor@^0.26.0":
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.26.0.tgz#99e15a3923a5d10514f8185b2d3909e5699d60d5"
+  integrity sha512-Nq+COIjE1135T7qfnOHEn7E0q39bQTgXLFk837/rgFe6Hkew9WML7eHsS+lSYD2p3OJaTiUOHTAq1lHy36oIqQ==
+  dependencies:
+    "@coral-xyz/borsh" "^0.26.0"
+    "@solana/web3.js" "^1.68.0"
+    base64-js "^1.5.1"
+    bn.js "^5.1.2"
+    bs58 "^4.0.1"
+    buffer-layout "^1.2.2"
+    camelcase "^6.3.0"
+    cross-fetch "^3.1.5"
+    crypto-hash "^1.3.0"
+    eventemitter3 "^4.0.7"
+    js-sha256 "^0.9.0"
+    pako "^2.0.3"
+    snake-case "^3.0.4"
+    superstruct "^0.15.4"
+    toml "^3.0.0"
+
 "@project-serum/anchor@^0.25.0":
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.25.0.tgz#88ee4843336005cf5a64c80636ce626f0996f503"
@@ -881,27 +854,6 @@
     bs58 "^4.0.1"
     buffer-layout "^1.2.2"
     camelcase "^5.3.1"
-    cross-fetch "^3.1.5"
-    crypto-hash "^1.3.0"
-    eventemitter3 "^4.0.7"
-    js-sha256 "^0.9.0"
-    pako "^2.0.3"
-    snake-case "^3.0.4"
-    superstruct "^0.15.4"
-    toml "^3.0.0"
-
-"@project-serum/anchor@^0.26.0":
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.26.0.tgz#99e15a3923a5d10514f8185b2d3909e5699d60d5"
-  integrity sha512-Nq+COIjE1135T7qfnOHEn7E0q39bQTgXLFk837/rgFe6Hkew9WML7eHsS+lSYD2p3OJaTiUOHTAq1lHy36oIqQ==
-  dependencies:
-    "@coral-xyz/borsh" "^0.26.0"
-    "@solana/web3.js" "^1.68.0"
-    base64-js "^1.5.1"
-    bn.js "^5.1.2"
-    bs58 "^4.0.1"
-    buffer-layout "^1.2.2"
-    camelcase "^6.3.0"
     cross-fetch "^3.1.5"
     crypto-hash "^1.3.0"
     eventemitter3 "^4.0.7"
@@ -1693,13 +1645,12 @@ caniuse-lite@^1.0.30001400:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001439.tgz#ab7371faeb4adff4b74dad1718a6fd122e45d9cb"
   integrity sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==
 
-"cardinal-token-manager@git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#026ed0b413515e16cc27924cab54db717f804a2c":
+"cardinal-token-manager@git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#899eccd1333998e37f8459261e1e809ee114b1ee":
   version "4.4.1"
-  resolved "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#026ed0b413515e16cc27924cab54db717f804a2c"
+  resolved "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#899eccd1333998e37f8459261e1e809ee114b1ee"
   dependencies:
     "@cardinal/common" "^7.1.3"
     "@cardinal/creator-standard" "^2.1.7"
-    "@cardinal/payment-manager" "^4.0.1"
     "@metaplex-foundation/mpl-token-auth-rules" "^1.0.0"
     "@metaplex-foundation/mpl-token-metadata" "^2.8.3"
     "@msgpack/msgpack" "^2.8.0"

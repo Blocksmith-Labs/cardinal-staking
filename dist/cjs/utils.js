@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculatePendingRewards = exports.getRewardMap = exports.getPendingRewardsForPool = exports.getMintSupply = exports.executeTransaction = void 0;
-const anchor_1 = require("@coral-xyz/anchor");
+const anchor_1 = require("@project-serum/anchor");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const accounts_1 = require("./programs/rewardDistributor/accounts");

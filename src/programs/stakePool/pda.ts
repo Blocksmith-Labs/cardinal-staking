@@ -1,4 +1,4 @@
-import { BN, utils } from "@coral-xyz/anchor";
+import { BN, utils } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 
 import { STAKE_ENTRY_SEED, STAKE_POOL_ADDRESS, STAKE_POOL_SEED } from ".";

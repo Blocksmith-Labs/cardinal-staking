@@ -1,4 +1,4 @@
-import { BN } from "@coral-xyz/anchor";
+import { BN } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 /**
  * Finds the stake pool id.

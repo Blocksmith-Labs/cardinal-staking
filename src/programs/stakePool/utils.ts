@@ -1,7 +1,7 @@
 import type { ParsedIdlAccountData } from "@cardinal/common";
 import { withFindOrInitAssociatedTokenAccount } from "@cardinal/common";
-import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import { AnchorProvider, BN, Program } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import type {
   AccountMeta,
   Connection,

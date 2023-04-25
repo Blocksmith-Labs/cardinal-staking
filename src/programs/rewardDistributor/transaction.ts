@@ -3,9 +3,9 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import type { web3 } from "@coral-xyz/anchor";
-import { BN } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { web3 } from "@project-serum/anchor";
+import { BN } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";

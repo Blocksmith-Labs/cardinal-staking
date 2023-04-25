@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.withReclaimFunds = exports.withUpdateRewardDistributor = exports.withCloseRewardEntry = exports.withUpdateRewardEntry = exports.withCloseRewardDistributor = exports.withClaimRewards = exports.withInitRewardEntry = exports.withInitRewardDistributor = void 0;
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@coral-xyz/anchor");
+const anchor_1 = require("@project-serum/anchor");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const accounts_1 = require("./accounts");

@@ -1,7 +1,7 @@
 import type { AccountData } from "@cardinal/common";
-import type { web3 } from "@coral-xyz/anchor";
-import { BN } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { web3 } from "@project-serum/anchor";
+import { BN } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import {
   getAccount,
   getAssociatedTokenAddressSync,

@@ -1,8 +1,6 @@
 import { findMintMetadataId, METADATA_PROGRAM_ID, tryGetAccount, withFindOrInitAssociatedTokenAccount, } from "@cardinal/common";
-import { PAYMENT_MANAGER_ADDRESS } from "@cardinal/payment-manager";
-import { getPaymentManager } from "@cardinal/payment-manager/dist/cjs/accounts";
-import { BN } from "@coral-xyz/anchor";
-import { ASSOCIATED_PROGRAM_ID } from "@coral-xyz/anchor/dist/cjs/utils/token";
+import { BN } from "@project-serum/anchor";
+import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
 import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID, } from "@solana/spl-token";
 import { Keypair, SystemProgram, SYSVAR_RENT_PUBKEY, SYSVAR_SLOT_HASHES_PUBKEY, } from "@solana/web3.js";
 import { TOKEN_MANAGER_ADDRESS } from "cardinal-token-manager/dist/cjs/programs/tokenManager";
@@ -11,6 +9,8 @@ import { getPoolIdentifier, getStakeBooster, getStakeEntry } from "./accounts";
 import { STAKE_BOOSTER_PAYMENT_MANAGER, stakePoolProgram } from "./constants";
 import { findGroupEntryId, findIdentifierId, findStakeAuthorizationId, findStakeBoosterId, findStakePoolId, } from "./pda";
 import { remainingAccountsForInitStakeEntry } from "./utils";
+import { getPaymentManager } from "cardinal-token-manager/dist/cjs/programs/paymentManager/accounts";
+import { PAYMENT_MANAGER_ADDRESS } from "cardinal-token-manager/dist/cjs/programs/paymentManager";
 export const withInitStakePool = async (transaction, connection, wallet, params) => {
     const identifierId = findIdentifierId();
     const identifierData = await tryGetAccount(() => getPoolIdentifier(connection));

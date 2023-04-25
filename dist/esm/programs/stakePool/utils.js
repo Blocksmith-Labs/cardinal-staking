@@ -1,5 +1,5 @@
 import { withFindOrInitAssociatedTokenAccount } from "@cardinal/common";
-import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
+import { AnchorProvider, BN, Program } from "@project-serum/anchor";
 import { getMintSupply } from "../../utils";
 import { REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_IDL, } from "../rewardDistributor";
 import { findRewardDistributorId } from "../rewardDistributor/pda";

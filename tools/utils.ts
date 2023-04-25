@@ -1,6 +1,5 @@
-import { fetchIdlAccountNullable, tryGetAccount } from "@cardinal/common";
-import { utils } from "@coral-xyz/anchor";
-import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import { utils } from "@project-serum/anchor";
+import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import type {
   Connection,
   SendTransactionError,

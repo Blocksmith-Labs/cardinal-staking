@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.stakePoolProgram = exports.ReceiptType = exports.STAKE_BOOSTER_PAYMENT_MANAGER = exports.STAKE_BOOSTER_PAYMENT_MANAGER_NAME = exports.STAKE_POOL_IDL = exports.POOL_OFFSET = exports.GROUP_STAKER_OFFSET = exports.STAKER_OFFSET = exports.AUTHORITY_OFFSET = exports.STAKE_BOOSTER_SEED = exports.STAKE_AUTHORIZATION_SEED = exports.IDENTIFIER_SEED = exports.GROUP_ENTRY_SEED = exports.STAKE_ENTRY_SEED = exports.STAKE_POOL_SEED = exports.STAKE_POOL_ADDRESS = void 0;
 const tslib_1 = require("tslib");
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@coral-xyz/anchor");
+const anchor_1 = require("@project-serum/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const STAKE_POOL_TYPES = tslib_1.__importStar(require("../../idl/cardinal_stake_pool"));
 exports.STAKE_POOL_ADDRESS = new web3_js_1.PublicKey("GKh7n1S96Kj3jadaqtALZu8i3oMnKkLHDXXKU6fweWX2");

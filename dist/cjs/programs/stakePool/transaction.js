@@ -2,21 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.withClaimStakeEntryFunds = exports.withInitUngrouping = exports.withRemoveFromGroupEntry = exports.withAddToGroupEntry = exports.withInitGroupStakeEntry = exports.withBoostStakeEntry = exports.withCloseStakeBooster = exports.withUpdateStakeBooster = exports.withInitStakeBooster = exports.withDoubleOrResetTotalStakeSeconds = exports.withReassignStakeEntry = exports.withCloseStakeEntry = exports.withCloseStakePool = exports.withUpdateTotalStakeSeconds = exports.withUpdateStakePool = exports.withInitStakeMint = exports.withDeauthorizeStakeEntry = exports.withAuthorizeStakeEntry = exports.withInitStakeEntry = exports.withInitStakePool = void 0;
 const common_1 = require("@cardinal/common");
-const payment_manager_1 = require("@cardinal/payment-manager");
-const accounts_1 = require("@cardinal/payment-manager/dist/cjs/accounts");
-const anchor_1 = require("@coral-xyz/anchor");
-const token_1 = require("@coral-xyz/anchor/dist/cjs/utils/token");
+const anchor_1 = require("@project-serum/anchor");
+const token_1 = require("@project-serum/anchor/dist/cjs/utils/token");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const tokenManager_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager");
 const pda_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager/pda");
-const accounts_2 = require("./accounts");
+const accounts_1 = require("./accounts");
 const constants_1 = require("./constants");
 const pda_2 = require("./pda");
 const utils_1 = require("./utils");
+const accounts_2 = require("cardinal-token-manager/dist/cjs/programs/paymentManager/accounts");
+const paymentManager_1 = require("cardinal-token-manager/dist/cjs/programs/paymentManager");
 const withInitStakePool = async (transaction, connection, wallet, params) => {
     const identifierId = (0, pda_2.findIdentifierId)();
-    const identifierData = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getPoolIdentifier)(connection));
+    const identifierData = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getPoolIdentifier)(connection));
     const identifier = (identifierData === null || identifierData === void 0 ? void 0 : identifierData.parsed.count) || new anchor_1.BN(1);
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
     if (!identifierData) {
@@ -323,8 +323,8 @@ exports.withCloseStakeBooster = withCloseStakeBooster;
 const withBoostStakeEntry = async (transaction, connection, wallet, params) => {
     var _a, _b;
     const stakeBoosterId = (0, pda_2.findStakeBoosterId)(params.stakePoolId, params.stakeBoosterIdentifier);
-    const stakeBooster = await (0, accounts_2.getStakeBooster)(connection, stakeBoosterId);
-    const paymentManager = await (0, accounts_1.getPaymentManager)(connection, stakeBooster.parsed.paymentManager);
+    const stakeBooster = await (0, accounts_1.getStakeBooster)(connection, stakeBoosterId);
+    const paymentManager = await (0, accounts_2.getPaymentManager)(connection, stakeBooster.parsed.paymentManager);
     const feeCollectorTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, stakeBooster.parsed.paymentMint, paymentManager.parsed.feeCollector, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
     const paymentRecipientTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, stakeBooster.parsed.paymentMint, stakeBooster.parsed.paymentRecipient, (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey);
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
@@ -340,7 +340,7 @@ const withBoostStakeEntry = async (transaction, connection, wallet, params) => {
         payer: wallet.publicKey,
         paymentManager: stakeBooster.parsed.paymentManager,
         feeCollectorTokenAccount: feeCollectorTokenAccount,
-        cardinalPaymentManager: payment_manager_1.PAYMENT_MANAGER_ADDRESS,
+        cardinalPaymentManager: paymentManager_1.PAYMENT_MANAGER_ADDRESS,
         tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
         systemProgram: web3_js_1.SystemProgram.programId,
     })
@@ -449,7 +449,7 @@ const withInitUngrouping = async (transaction, connection, wallet, params) => {
 exports.withInitUngrouping = withInitUngrouping;
 const withClaimStakeEntryFunds = async (transaction, connection, wallet, stakeEntryId, fundsMintId) => {
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
-    const stakeEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getStakeEntry)(connection, stakeEntryId));
+    const stakeEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getStakeEntry)(connection, stakeEntryId));
     if (!stakeEntryData) {
         throw `No stake entry id with address ${stakeEntryId.toString()}`;
     }

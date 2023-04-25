@@ -1,4 +1,4 @@
-import { utils } from "@coral-xyz/anchor";
+import { utils } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_SEED, REWARD_ENTRY_SEED, } from ".";
 /**

@@ -1,4 +1,4 @@
-import { Wallet } from "@coral-xyz/anchor";
+import { Wallet } from "@project-serum/anchor";
 import type { Cluster, Connection } from "@solana/web3.js";
 import * as dotenv from "dotenv";
 import * as readline from "readline";

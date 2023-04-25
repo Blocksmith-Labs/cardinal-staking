@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.shouldReturnReceipt = exports.getClaimedRewards = exports.getUnclaimedRewards = exports.getActiveStakeSeconds = exports.getTotalStakeSeconds = exports.findStakeEntryIdFromMint = exports.withRemainingAccountsForUnstake = exports.remainingAccountsForInitStakeEntry = void 0;
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@coral-xyz/anchor");
+const anchor_1 = require("@project-serum/anchor");
 const utils_1 = require("../../utils");
 const rewardDistributor_1 = require("../rewardDistributor");
 const pda_1 = require("../rewardDistributor/pda");
