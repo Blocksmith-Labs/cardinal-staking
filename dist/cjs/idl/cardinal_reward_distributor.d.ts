@@ -1,5 +1,5 @@
-export declare type CardinalRewardDistributor = {
-    version: "1.10.5";
+export type CardinalRewardDistributor = {
+    version: "2.2.1";
     name: "cardinal_reward_distributor";
     instructions: [
         {
@@ -555,6 +555,11 @@ export declare type CardinalRewardDistributor = {
             code: 6015;
             name: "InvalidPayer";
             msg: "Invalid payer";
+        },
+        {
+            code: 6016;
+            name: "MaxRewardSecondsClaimed";
+            msg: "Max reward seconds claimed";
         }
     ];
 };

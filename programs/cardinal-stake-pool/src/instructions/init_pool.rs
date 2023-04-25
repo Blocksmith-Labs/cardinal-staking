@@ -1,4 +1,5 @@
-use {crate::state::*, anchor_lang::prelude::*};
+use crate::state::*;
+use anchor_lang::prelude::*;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct InitPoolIx {
@@ -12,6 +13,7 @@ pub struct InitPoolIx {
     cooldown_seconds: Option<u32>,
     min_stake_seconds: Option<u32>,
     end_date: Option<i64>,
+    double_or_reset_enabled: Option<bool>,
 }
 
 #[derive(Accounts)]
@@ -49,7 +51,7 @@ pub fn handler(ctx: Context<InitPoolCtx>, ix: InitPoolIx) -> Result<()> {
     stake_pool.cooldown_seconds = ix.cooldown_seconds;
     stake_pool.min_stake_seconds = ix.min_stake_seconds;
     stake_pool.end_date = ix.end_date;
-
+    stake_pool.double_or_reset_enabled = ix.double_or_reset_enabled;
     let identifier = &mut ctx.accounts.identifier;
     identifier.count += 1;
     Ok(())

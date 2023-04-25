@@ -1,7 +1,7 @@
 import type { AccountData } from "@cardinal/common";
-import type { web3 } from "@project-serum/anchor";
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
+import type { web3 } from "@coral-xyz/anchor";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import type { ConfirmOptions, Connection, PublicKey, Signer, Transaction } from "@solana/web3.js";
 import type { RewardDistributorData, RewardEntryData } from "./programs/rewardDistributor";
 import type { StakeEntryData } from "./programs/stakePool";

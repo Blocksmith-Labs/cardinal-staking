@@ -1,16 +1,14 @@
-use {
-    crate::{errors::ErrorCode, state::*},
-    anchor_lang::prelude::*,
-    anchor_spl::{
-        associated_token::AssociatedToken,
-        token::{Mint, Token, TokenAccount},
-    },
-    cardinal_token_manager::{
-        self,
-        program::CardinalTokenManager,
-        state::{InvalidationType, TokenManagerKind},
-    },
-};
+use crate::errors::ErrorCode;
+use crate::state::*;
+use anchor_lang::prelude::*;
+use anchor_spl::associated_token::AssociatedToken;
+use anchor_spl::token::Mint;
+use anchor_spl::token::Token;
+use anchor_spl::token::TokenAccount;
+use cardinal_token_manager::program::CardinalTokenManager;
+use cardinal_token_manager::state::InvalidationType;
+use cardinal_token_manager::state::TokenManagerKind;
+use cardinal_token_manager::{self};
 
 #[derive(Accounts)]
 pub struct ClaimReceiptMintCtx<'info> {

@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.calculatePendingRewards = exports.getRewardMap = exports.getPendingRewardsForPool = exports.getMintSupply = exports.executeTransaction = void 0;
-const tslib_1 = require("tslib");
-const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
-const splToken = tslib_1.__importStar(require("@solana/spl-token"));
+const anchor_1 = require("@coral-xyz/anchor");
+const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const accounts_1 = require("./programs/rewardDistributor/accounts");
 const pda_1 = require("./programs/rewardDistributor/pda");
@@ -15,7 +13,7 @@ const executeTransaction = async (connection, wallet, transaction, config) => {
     try {
         transaction.feePayer = wallet.publicKey;
         transaction.recentBlockhash = (await connection.getRecentBlockhash("max")).blockhash;
-        await wallet.signTransaction(transaction);
+        transaction = await wallet.signTransaction(transaction);
         if (config.signers && config.signers.length > 0) {
             transaction.partialSign(...config.signers);
         }
@@ -39,11 +37,7 @@ exports.executeTransaction = executeTransaction;
  * @returns
  */
 const getMintSupply = async (connection, originalMintId) => {
-    const mint = new splToken.Token(connection, originalMintId, splToken.TOKEN_PROGRAM_ID, 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    null);
-    return (await mint.getMintInfo()).supply;
+    return new anchor_1.BN((await (0, spl_token_1.getMint)(connection, originalMintId)).supply.toString());
 };
 exports.getMintSupply = getMintSupply;
 /**
@@ -55,17 +49,15 @@ exports.getMintSupply = getMintSupply;
  * @returns
  */
 const getPendingRewardsForPool = async (connection, wallet, mintIds, rewardDistributor, UTCNow) => {
-    const rewardDistributorTokenAccount = await (0, common_1.findAta)(rewardDistributor.parsed.rewardMint, rewardDistributor.pubkey, true);
-    const rewardMint = new splToken.Token(connection, rewardDistributor.parsed.rewardMint, splToken.TOKEN_PROGRAM_ID, web3_js_1.Keypair.generate() // not used
-    );
-    const rewardDistributorTokenAccountInfo = await rewardMint.getAccountInfo(rewardDistributorTokenAccount);
-    const stakeEntryIds = await Promise.all(mintIds.map(async (mintId) => (await (0, utils_1.findStakeEntryIdFromMint)(connection, wallet, rewardDistributor.parsed.stakePool, mintId))[0]));
-    const rewardEntryIds = await Promise.all(stakeEntryIds.map(async (stakeEntryId) => (await (0, pda_1.findRewardEntryId)(rewardDistributor.pubkey, stakeEntryId))[0]));
+    const rewardDistributorTokenAccount = (0, spl_token_1.getAssociatedTokenAddressSync)(rewardDistributor.parsed.rewardMint, rewardDistributor.pubkey, true);
+    const rewardDistributorTokenAccountInfo = await (0, spl_token_1.getAccount)(connection, rewardDistributorTokenAccount);
+    const stakeEntryIds = await Promise.all(mintIds.map(async (mintId) => (0, utils_1.findStakeEntryIdFromMint)(connection, wallet, rewardDistributor.parsed.stakePool, mintId)));
+    const rewardEntryIds = stakeEntryIds.map((stakeEntryId) => (0, pda_1.findRewardEntryId)(rewardDistributor.pubkey, stakeEntryId));
     const [stakeEntries, rewardEntries] = await Promise.all([
         (0, accounts_2.getStakeEntries)(connection, stakeEntryIds),
         (0, accounts_1.getRewardEntries)(connection, rewardEntryIds),
     ]);
-    return (0, exports.getRewardMap)(stakeEntries, rewardEntries, rewardDistributor, rewardDistributorTokenAccountInfo.amount, UTCNow);
+    return (0, exports.getRewardMap)(stakeEntries, rewardEntries, rewardDistributor, new anchor_1.BN(rewardDistributorTokenAccountInfo.amount.toString()), UTCNow);
 };
 exports.getPendingRewardsForPool = getPendingRewardsForPool;
 /**
@@ -114,7 +106,7 @@ exports.getRewardMap = getRewardMap;
  * @returns
  */
 const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEntry, remainingRewardAmount, UTCNow) => {
-    var _a;
+    var _a, _b, _c;
     if (!stakeEntry ||
         stakeEntry.parsed.pool.toString() !==
             rewardDistributor.parsed.stakePool.toString()) {
@@ -124,7 +116,7 @@ const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEntry, rem
     const multiplier = ((_a = rewardEntry === null || rewardEntry === void 0 ? void 0 : rewardEntry.parsed) === null || _a === void 0 ? void 0 : _a.multiplier) ||
         rewardDistributor.parsed.defaultMultiplier;
     let rewardSeconds = (stakeEntry.parsed.cooldownStartSeconds || new anchor_1.BN(UTCNow))
-        .sub(stakeEntry.parsed.lastStakedAt)
+        .sub((_b = stakeEntry.parsed.lastUpdatedAt) !== null && _b !== void 0 ? _b : stakeEntry.parsed.lastStakedAt)
         .mul(stakeEntry.parsed.amount)
         .add(stakeEntry.parsed.totalStakeSeconds);
     if (rewardDistributor.parsed.maxRewardSecondsReceived) {
@@ -146,7 +138,7 @@ const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEntry, rem
         rewardAmountToReceive = remainingRewardAmount;
     }
     const nextRewardsIn = rewardDistributor.parsed.rewardDurationSeconds.sub((stakeEntry.parsed.cooldownStartSeconds || new anchor_1.BN(UTCNow))
-        .sub(stakeEntry.parsed.lastStakedAt)
+        .sub((_c = stakeEntry.parsed.lastUpdatedAt) !== null && _c !== void 0 ? _c : stakeEntry.parsed.lastStakedAt)
         .add(stakeEntry.parsed.totalStakeSeconds)
         .mod(rewardDistributor.parsed.rewardDurationSeconds));
     return [rewardAmountToReceive, nextRewardsIn];

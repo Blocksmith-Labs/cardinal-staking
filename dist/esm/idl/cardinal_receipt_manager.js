@@ -1,5 +1,5 @@
 export const IDL = {
-    version: "1.10.5",
+    version: "2.2.1",
     name: "cardinal_receipt_manager",
     instructions: [
         {

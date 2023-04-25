@@ -1,4 +1,26 @@
-# Tools
+# How To Use
+
+## Setup
+
+All scripts can be run via `cli`
+
+```
+git clone https://github.com/cardinal-labs/cardinal-staking
+cd cardinal-staking
+yarn
+```
+
+## Getting Started
+
+All scripts can be run via `cli`. Run the command to view the tools enabled on the cli and read their description.
+
+```
+ts-node tools/cli.ts
+```
+
+The CLI is configured with environment variables and can be set by creating a `.env` file in the same directory as the repo.
+
+# Example Scripts
 
 ## checkMultiplier.ts
 

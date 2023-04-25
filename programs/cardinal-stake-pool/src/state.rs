@@ -15,11 +15,35 @@ pub const IDENTIFIER_SIZE: usize = 8 + std::mem::size_of::<Identifier>() + 8;
 pub const STAKE_AUTHORIZATION_PREFIX: &str = "stake-authorization";
 pub const STAKE_AUTHORIZATION_SIZE: usize = 8 + std::mem::size_of::<StakeAuthorizationRecord>() + 8;
 
+pub const GROUP_ENTRY_PREFIX: &str = "group-entry";
+pub const GROUP_ENTRY_DEFAULT_SIZE: usize = 8 // Anchor discriminator/sighash
+ + 1 // bump
+ + 32 // group_id
+ + 32 // authority
+ + 4 + 32 // stake_entries (1 pubkeys)
+ + 8 // changed_at
+ + 4 // group_cooldown_seconds
+ + 4 // group_stake_seconds
+ + 8 // group_cooldown_start_seconds
+ + 8; // padding
+
 #[derive(Clone, Debug, PartialEq, Eq, AnchorSerialize, AnchorDeserialize)]
 #[repr(u8)]
 pub enum StakeEntryKind {
     Permissionless = 0, // original
     Permissioned = 1,   // someone else called update_total_stake_seconds indicating claim_reward must check signer so this is a permissioned claim_rewards
+}
+
+#[account]
+pub struct GroupStakeEntry {
+    pub bump: u8,
+    pub group_id: Pubkey,
+    pub authority: Pubkey,
+    pub stake_entries: Vec<Pubkey>,
+    pub changed_at: i64,
+    pub group_cooldown_seconds: u32,
+    pub group_stake_seconds: u32,
+    pub group_cooldown_start_seconds: Option<i64>,
 }
 
 #[account]
@@ -36,6 +60,8 @@ pub struct StakeEntry {
     pub kind: u8,
     pub stake_mint: Option<Pubkey>,
     pub cooldown_start_seconds: Option<i64>,
+    pub last_updated_at: Option<i64>,
+    pub grouped: Option<bool>,
 }
 
 #[account]
@@ -53,6 +79,7 @@ pub struct StakePool {
     pub cooldown_seconds: Option<u32>,
     pub min_stake_seconds: Option<u32>,
     pub end_date: Option<i64>,
+    pub double_or_reset_enabled: Option<bool>,
 }
 
 pub fn assert_stake_boost_payment_manager(pubkey: &Pubkey) -> Result<()> {
@@ -97,4 +124,12 @@ pub fn get_stake_seed(supply: u64, user: Pubkey) -> Pubkey {
     } else {
         Pubkey::default()
     }
+}
+
+pub fn stake_entry_fill_zeros(stake_entry: &mut Account<StakeEntry>) -> Result<()> {
+    let stake_entry_account = stake_entry.to_account_info();
+    let mut stake_entry_data = stake_entry_account.data.borrow_mut();
+    let len = stake_entry_data.len();
+    stake_entry_data[stake_entry.try_to_vec()?.len()..len].iter_mut().for_each(|d| *d = 0);
+    Ok(())
 }

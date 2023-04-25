@@ -1,12 +1,12 @@
 import { withFindOrInitAssociatedTokenAccount } from "@cardinal/common";
-import { AnchorProvider, BN, Program } from "@project-serum/anchor";
+import { AnchorProvider, BN, Program } from "@coral-xyz/anchor";
 import { getMintSupply } from "../../utils";
 import { REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_IDL, } from "../rewardDistributor";
 import { findRewardDistributorId } from "../rewardDistributor/pda";
 import { STAKE_POOL_ADDRESS, STAKE_POOL_IDL } from ".";
 import { findStakeAuthorizationId, findStakeEntryId } from "./pda";
-export const remainingAccountsForInitStakeEntry = async (stakePoolId, originalMintId) => {
-    const [stakeAuthorizationRecordId] = await findStakeAuthorizationId(stakePoolId, originalMintId);
+export const remainingAccountsForInitStakeEntry = (stakePoolId, originalMintId) => {
+    const stakeAuthorizationRecordId = findStakeAuthorizationId(stakePoolId, originalMintId);
     return [
         {
             pubkey: stakeAuthorizationRecordId,
@@ -66,7 +66,7 @@ export const getUnclaimedRewards = async (connection, stakePoolId) => {
     // @ts-ignore
     const provider = new AnchorProvider(connection, null, {});
     const rewardDistributor = new Program(REWARD_DISTRIBUTOR_IDL, REWARD_DISTRIBUTOR_ADDRESS, provider);
-    const [rewardDistributorId] = await findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId);
     const parsed = await rewardDistributor.account.rewardDistributor.fetch(rewardDistributorId);
     return parsed.maxSupply
         ? new BN(((_a = parsed.maxSupply) === null || _a === void 0 ? void 0 : _a.toNumber()) - parsed.rewardsIssued.toNumber())
@@ -77,8 +77,15 @@ export const getClaimedRewards = async (connection, stakePoolId) => {
     // @ts-ignore
     const provider = new AnchorProvider(connection, null, {});
     const rewardDistributor = new Program(REWARD_DISTRIBUTOR_IDL, REWARD_DISTRIBUTOR_ADDRESS, provider);
-    const [rewardDistributorId] = await findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId);
     const parsed = await rewardDistributor.account.rewardDistributor.fetch(rewardDistributorId);
     return parsed.rewardsIssued;
 };
+export const shouldReturnReceipt = (stakePoolData, stakeEntryData) => 
+// no cooldown
+!stakePoolData.cooldownSeconds ||
+    stakePoolData.cooldownSeconds === 0 ||
+    (!!(stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.cooldownStartSeconds) &&
+        Date.now() / 1000 - stakeEntryData.cooldownStartSeconds.toNumber() >=
+            stakePoolData.cooldownSeconds);
 //# sourceMappingURL=utils.js.map

@@ -1,18 +1,10 @@
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
-import type * as web3 from "@solana/web3.js";
-import { ReceiptType } from "./constants";
-/**
- * Add init pool identifier instructions to a transaction
- * @param transaction
- * @param connection
- * @param wallet
- * @returns Transaction, public key for the created pool identifier
- */
-export declare const withInitPoolIdentifier: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet) => Promise<[web3.Transaction, web3.PublicKey]>;
-export declare const withInitStakePool: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    requiresCollections?: web3.PublicKey[];
-    requiresCreators?: web3.PublicKey[];
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { Keypair } from "@solana/web3.js";
+export declare const withInitStakePool: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    requiresCollections?: PublicKey[];
+    requiresCreators?: PublicKey[];
     requiresAuthorization?: boolean;
     overlayText?: string;
     imageUri?: string;
@@ -20,7 +12,8 @@ export declare const withInitStakePool: (transaction: web3.Transaction, connecti
     cooldownSeconds?: number;
     minStakeSeconds?: number;
     endDate?: BN;
-}) => Promise<[web3.Transaction, web3.PublicKey]>;
+    doubleOrResetEnabled?: boolean;
+}) => Promise<[Transaction, PublicKey]>;
 /**
  * Add init stake entry instructions to a transaction
  * @param transaction
@@ -29,10 +22,11 @@ export declare const withInitStakePool: (transaction: web3.Transaction, connecti
  * @param params
  * @returns Transaction, public key for the created stake entry
  */
-export declare const withInitStakeEntry: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-}) => Promise<[web3.Transaction, web3.PublicKey]>;
+export declare const withInitStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryId: PublicKey;
+    originalMintId: PublicKey;
+}) => Promise<Transaction>;
 /**
  * Add authorize stake entry instructions to a transaction
  * @param transaction
@@ -41,10 +35,10 @@ export declare const withInitStakeEntry: (transaction: web3.Transaction, connect
  * @param params
  * @returns Transaction
  */
-export declare const withAuthorizeStakeEntry: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-}) => Promise<web3.Transaction>;
+export declare const withAuthorizeStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    originalMintId: PublicKey;
+}) => Promise<Transaction>;
 /**
  * Add authorize stake entry instructions to a transaction
  * @param transaction
@@ -53,10 +47,10 @@ export declare const withAuthorizeStakeEntry: (transaction: web3.Transaction, co
  * @param params
  * @returns Transaction
  */
-export declare const withDeauthorizeStakeEntry: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-}) => Promise<web3.Transaction>;
+export declare const withDeauthorizeStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    originalMintId: PublicKey;
+}) => Promise<Transaction>;
 /**
  * Add init stake mint instructions to a transaction
  * @param transaction
@@ -65,60 +59,18 @@ export declare const withDeauthorizeStakeEntry: (transaction: web3.Transaction, 
  * @param params
  * @returns Transaction, keypair of the created stake mint
  */
-export declare const withInitStakeMint: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    stakeEntryId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-    stakeMintKeypair: web3.Keypair;
+export declare const withInitStakeMint: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryId: PublicKey;
+    originalMintId: PublicKey;
+    stakeMintKeypair: Keypair;
     name: string;
     symbol: string;
-}) => Promise<[web3.Transaction, web3.Keypair]>;
-/**
- * Add claim receipt mint instructions to a transaction
- * @param transaction
- * @param connection
- * @param wallet
- * @param params
- * @returns Transaction
- */
-export declare const withClaimReceiptMint: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    stakeEntryId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-    receiptMintId: web3.PublicKey;
-    receiptType: ReceiptType;
-}) => Promise<web3.Transaction>;
-/**
- * Add stake instructions to a transaction
- * @param transaction
- * @param connection
- * @param wallet
- * @param params
- * @returns Transaction
- */
-export declare const withStake: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-    userOriginalMintTokenAccountId: web3.PublicKey;
-    amount?: BN;
-}) => Promise<web3.Transaction>;
-/**
- * Add unstake instructions to a transaction
- * @param transaction
- * @param connection
- * @param wallet
- * @param params
- * @returns Transaction
- */
-export declare const withUnstake: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    originalMintId: web3.PublicKey;
-    skipRewardMintTokenAccount?: boolean;
-}) => Promise<web3.Transaction>;
-export declare const withUpdateStakePool: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    requiresCollections?: web3.PublicKey[];
-    requiresCreators?: web3.PublicKey[];
+}) => Promise<[Transaction, Keypair]>;
+export declare const withUpdateStakePool: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    requiresCollections?: PublicKey[];
+    requiresCreators?: PublicKey[];
     requiresAuthorization?: boolean;
     overlayText?: string;
     imageUri?: string;
@@ -126,45 +78,105 @@ export declare const withUpdateStakePool: (transaction: web3.Transaction, connec
     cooldownSeconds?: number;
     minStakeSeconds?: number;
     endDate?: BN;
-}) => [web3.Transaction, web3.PublicKey];
-export declare const withUpdateTotalStakeSeconds: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakeEntryId: web3.PublicKey;
-    lastStaker: web3.PublicKey;
-}) => web3.Transaction;
-export declare const withReturnReceiptMint: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakeEntryId: web3.PublicKey;
-}) => Promise<web3.Transaction>;
-export declare const withCloseStakePool: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-}) => web3.Transaction;
-export declare const withCloseStakeEntry: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    stakeEntryId: web3.PublicKey;
-}) => web3.Transaction;
-export declare const withReassignStakeEntry: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
-    stakeEntryId: web3.PublicKey;
-    target: web3.PublicKey;
-}) => web3.Transaction;
-export declare const withInitStakeBooster: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
+    doubleOrResetEnabled?: boolean;
+}) => Promise<[Transaction, PublicKey]>;
+export declare const withUpdateTotalStakeSeconds: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakeEntryId: PublicKey;
+    lastStaker: PublicKey;
+}) => Promise<Transaction>;
+export declare const withCloseStakePool: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+}) => Promise<Transaction>;
+export declare const withCloseStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryId: PublicKey;
+}) => Promise<Transaction>;
+export declare const withReassignStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryId: PublicKey;
+    target: PublicKey;
+}) => Promise<Transaction>;
+export declare const withDoubleOrResetTotalStakeSeconds: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryId: PublicKey;
+}) => Promise<Transaction>;
+export declare const withInitStakeBooster: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
     stakeBoosterIdentifier?: BN;
     paymentAmount: BN;
-    paymentMint: web3.PublicKey;
+    paymentMint: PublicKey;
     boostSeconds: BN;
     startTimeSeconds: number;
-    payer?: web3.PublicKey;
-}) => Promise<web3.Transaction>;
-export declare const withUpdateStakeBooster: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
+    payer?: PublicKey;
+}) => Promise<Transaction>;
+export declare const withUpdateStakeBooster: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
     stakeBoosterIdentifier?: BN;
     paymentAmount: BN;
-    paymentMint: web3.PublicKey;
+    paymentMint: PublicKey;
     boostSeconds: BN;
     startTimeSeconds: number;
-}) => Promise<web3.Transaction>;
-export declare const withCloseStakeBooster: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, params: {
-    stakePoolId: web3.PublicKey;
+}) => Promise<Transaction>;
+export declare const withCloseStakeBooster: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
     stakeBoosterIdentifier?: BN;
-}) => Promise<web3.Transaction>;
+}) => Promise<Transaction>;
+export declare const withBoostStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeBoosterIdentifier?: BN;
+    stakeEntryId: PublicKey;
+    originalMintId: PublicKey;
+    payerTokenAccount: PublicKey;
+    payer?: PublicKey;
+    secondsToBoost: BN;
+}) => Promise<Transaction>;
+/**
+ * Add init group stake entry instructions to a transaction
+ * @param transaction
+ * @param connection
+ * @param wallet
+ * @param params
+ * @returns Transaction, public key for the created group stake entry
+ */
+export declare const withInitGroupStakeEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    groupCooldownSeconds?: number;
+    groupStakeSeconds?: number;
+}) => Promise<[Transaction, PublicKey]>;
+/**
+ * Add a stake entry to the group entry instructions to a transaction
+ * @param transaction
+ * @param connection
+ * @param wallet
+ * @param params
+ * @returns Transaction, public key for the created group stake entry
+ */
+export declare const withAddToGroupEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    groupEntryId: PublicKey;
+    stakeEntryId: PublicKey;
+    payer?: PublicKey;
+}) => Promise<[Transaction]>;
+/**
+ * Remove stake entry from the group entry instructions to a transaction
+ * @param transaction
+ * @param connection
+ * @param wallet
+ * @param params
+ * @returns Transaction, public key for the created group stake entry
+ */
+export declare const withRemoveFromGroupEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    groupEntryId: PublicKey;
+    stakeEntryId: PublicKey;
+}) => Promise<[Transaction]>;
+/**
+ * Add init ungrouping instructions to a transaction
+ * @param transaction
+ * @param connection
+ * @param wallet
+ * @param params
+ * @returns Transaction, public key for the created group stake entry
+ */
+export declare const withInitUngrouping: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    groupEntryId: PublicKey;
+}) => Promise<[Transaction]>;
+export declare const withClaimStakeEntryFunds: (transaction: Transaction, connection: Connection, wallet: Wallet, stakeEntryId: PublicKey, fundsMintId: PublicKey) => Promise<[Transaction]>;
 //# sourceMappingURL=transaction.d.ts.map

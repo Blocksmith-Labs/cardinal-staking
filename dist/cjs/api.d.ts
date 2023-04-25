@@ -1,6 +1,6 @@
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
-import type { Connection, PublicKey } from "@solana/web3.js";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { Connection, PublicKey, Signer } from "@solana/web3.js";
 import { Keypair, Transaction } from "@solana/web3.js";
 import type { RewardDistributorKind } from "./programs/rewardDistributor";
 import { ReceiptType } from "./programs/stakePool";
@@ -28,6 +28,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
     cooldownSeconds?: number;
     minStakeSeconds?: number;
     endDate?: BN;
+    doubleOrResetEnabled?: boolean;
     rewardDistributor?: {
         rewardMintId: PublicKey;
         rewardAmount?: BN;
@@ -121,10 +122,25 @@ export declare const createStakeEntryAndStakeMint: (connection: Connection, wall
  */
 export declare const claimRewards: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
-    stakeEntryId: PublicKey;
+    stakeEntryIds: PublicKey[];
     lastStaker?: PublicKey;
     payer?: PublicKey;
-    skipRewardMintTokenAccount?: boolean;
+}) => Promise<Transaction[]>;
+export declare const claimRewardsAll: (connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    stakeEntryIds: PublicKey[];
+    lastStaker?: PublicKey;
+    payer?: PublicKey;
+}) => Promise<{
+    tx: Transaction;
+}[][]>;
+export declare const stake: (connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    originalMintId: PublicKey;
+    userOriginalMintTokenAccountId: PublicKey;
+    amount?: BN;
+    fungible?: boolean;
+    receiptType?: ReceiptType;
 }) => Promise<Transaction>;
 /**
  * Convenience method to stake tokens
@@ -139,12 +155,24 @@ export declare const claimRewards: (connection: Connection, wallet: Wallet, para
  * @param amount - (Optional) Amount of tokens to be staked, defaults to 1
  * @returns
  */
-export declare const stake: (connection: Connection, wallet: Wallet, params: {
+export declare const stakeAll: (connection: Connection, wallet: Wallet, params: {
+    stakePoolId: PublicKey;
+    mintInfos: {
+        mintId: PublicKey;
+        tokenAccountId: PublicKey;
+        fungible?: boolean;
+        amount?: BN;
+        receiptType?: ReceiptType;
+    }[];
+}) => Promise<{
+    tx: Transaction;
+    signers?: Signer[];
+}[][]>;
+export declare const unstake: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
-    userOriginalMintTokenAccountId: PublicKey;
-    receiptType?: ReceiptType;
-    amount?: BN;
+    fungible?: boolean;
+    stakeEntryId?: PublicKey;
 }) => Promise<Transaction>;
 /**
  * Convenience method to unstake tokens
@@ -154,9 +182,15 @@ export declare const stake: (connection: Connection, wallet: Wallet, params: {
  * @param originalMintId - Original mint ID
  * @returns
  */
-export declare const unstake: (connection: Connection, wallet: Wallet, params: {
+export declare const unstakeAll: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
-    originalMintId: PublicKey;
-    skipRewardMintTokenAccount?: boolean;
-}) => Promise<Transaction>;
+    mintInfos: {
+        mintId: PublicKey;
+        stakeEntryId?: PublicKey;
+        fungible?: boolean;
+    }[];
+}) => Promise<{
+    tx: Transaction;
+    signers?: Signer[];
+}[][]>;
 //# sourceMappingURL=api.d.ts.map

@@ -1,7 +1,6 @@
-import { findAta } from "@cardinal/common";
-import { BN } from "@project-serum/anchor";
-import * as splToken from "@solana/spl-token";
-import { Keypair, sendAndConfirmRawTransaction } from "@solana/web3.js";
+import { BN } from "@coral-xyz/anchor";
+import { getAccount, getAssociatedTokenAddressSync, getMint, } from "@solana/spl-token";
+import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 import { getRewardEntries } from "./programs/rewardDistributor/accounts";
 import { findRewardEntryId } from "./programs/rewardDistributor/pda";
 import { getStakeEntries } from "./programs/stakePool/accounts";
@@ -11,7 +10,7 @@ export const executeTransaction = async (connection, wallet, transaction, config
     try {
         transaction.feePayer = wallet.publicKey;
         transaction.recentBlockhash = (await connection.getRecentBlockhash("max")).blockhash;
-        await wallet.signTransaction(transaction);
+        transaction = await wallet.signTransaction(transaction);
         if (config.signers && config.signers.length > 0) {
             transaction.partialSign(...config.signers);
         }
@@ -34,11 +33,7 @@ export const executeTransaction = async (connection, wallet, transaction, config
  * @returns
  */
 export const getMintSupply = async (connection, originalMintId) => {
-    const mint = new splToken.Token(connection, originalMintId, splToken.TOKEN_PROGRAM_ID, 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    null);
-    return (await mint.getMintInfo()).supply;
+    return new BN((await getMint(connection, originalMintId)).supply.toString());
 };
 /**
  * Get pending rewards of mintIds for a given reward distributor
@@ -49,17 +44,15 @@ export const getMintSupply = async (connection, originalMintId) => {
  * @returns
  */
 export const getPendingRewardsForPool = async (connection, wallet, mintIds, rewardDistributor, UTCNow) => {
-    const rewardDistributorTokenAccount = await findAta(rewardDistributor.parsed.rewardMint, rewardDistributor.pubkey, true);
-    const rewardMint = new splToken.Token(connection, rewardDistributor.parsed.rewardMint, splToken.TOKEN_PROGRAM_ID, Keypair.generate() // not used
-    );
-    const rewardDistributorTokenAccountInfo = await rewardMint.getAccountInfo(rewardDistributorTokenAccount);
-    const stakeEntryIds = await Promise.all(mintIds.map(async (mintId) => (await findStakeEntryIdFromMint(connection, wallet, rewardDistributor.parsed.stakePool, mintId))[0]));
-    const rewardEntryIds = await Promise.all(stakeEntryIds.map(async (stakeEntryId) => (await findRewardEntryId(rewardDistributor.pubkey, stakeEntryId))[0]));
+    const rewardDistributorTokenAccount = getAssociatedTokenAddressSync(rewardDistributor.parsed.rewardMint, rewardDistributor.pubkey, true);
+    const rewardDistributorTokenAccountInfo = await getAccount(connection, rewardDistributorTokenAccount);
+    const stakeEntryIds = await Promise.all(mintIds.map(async (mintId) => findStakeEntryIdFromMint(connection, wallet, rewardDistributor.parsed.stakePool, mintId)));
+    const rewardEntryIds = stakeEntryIds.map((stakeEntryId) => findRewardEntryId(rewardDistributor.pubkey, stakeEntryId));
     const [stakeEntries, rewardEntries] = await Promise.all([
         getStakeEntries(connection, stakeEntryIds),
         getRewardEntries(connection, rewardEntryIds),
     ]);
-    return getRewardMap(stakeEntries, rewardEntries, rewardDistributor, rewardDistributorTokenAccountInfo.amount, UTCNow);
+    return getRewardMap(stakeEntries, rewardEntries, rewardDistributor, new BN(rewardDistributorTokenAccountInfo.amount.toString()), UTCNow);
 };
 /**
  * Get the map of rewards for stakeEntry to rewards and next reward time
@@ -106,7 +99,7 @@ export const getRewardMap = (stakeEntries, rewardEntries, rewardDistributor, rem
  * @returns
  */
 export const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEntry, remainingRewardAmount, UTCNow) => {
-    var _a;
+    var _a, _b, _c;
     if (!stakeEntry ||
         stakeEntry.parsed.pool.toString() !==
             rewardDistributor.parsed.stakePool.toString()) {
@@ -116,7 +109,7 @@ export const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEnt
     const multiplier = ((_a = rewardEntry === null || rewardEntry === void 0 ? void 0 : rewardEntry.parsed) === null || _a === void 0 ? void 0 : _a.multiplier) ||
         rewardDistributor.parsed.defaultMultiplier;
     let rewardSeconds = (stakeEntry.parsed.cooldownStartSeconds || new BN(UTCNow))
-        .sub(stakeEntry.parsed.lastStakedAt)
+        .sub((_b = stakeEntry.parsed.lastUpdatedAt) !== null && _b !== void 0 ? _b : stakeEntry.parsed.lastStakedAt)
         .mul(stakeEntry.parsed.amount)
         .add(stakeEntry.parsed.totalStakeSeconds);
     if (rewardDistributor.parsed.maxRewardSecondsReceived) {
@@ -138,7 +131,7 @@ export const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEnt
         rewardAmountToReceive = remainingRewardAmount;
     }
     const nextRewardsIn = rewardDistributor.parsed.rewardDurationSeconds.sub((stakeEntry.parsed.cooldownStartSeconds || new BN(UTCNow))
-        .sub(stakeEntry.parsed.lastStakedAt)
+        .sub((_c = stakeEntry.parsed.lastUpdatedAt) !== null && _c !== void 0 ? _c : stakeEntry.parsed.lastStakedAt)
         .add(stakeEntry.parsed.totalStakeSeconds)
         .mod(rewardDistributor.parsed.rewardDurationSeconds));
     return [rewardAmountToReceive, nextRewardsIn];

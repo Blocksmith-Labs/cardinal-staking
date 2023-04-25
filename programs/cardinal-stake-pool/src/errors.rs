@@ -58,9 +58,12 @@ pub enum ErrorCode {
     StakeMintAlreadyInitialized,
     #[msg("Invalid stake entry")]
     InvalidStakeEntry,
+    #[msg("Cannot update unstaked entry")]
+    CannotUpdateUnstakedEntry,
+
     // boost errors
     #[msg("Cannot boost unstaked token")]
-    CannotBoostUnstakedToken,
+    CannotBoostUnstakedToken = 100,
     #[msg("Cannot boost past current time less than start time")]
     CannotBoostMoreThanCurrentTime,
     #[msg("Invalid boost payer token account")]
@@ -71,4 +74,24 @@ pub enum ErrorCode {
     InvalidPaymentManager,
     #[msg("Cannot boost a fungible token stake entry")]
     CannotBoostFungibleToken,
+
+    // group errors
+    #[msg("Grouped stake entry")]
+    GroupedStakeEntry = 120,
+    #[msg("Ungrouped stake entry")]
+    UngroupedStakeEntry,
+    #[msg("Minimum group seconds not satisfied")]
+    MinGroupSecondsNotSatisfied,
+    #[msg("Active group entry")]
+    ActiveGroupEntry,
+    #[msg("Stake entry not found in group")]
+    StakeEntryNotFoundInGroup,
+
+    // claim stake entry fundssl
+    #[msg("Invalid funds mint")]
+    InvalidFundsMint = 130,
+    #[msg("Invalid mint for token account")]
+    InvalidMintForTokenAccount,
+    #[msg("Stake entry funds token account is empty")]
+    StakeEntryFundsTokenAccountEmpty,
 }

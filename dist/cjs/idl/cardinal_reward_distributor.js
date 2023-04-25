@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IDL = void 0;
 exports.IDL = {
-    version: "1.10.5",
+    version: "2.2.1",
     name: "cardinal_reward_distributor",
     instructions: [
         {
@@ -558,6 +558,11 @@ exports.IDL = {
             code: 6015,
             name: "InvalidPayer",
             msg: "Invalid payer",
+        },
+        {
+            code: 6016,
+            name: "MaxRewardSecondsClaimed",
+            msg: "Max reward seconds claimed",
         },
     ],
 };

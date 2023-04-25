@@ -1,10 +1,13 @@
-use {
-    crate::{errors::ErrorCode, state::*},
-    anchor_lang::prelude::*,
-    anchor_spl::token::{self, Mint, SetAuthority, Token, TokenAccount},
-    cardinal_stake_pool::state::StakePool,
-    spl_token::instruction::AuthorityType,
-};
+use crate::errors::ErrorCode;
+use crate::state::*;
+use anchor_lang::prelude::*;
+use anchor_spl::token::Mint;
+use anchor_spl::token::SetAuthority;
+use anchor_spl::token::Token;
+use anchor_spl::token::TokenAccount;
+use anchor_spl::token::{self};
+use cardinal_stake_pool::state::StakePool;
+use spl_token::instruction::AuthorityType;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct InitRewardDistributorIx {
@@ -28,6 +31,7 @@ pub struct InitRewardDistributorCtx<'info> {
         bump,
     )]
     reward_distributor: Box<Account<'info, RewardDistributor>>,
+    #[account(constraint = authority.key() == stake_pool.authority @ ErrorCode::InvalidAuthority)]
     stake_pool: Box<Account<'info, StakePool>>,
     #[account(mut)]
     reward_mint: Box<Account<'info, Mint>>,
@@ -73,6 +77,14 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
             let reward_distributor_token_account = Account::<TokenAccount>::try_from(reward_distributor_token_account_info)?;
             let authority_token_account_info = next_account_info(remaining_accs)?;
             let authority_token_account = Account::<TokenAccount>::try_from(authority_token_account_info)?;
+
+            if authority_token_account.mint != ctx.accounts.reward_mint.key() {
+                return Err(error!(ErrorCode::InvalidAuthorityTokenAccount));
+            }
+
+            if reward_distributor_token_account.mint != ctx.accounts.reward_mint.key() || reward_distributor_token_account.owner.key() != reward_distributor.key() {
+                return Err(error!(ErrorCode::InvalidRewardDistributorTokenAccount));
+            }
 
             let cpi_accounts = token::Transfer {
                 from: authority_token_account.to_account_info(),

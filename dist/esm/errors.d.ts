@@ -1,11 +1,11 @@
-import type { Idl } from "@project-serum/anchor";
+import type { Idl } from "@coral-xyz/anchor";
 import type { PublicKey } from "@solana/web3.js";
-declare type ErrorCode = {
+type ErrorCode = {
     code: string;
     message: string;
 };
 export declare const NATIVE_ERRORS: ErrorCode[];
-export declare type ErrorOptions = {
+export type ErrorOptions = {
     /** ProgramIdls in priority order */
     programIdls?: {
         idl: Idl;

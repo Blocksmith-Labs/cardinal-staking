@@ -1,30 +1,25 @@
-import { AnchorProvider, BorshAccountsCoder, Program, utils, } from "@project-serum/anchor";
-import { SignerWallet } from "@saberhq/solana-contrib";
-import { Keypair, PublicKey } from "@solana/web3.js";
+import { BorshAccountsCoder, utils } from "@coral-xyz/anchor";
+import { PublicKey } from "@solana/web3.js";
 import { STAKE_POOL_ADDRESS, STAKE_POOL_IDL } from ".";
-import { AUTHORITY_OFFSET, POOL_OFFSET, STAKER_OFFSET } from "./constants";
+import { AUTHORITY_OFFSET, GROUP_STAKER_OFFSET, POOL_OFFSET, stakePoolProgram, STAKER_OFFSET, } from "./constants";
 import { findIdentifierId } from "./pda";
-const getProgram = (connection) => {
-    const provider = new AnchorProvider(connection, new SignerWallet(Keypair.generate()), {});
-    return new Program(STAKE_POOL_IDL, STAKE_POOL_ADDRESS, provider);
-};
-export const getStakePool = async (connection, stakePoolId) => {
-    const stakePoolProgram = getProgram(connection);
-    const parsed = await stakePoolProgram.account.stakePool.fetch(stakePoolId);
+export const getStakePool = async (connection, stakePoolId, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const parsed = await program.account.stakePool.fetch(stakePoolId);
     return {
         parsed,
         pubkey: stakePoolId,
     };
 };
-export const getStakePools = async (connection, stakePoolIds) => {
-    const stakePoolProgram = getProgram(connection);
-    const stakePools = (await stakePoolProgram.account.stakePool.fetchMultiple(stakePoolIds));
+export const getStakePools = async (connection, stakePoolIds, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const stakePools = (await program.account.stakePool.fetchMultiple(stakePoolIds));
     return stakePools.map((tm, i) => ({
         parsed: tm,
         pubkey: stakePoolIds[i],
     }));
 };
-export const getAllStakePools = async (connection) => {
+export const getAllStakePools = async (connection, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
@@ -34,6 +29,7 @@ export const getAllStakePools = async (connection) => {
                 },
             },
         ],
+        commitment,
     });
     const stakePoolDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -52,9 +48,10 @@ export const getAllStakePools = async (connection) => {
     });
     return stakePoolDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getStakeEntriesForUser = async (connection, user) => {
+export const getStakeEntriesForUser = async (connection, user, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [{ memcmp: { offset: STAKER_OFFSET, bytes: user.toBase58() } }],
+        commitment,
     });
     const stakeEntryDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -74,7 +71,7 @@ export const getStakeEntriesForUser = async (connection, user) => {
     });
     return stakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getAllActiveStakeEntries = async (connection) => {
+export const getAllActiveStakeEntries = async (connection, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
@@ -84,6 +81,7 @@ export const getAllActiveStakeEntries = async (connection) => {
                 },
             },
         ],
+        commitment,
     });
     const stakeEntryDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -104,7 +102,7 @@ export const getAllActiveStakeEntries = async (connection) => {
     });
     return stakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getAllStakeEntriesForPool = async (connection, stakePoolId) => {
+export const getAllStakeEntriesForPool = async (connection, stakePoolId, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
@@ -117,6 +115,7 @@ export const getAllStakeEntriesForPool = async (connection, stakePoolId) => {
                 memcmp: { offset: POOL_OFFSET, bytes: stakePoolId.toBase58() },
             },
         ],
+        commitment,
     });
     const stakeEntryDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -134,13 +133,14 @@ export const getAllStakeEntriesForPool = async (connection, stakePoolId) => {
     });
     return stakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getActiveStakeEntriesForPool = async (connection, stakePoolId) => {
+export const getActiveStakeEntriesForPool = async (connection, stakePoolId, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
                 memcmp: { offset: POOL_OFFSET, bytes: stakePoolId.toBase58() },
             },
         ],
+        commitment,
     });
     const stakeEntryDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -161,48 +161,74 @@ export const getActiveStakeEntriesForPool = async (connection, stakePoolId) => {
     });
     return stakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getStakeEntry = async (connection, stakeEntryId) => {
-    const stakePoolProgram = getProgram(connection);
-    const parsed = await stakePoolProgram.account.stakeEntry.fetch(stakeEntryId);
+export const getActiveStakeEntryIdsForPool = async (connection, stakePoolId, commitment) => {
+    const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
+        filters: [
+            {
+                memcmp: { offset: POOL_OFFSET, bytes: stakePoolId.toBase58() },
+            },
+        ],
+        commitment,
+        dataSlice: {
+            length: 32,
+            offset: STAKER_OFFSET,
+        },
+    });
+    return programAccounts
+        .filter((x) => {
+        try {
+            const lastStaker = new PublicKey(x.account.data);
+            return !lastStaker.equals(PublicKey.default);
+        }
+        catch (error) {
+            console.error(error);
+            return false;
+        }
+    })
+        .map((x) => x.pubkey);
+};
+export const getStakeEntry = async (connection, stakeEntryId, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const parsed = await program.account.stakeEntry.fetch(stakeEntryId);
     return {
         parsed,
         pubkey: stakeEntryId,
     };
 };
-export const getStakeEntries = async (connection, stakeEntryIds) => {
-    const stakePoolProgram = getProgram(connection);
-    const stakeEntries = (await stakePoolProgram.account.stakeEntry.fetchMultiple(stakeEntryIds));
+export const getStakeEntries = async (connection, stakeEntryIds, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const stakeEntries = (await program.account.stakeEntry.fetchMultiple(stakeEntryIds));
     return stakeEntries.map((tm, i) => ({
         parsed: tm,
         pubkey: stakeEntryIds[i],
     }));
 };
-export const getPoolIdentifier = async (connection) => {
-    const stakePoolProgram = getProgram(connection);
-    const [identifierId] = await findIdentifierId();
-    const parsed = await stakePoolProgram.account.identifier.fetch(identifierId);
+export const getPoolIdentifier = async (connection, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const identifierId = findIdentifierId();
+    const parsed = await program.account.identifier.fetch(identifierId);
     return {
         parsed,
         pubkey: identifierId,
     };
 };
-export const getStakeAuthorization = async (connection, stakeAuthorizationId) => {
-    const stakePoolProgram = getProgram(connection);
-    const parsed = await stakePoolProgram.account.stakeAuthorizationRecord.fetch(stakeAuthorizationId);
+export const getStakeAuthorization = async (connection, stakeAuthorizationId, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const parsed = await program.account.stakeAuthorizationRecord.fetch(stakeAuthorizationId);
     return {
         parsed,
         pubkey: stakeAuthorizationId,
     };
 };
-export const getStakeAuthorizations = async (connection, stakeAuthorizationIds) => {
-    const stakePoolProgram = getProgram(connection);
-    const stakeAuthorizations = (await stakePoolProgram.account.stakeAuthorizationRecord.fetchMultiple(stakeAuthorizationIds));
+export const getStakeAuthorizations = async (connection, stakeAuthorizationIds, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const stakeAuthorizations = (await program.account.stakeAuthorizationRecord.fetchMultiple(stakeAuthorizationIds));
     return stakeAuthorizations.map((data, i) => ({
         parsed: data,
         pubkey: stakeAuthorizationIds[i],
     }));
 };
-export const getStakeAuthorizationsForPool = async (connection, poolId) => {
+export const getStakeAuthorizationsForPool = async (connection, poolId, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
@@ -215,6 +241,7 @@ export const getStakeAuthorizationsForPool = async (connection, poolId) => {
                 memcmp: { offset: POOL_OFFSET, bytes: poolId.toBase58() },
             },
         ],
+        commitment,
     });
     const stakeAuthorizationDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -231,7 +258,7 @@ export const getStakeAuthorizationsForPool = async (connection, poolId) => {
     });
     return stakeAuthorizationDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getStakePoolsByAuthority = async (connection, user) => {
+export const getStakePoolsByAuthority = async (connection, user, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
@@ -247,6 +274,7 @@ export const getStakePoolsByAuthority = async (connection, user) => {
                 },
             },
         ],
+        commitment,
     });
     const stakePoolDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -265,7 +293,7 @@ export const getStakePoolsByAuthority = async (connection, user) => {
     });
     return stakePoolDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getAllStakeEntries = async (connection) => {
+export const getAllStakeEntries = async (connection, commitment) => {
     const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
         filters: [
             {
@@ -275,6 +303,7 @@ export const getAllStakeEntries = async (connection) => {
                 },
             },
         ],
+        commitment,
     });
     const stakeEntryDatas = [];
     const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
@@ -293,12 +322,89 @@ export const getAllStakeEntries = async (connection) => {
     });
     return stakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
 };
-export const getStakeBooster = async (connection, stakeBoosterId) => {
-    const stakePoolProgram = getProgram(connection);
-    const parsed = await stakePoolProgram.account.stakeBooster.fetch(stakeBoosterId);
+export const getStakeBooster = async (connection, stakeBoosterId, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const parsed = await program.account.stakeBooster.fetch(stakeBoosterId);
     return {
         parsed,
         pubkey: stakeBoosterId,
     };
+};
+export const getGroupStakeEntriesForUser = async (connection, user, commitment) => {
+    const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
+        filters: [
+            {
+                memcmp: {
+                    offset: 0,
+                    bytes: utils.bytes.bs58.encode(BorshAccountsCoder.accountDiscriminator("groupStakeEntry")),
+                },
+            },
+            { memcmp: { offset: GROUP_STAKER_OFFSET, bytes: user.toBase58() } },
+        ],
+        commitment,
+    });
+    const groupStakeEntryDatas = [];
+    const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
+    programAccounts.forEach((account) => {
+        try {
+            const groupStakeEntryData = coder.decode("groupStakeEntry", account.account.data);
+            if (groupStakeEntryData) {
+                groupStakeEntryDatas.push({
+                    ...account,
+                    parsed: groupStakeEntryData,
+                });
+            }
+        }
+        catch (e) {
+            console.log(`Failed to decode token manager data`);
+        }
+    });
+    return groupStakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
+};
+export const getAllGroupStakeEntries = async (connection, commitment) => {
+    const programAccounts = await connection.getProgramAccounts(STAKE_POOL_ADDRESS, {
+        filters: [
+            {
+                memcmp: {
+                    offset: 0,
+                    bytes: utils.bytes.bs58.encode(BorshAccountsCoder.accountDiscriminator("groupStakeEntry")),
+                },
+            },
+        ],
+        commitment,
+    });
+    const groupStakeEntryDatas = [];
+    const coder = new BorshAccountsCoder(STAKE_POOL_IDL);
+    programAccounts.forEach((account) => {
+        try {
+            const groupStakeEntryData = coder.decode("groupStakeEntry", account.account.data);
+            if (groupStakeEntryData) {
+                groupStakeEntryDatas.push({
+                    ...account,
+                    parsed: groupStakeEntryData,
+                });
+            }
+        }
+        catch (e) {
+            console.log(`Failed to decode group stake entry data`);
+        }
+    });
+    return groupStakeEntryDatas.sort((a, b) => a.pubkey.toBase58().localeCompare(b.pubkey.toBase58()));
+};
+export const getGroupStakeEntry = async (connection, groupStakeEntryId, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const parsed = await program.account.groupStakeEntry.fetch(groupStakeEntryId);
+    return {
+        parsed,
+        pubkey: groupStakeEntryId,
+    };
+};
+export const getGroupStakeEntries = async (connection, groupStakeEntryIds, commitment) => {
+    const program = stakePoolProgram(connection, undefined, { commitment });
+    const groupStakeEntries = (await program.account.groupStakeEntry.fetchMultiple(groupStakeEntryIds));
+    return groupStakeEntries.map((tm, i) => ({
+        parsed: tm,
+        pubkey: groupStakeEntryIds[i],
+    }));
 };
 //# sourceMappingURL=accounts.js.map

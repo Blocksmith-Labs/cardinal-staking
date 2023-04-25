@@ -1,16 +1,19 @@
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@saberhq/solana-contrib";
-import type * as web3 from "@solana/web3.js";
-export declare const remainingAccountsForInitStakeEntry: (stakePoolId: web3.PublicKey, originalMintId: web3.PublicKey) => Promise<web3.AccountMeta[]>;
-export declare const withRemainingAccountsForUnstake: (transaction: web3.Transaction, connection: web3.Connection, wallet: Wallet, stakeEntryId: web3.PublicKey, receiptMint: web3.PublicKey | null | undefined) => Promise<web3.AccountMeta[]>;
+import type { ParsedIdlAccountData } from "@cardinal/common";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import type { AccountMeta, Connection, PublicKey, Transaction } from "@solana/web3.js";
+import type { CardinalStakePool } from "../../idl/cardinal_stake_pool";
+export declare const remainingAccountsForInitStakeEntry: (stakePoolId: PublicKey, originalMintId: PublicKey) => AccountMeta[];
+export declare const withRemainingAccountsForUnstake: (transaction: Transaction, connection: Connection, wallet: Wallet, stakeEntryId: PublicKey, receiptMint: PublicKey | null | undefined) => Promise<AccountMeta[]>;
 /**
  * Convenience method to find the stake entry id from a mint
  * NOTE: This will lookup the mint on-chain to get the supply
  * @returns
  */
-export declare const findStakeEntryIdFromMint: (connection: web3.Connection, wallet: web3.PublicKey, stakePoolId: web3.PublicKey, originalMintId: web3.PublicKey, isFungible?: boolean) => Promise<[web3.PublicKey, number]>;
-export declare const getTotalStakeSeconds: (connection: web3.Connection, stakeEntryId: web3.PublicKey) => Promise<BN>;
-export declare const getActiveStakeSeconds: (connection: web3.Connection, stakeEntryId: web3.PublicKey) => Promise<BN>;
-export declare const getUnclaimedRewards: (connection: web3.Connection, stakePoolId: web3.PublicKey) => Promise<BN>;
-export declare const getClaimedRewards: (connection: web3.Connection, stakePoolId: web3.PublicKey) => Promise<BN>;
+export declare const findStakeEntryIdFromMint: (connection: Connection, wallet: PublicKey, stakePoolId: PublicKey, originalMintId: PublicKey, isFungible?: boolean) => Promise<PublicKey>;
+export declare const getTotalStakeSeconds: (connection: Connection, stakeEntryId: PublicKey) => Promise<BN>;
+export declare const getActiveStakeSeconds: (connection: Connection, stakeEntryId: PublicKey) => Promise<BN>;
+export declare const getUnclaimedRewards: (connection: Connection, stakePoolId: PublicKey) => Promise<BN>;
+export declare const getClaimedRewards: (connection: Connection, stakePoolId: PublicKey) => Promise<BN>;
+export declare const shouldReturnReceipt: (stakePoolData: ParsedIdlAccountData<"stakePool", CardinalStakePool>, stakeEntryData: ParsedIdlAccountData<"stakeEntry", CardinalStakePool>) => boolean;
 //# sourceMappingURL=utils.d.ts.map
