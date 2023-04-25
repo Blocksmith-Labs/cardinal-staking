@@ -1171,7 +1171,7 @@ export const unstakeAll = async (
             mintMetadata: mintMetadataId,
             mintEdition: findMintEditionId(originalMintId),
             authorizationRules:
-              mintMetadata?.programmableConfig?.ruleSet ?? STAKE_POOL_ADDRESS,
+              mintMetadata?.programmableConfig?.ruleSet ?? METADATA_PROGRAM_ID,
             sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
             tokenProgram: TOKEN_PROGRAM_ID,
             associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,

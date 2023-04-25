@@ -694,7 +694,7 @@ export const unstakeAll = async (connection, wallet, params) => {
                     userOriginalMintTokenRecord: findTokenRecordId(originalMintId, userOriginalMintTokenAccountId),
                     mintMetadata: mintMetadataId,
                     mintEdition: findMintEditionId(originalMintId),
-                    authorizationRules: (_e = (_d = mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.programmableConfig) === null || _d === void 0 ? void 0 : _d.ruleSet) !== null && _e !== void 0 ? _e : STAKE_POOL_ADDRESS,
+                    authorizationRules: (_e = (_d = mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.programmableConfig) === null || _d === void 0 ? void 0 : _d.ruleSet) !== null && _e !== void 0 ? _e : METADATA_PROGRAM_ID,
                     sysvarInstructions: SYSVAR_INSTRUCTIONS_PUBKEY,
                     tokenProgram: TOKEN_PROGRAM_ID,
                     associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,

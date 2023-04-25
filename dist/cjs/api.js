@@ -708,7 +708,7 @@ const unstakeAll = async (connection, wallet, params) => {
                     userOriginalMintTokenRecord: (0, common_1.findTokenRecordId)(originalMintId, userOriginalMintTokenAccountId),
                     mintMetadata: mintMetadataId,
                     mintEdition: (0, common_1.findMintEditionId)(originalMintId),
-                    authorizationRules: (_e = (_d = mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.programmableConfig) === null || _d === void 0 ? void 0 : _d.ruleSet) !== null && _e !== void 0 ? _e : stakePool_1.STAKE_POOL_ADDRESS,
+                    authorizationRules: (_e = (_d = mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.programmableConfig) === null || _d === void 0 ? void 0 : _d.ruleSet) !== null && _e !== void 0 ? _e : common_1.METADATA_PROGRAM_ID,
                     sysvarInstructions: web3_js_1.SYSVAR_INSTRUCTIONS_PUBKEY,
                     tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
                     associatedTokenProgram: spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID,
