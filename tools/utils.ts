@@ -1,5 +1,4 @@
-import { tryGetAccount } from "@cardinal/common";
-import { fetchIdlAccountNullable } from "@cardinal/rewards-center";
+import { fetchIdlAccountNullable, tryGetAccount } from "@cardinal/common";
 import { utils } from "@coral-xyz/anchor";
 import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import type {
@@ -13,32 +12,6 @@ import {
   PublicKey,
   sendAndConfirmRawTransaction,
 } from "@solana/web3.js";
-import * as dotenv from "dotenv";
-
-import { getStakePool } from "../src/programs/stakePool/accounts";
-
-dotenv.config();
-
-export type StakePoolKind = "v1" | "v2" | "unknown";
-
-export const stakePoolKind = async (
-  connection: Connection,
-  stakePoolAddress: PublicKey
-): Promise<StakePoolKind> => {
-  const checkStakePooolV1 = await tryGetAccount(() =>
-    getStakePool(connection, stakePoolAddress)
-  );
-  if (checkStakePooolV1) return "v1";
-
-  const checkStakePoolV2 = await fetchIdlAccountNullable(
-    connection,
-    stakePoolAddress,
-    "stakePool"
-  );
-  if (checkStakePoolV2) return "v2";
-
-  return "unknown";
-};
 
 export function chunkArray<T>(arr: T[], size: number): T[][] {
   return arr.length > size

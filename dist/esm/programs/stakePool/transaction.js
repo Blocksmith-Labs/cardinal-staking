@@ -63,7 +63,7 @@ export const withInitStakePool = async (transaction, connection, wallet, params)
 export const withInitStakeEntry = async (transaction, connection, wallet, params) => {
     const ix = await stakePoolProgram(connection, wallet)
         .methods.initEntry(wallet.publicKey)
-        .accountsStrict({
+        .accounts({
         stakeEntry: params.stakeEntryId,
         stakePool: params.stakePoolId,
         originalMint: params.originalMintId,

@@ -39,14 +39,14 @@
   "dependencies": {
     "@cardinal/common": "^7.2.3",
     "@cardinal/payment-manager": "^2.1.1",
-    "@cardinal/rewards-center": "^2.4.0",
-    "@coral-xyz/anchor": "0.27.0",
     "@metaplex-foundation/mpl-token-auth-rules": "^1.1.0",
     "@metaplex-foundation/mpl-token-metadata": "^2.8.1",
+    "@coral-xyz/anchor": "0.27.0",
     "@solana/spl-token": "^0.3.6",
     "@solana/web3.js": "^1.34.0",
     "@types/mocha": "^10.0.1",
-    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#9677f50f3c9c617cf7ed50e5384e2baba3131f17",
+    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#026ed0b413515e16cc27924cab54db717f804a2c",
+    "dotenv": "^16.0.3",
     "mocha": "^10.2.0"
   },
   "devDependencies": {

@@ -344,7 +344,7 @@ const stakeAll = async (connection, wallet, params) => {
             if (!stakeEntryInfo) {
                 const ix = await (0, stakePool_1.stakePoolProgram)(connection, wallet)
                     .methods.initEntry(wallet.publicKey)
-                    .accountsStrict({
+                    .accounts({
                     stakeEntry: stakeEntryId,
                     stakePool: params.stakePoolId,
                     originalMint: mintId,
@@ -414,7 +414,7 @@ const stakeAll = async (connection, wallet, params) => {
             /////// programmable ///////
             transaction.add(await (0, stakePool_1.stakePoolProgram)(connection, wallet)
                 .methods.stakeProgrammable(amount !== null && amount !== void 0 ? amount : new anchor_1.BN(1))
-                .accountsStrict({
+                .accounts({
                 stakeEntry: stakeEntryId,
                 stakePool: params.stakePoolId,
                 originalMint: originalMintId,
@@ -575,7 +575,7 @@ const unstakeAll = async (connection, wallet, params) => {
             /////// update total stake seconds ///////
             const updateIx = await (0, stakePool_1.stakePoolProgram)(connection, wallet)
                 .methods.updateTotalStakeSeconds()
-                .accountsStrict({
+                .accounts({
                 stakeEntry: stakeEntryId,
                 lastStaker: wallet.publicKey,
             })
@@ -587,7 +587,7 @@ const unstakeAll = async (connection, wallet, params) => {
             if (!rewardEntry) {
                 const ix = await (0, rewardDistributor_1.rewardDistributorProgram)(connection, wallet)
                     .methods.initRewardEntry()
-                    .accountsStrict({
+                    .accounts({
                     rewardEntry: (0, pda_2.findRewardEntryId)(rewardDistributorId, stakeEntryId),
                     rewardDistributor: rewardDistributorId,
                     stakeEntry: stakeEntryId,
@@ -601,7 +601,7 @@ const unstakeAll = async (connection, wallet, params) => {
             const stakeEntryData = (0, common_1.decodeIdlAccount)(stakeEntryInfo, "stakeEntry", stakePool_1.STAKE_POOL_IDL);
             const ix = await (0, rewardDistributor_1.rewardDistributorProgram)(connection, wallet)
                 .methods.claimRewards()
-                .accountsStrict({
+                .accounts({
                 rewardEntry: rewardEntryId,
                 rewardDistributor: rewardDistributorId,
                 stakeEntry: stakeEntryId,
@@ -636,7 +636,7 @@ const unstakeAll = async (connection, wallet, params) => {
             }));
             const ix = await (0, stakePool_1.stakePoolProgram)(connection, wallet)
                 .methods.unstakeProgrammable()
-                .accountsStrict({
+                .accounts({
                 stakeEntry: stakeEntryId,
                 stakePool: params.stakePoolId,
                 originalMint: originalMintId,
@@ -675,7 +675,7 @@ const unstakeAll = async (connection, wallet, params) => {
                     const remainingAccounts = await (0, tokenManager_1.withRemainingAccountsForInvalidate)(tx, connection, wallet, receiptMint, tokenManagerData, stakeEntryId, mintMetadata);
                     const ix = await (0, stakePool_1.stakePoolProgram)(connection, wallet)
                         .methods.returnReceiptMint()
-                        .accountsStrict({
+                        .accounts({
                         stakeEntry: stakeEntryId,
                         receiptMint: receiptMint,
                         tokenManager: tokenManagerId,
@@ -697,7 +697,7 @@ const unstakeAll = async (connection, wallet, params) => {
             if ((tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === mpl_token_metadata_1.TokenDelegateRole.Migration) {
                 const ix = await program.methods
                     .unstakeCustodialProgrammable()
-                    .accountsStrict({
+                    .accounts({
                     stakePool: params.stakePoolId,
                     stakeEntry: stakeEntryId,
                     originalMint: originalMintId,
@@ -722,7 +722,7 @@ const unstakeAll = async (connection, wallet, params) => {
             else {
                 const ix = await program.methods
                     .unstake()
-                    .accountsStrict({
+                    .accounts({
                     stakePool: params.stakePoolId,
                     stakeEntry: stakeEntryId,
                     originalMint: originalMintId,

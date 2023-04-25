@@ -116,7 +116,7 @@ export const withInitStakeEntry = async (
 ): Promise<Transaction> => {
   const ix = await stakePoolProgram(connection, wallet)
     .methods.initEntry(wallet.publicKey)
-    .accountsStrict({
+    .accounts({
       stakeEntry: params.stakeEntryId,
       stakePool: params.stakePoolId,
       originalMint: params.originalMintId,
