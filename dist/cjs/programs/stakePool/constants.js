@@ -4,7 +4,7 @@ exports.ReceiptType = exports.STAKE_BOOSTER_PAYMENT_MANAGER = exports.STAKE_BOOS
 const tslib_1 = require("tslib");
 const web3_js_1 = require("@solana/web3.js");
 const STAKE_POOL_TYPES = tslib_1.__importStar(require("../../idl/cardinal_stake_pool"));
-exports.STAKE_POOL_ADDRESS = new web3_js_1.PublicKey("47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp");
+exports.STAKE_POOL_ADDRESS = new web3_js_1.PublicKey("J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14");
 exports.STAKE_POOL_SEED = "stake-pool";
 exports.STAKE_ENTRY_SEED = "stake-entry";
 exports.IDENTIFIER_SEED = "identifier";

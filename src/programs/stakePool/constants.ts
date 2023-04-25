@@ -4,7 +4,7 @@ import { PublicKey } from "@solana/web3.js";
 import * as STAKE_POOL_TYPES from "../../idl/cardinal_stake_pool";
 
 export const STAKE_POOL_ADDRESS = new PublicKey(
-  "47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp"
+  "J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14"
 );
 
 export const STAKE_POOL_SEED = "stake-pool";

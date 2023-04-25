@@ -4,7 +4,7 @@ exports.RewardDistributorKind = exports.REWARD_DISTRIBUTOR_IDL = exports.REWARD_
 const tslib_1 = require("tslib");
 const web3_js_1 = require("@solana/web3.js");
 const REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(require("../../idl/cardinal_reward_distributor"));
-exports.REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey("ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8");
+exports.REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey("CAycEuE9Krg5rPkRDKyWsMPJVJgNFm1tcGPXv8v6foPk");
 exports.REWARD_MANAGER = new web3_js_1.PublicKey("crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr");
 exports.REWARD_ENTRY_SEED = "reward-entry";
 exports.REWARD_DISTRIBUTOR_SEED = "reward-distributor";

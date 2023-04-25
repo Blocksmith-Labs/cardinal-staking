@@ -8,9 +8,9 @@ install:
 	yarn install
 
 test-keys:
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/g" {} +
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/g" {} +
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/4QHcuyATWEoA3E1knztBD6WNSZuCMEKwtRzpQBcwj1Sa/$$(solana-keygen pubkey ./target/deploy/cardinal_receipt_manager-keypair.json)/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/CAycEuE9Krg5rPkRDKyWsMPJVJgNFm1tcGPXv8v6foPk/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/GgKDqv8FdwCfgStTnwuYNjifTGJ2wffhNoknn1UJ2sve/$$(solana-keygen pubkey ./target/deploy/cardinal_receipt_manager-keypair.json)/g" {} +
 
 build:
 	anchor build
@@ -33,9 +33,9 @@ test:
 	anchor test --skip-local-validator --skip-build --skip-deploy --provider.cluster localnet
 
 clean-test-keys:
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp/g" {} +
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8/g" {} +
-	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_receipt_manager-keypair.json)/4QHcuyATWEoA3E1knztBD6WNSZuCMEKwtRzpQBcwj1Sa/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_stake_pool-keypair.json)/J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_reward_distributor-keypair.json)/CAycEuE9Krg5rPkRDKyWsMPJVJgNFm1tcGPXv8v6foPk/g" {} +
+	LC_ALL=C find programs src -type f -exec sed -i '' -e "s/$$(solana-keygen pubkey ./target/deploy/cardinal_receipt_manager-keypair.json)/GgKDqv8FdwCfgStTnwuYNjifTGJ2wffhNoknn1UJ2sve/g" {} +
 
 stop:
 	pkill solana-test-validator

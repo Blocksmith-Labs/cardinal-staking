@@ -27,8 +27,8 @@ Cardinal staking encompasses a suite of contracts for issuing and staking NFTs a
 
 Program addresses are the same on devnet, testnet, and mainnet-beta.
 
-- StakePool: [`47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp`](https://explorer.solana.com/address/47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp)
-- RewardDistributor: [`ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8`](https://explorer.solana.com/address/ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8)
+- StakePool: [`J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14`](https://explorer.solana.com/address/J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14)
+- RewardDistributor: [`CAycEuE9Krg5rPkRDKyWsMPJVJgNFm1tcGPXv8v6foPk`](https://explorer.solana.com/address/CAycEuE9Krg5rPkRDKyWsMPJVJgNFm1tcGPXv8v6foPk)
 
 ## Plugins
 

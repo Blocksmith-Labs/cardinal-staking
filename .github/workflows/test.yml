@@ -116,9 +116,9 @@ jobs:
       - name: Setup
         run: mkdir -p target/deploy
       - run: cp -r tests/test-keypairs/* target/deploy
-      - run: find . -type f -name "*" -exec sed -i'' -e "s/47Eamqe6bTbrqSwZwPFTYCQSPxx92E9zw8XTPDz2yHSp/$(solana-keygen pubkey tests/test-keypairs/cardinal_stake_pool-keypair.json)/g" {} +
-      - run: find . -type f -name "*" -exec sed -i'' -e "s/ES6LNgcKLkqD8kemcVBcmuxYzFJxLmQ1BRJ2fAvmX4R8/$(solana-keygen pubkey tests/test-keypairs/cardinal_reward_distributor-keypair.json)/g" {} +
-      - run: find . -type f -name "*" -exec sed -i'' -e "s/4QHcuyATWEoA3E1knztBD6WNSZuCMEKwtRzpQBcwj1Sa/$(solana-keygen pubkey tests/test-keypairs/cardinal_receipt_manager-keypair.json)/g" {} +
+      - run: find . -type f -name "*" -exec sed -i'' -e "s/J7UH6Lj7JDhRqEgMipbAyjkXWMdUoD5e36EFLJt6Md14/$(solana-keygen pubkey tests/test-keypairs/cardinal_stake_pool-keypair.json)/g" {} +
+      - run: find . -type f -name "*" -exec sed -i'' -e "s/CAycEuE9Krg5rPkRDKyWsMPJVJgNFm1tcGPXv8v6foPk/$(solana-keygen pubkey tests/test-keypairs/cardinal_reward_distributor-keypair.json)/g" {} +
+      - run: find . -type f -name "*" -exec sed -i'' -e "s/GgKDqv8FdwCfgStTnwuYNjifTGJ2wffhNoknn1UJ2sve/$(solana-keygen pubkey tests/test-keypairs/cardinal_receipt_manager-keypair.json)/g" {} +
       - run: find . -type f -name "Anchor.toml" -exec sed -i'' -e "s/yarn mocha tests\/\*.spec.ts/yarn mocha tests\/\*.spec.ts --reporter mocha-junit-reporter --reporter-options mochaFile=.\/tests\/out.xml/g" {} +
 
       - name: Run tests
