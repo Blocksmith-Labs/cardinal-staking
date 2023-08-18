@@ -44,7 +44,7 @@
     "@solana/spl-token": "^0.3.6",
     "@solana/web3.js": "^1.34.0",
     "@types/mocha": "^10.0.1",
-    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#899eccd1333998e37f8459261e1e809ee114b1ee",
+    "cardinal-token-manager": "git+https://github.com/Blocksmith-Labs/cardinal-token-manager.git#d5520f1524ee88490e96559fe30196b4a7e8938e",
     "dotenv": "^16.0.3",
     "mocha": "^10.2.0"
   },
