@@ -1,4 +1,4 @@
-import { utils, Wallet } from "@project-serum/anchor";
+import { utils, Wallet } from "@coral-xyz/anchor";
 import { Keypair } from "@solana/web3.js";
 
 import { createProgrammableAsset } from "../tests/utils";

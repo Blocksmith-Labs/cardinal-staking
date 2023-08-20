@@ -1,5 +1,5 @@
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import type { Connection, PublicKey, Signer } from "@solana/web3.js";
 import { Keypair, Transaction } from "@solana/web3.js";
 import type { RewardDistributorKind } from "./programs/rewardDistributor";

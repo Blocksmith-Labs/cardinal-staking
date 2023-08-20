@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.withClaimStakeEntryFunds = exports.withInitUngrouping = exports.withRemoveFromGroupEntry = exports.withAddToGroupEntry = exports.withInitGroupStakeEntry = exports.withBoostStakeEntry = exports.withCloseStakeBooster = exports.withUpdateStakeBooster = exports.withInitStakeBooster = exports.withDoubleOrResetTotalStakeSeconds = exports.withReassignStakeEntry = exports.withCloseStakeEntry = exports.withCloseStakePool = exports.withUpdateTotalStakeSeconds = exports.withUpdateStakePool = exports.withInitStakeMint = exports.withDeauthorizeStakeEntry = exports.withAuthorizeStakeEntry = exports.withInitStakeEntry = exports.withInitStakePool = void 0;
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
-const token_1 = require("@project-serum/anchor/dist/cjs/utils/token");
+const anchor_1 = require("@coral-xyz/anchor");
+const token_1 = require("@coral-xyz/anchor/dist/cjs/utils/token");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const tokenManager_1 = require("cardinal-token-manager/dist/cjs/programs/tokenManager");

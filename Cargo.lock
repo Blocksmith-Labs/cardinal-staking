@@ -486,7 +486,7 @@ dependencies = [
 [[package]]
 name = "cardinal-payment-manager"
 version = "4.0.0"
-source = "git+https://github.com/Blocksmith-Labs/cardinal-token-manager#9677f50f3c9c617cf7ed50e5384e2baba3131f17"
+source = "git+https://github.com/Blocksmith-Labs/cardinal-token-manager?branch=dev-yield#d5520f1524ee88490e96559fe30196b4a7e8938e"
 dependencies = [
  "anchor-lang",
  "anchor-spl",
@@ -539,7 +539,7 @@ dependencies = [
 [[package]]
 name = "cardinal-token-manager"
 version = "4.4.0"
-source = "git+https://github.com/Blocksmith-Labs/cardinal-token-manager#9677f50f3c9c617cf7ed50e5384e2baba3131f17"
+source = "git+https://github.com/Blocksmith-Labs/cardinal-token-manager?branch=dev-yield#d5520f1524ee88490e96559fe30196b4a7e8938e"
 dependencies = [
  "anchor-lang",
  "anchor-spl",

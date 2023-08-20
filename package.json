@@ -40,7 +40,7 @@
     "@cardinal/common": "^7.2.3",
     "@metaplex-foundation/mpl-token-auth-rules": "^1.1.0",
     "@metaplex-foundation/mpl-token-metadata": "^2.8.1",
-    "@project-serum/anchor": "0.26.0",
+    "@coral-xyz/anchor": "0.27.0",
     "@solana/spl-token": "^0.3.6",
     "@solana/web3.js": "^1.34.0",
     "@types/mocha": "^10.0.1",

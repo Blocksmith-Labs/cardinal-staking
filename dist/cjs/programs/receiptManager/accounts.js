@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllOfType = exports.getClaimableRewardReceiptsForManager = exports.getRewardReceiptsForManager = exports.getAllRewardReceipts = exports.getRewardReceipt = exports.getReceiptEntry = exports.getReceiptManagersForPool = exports.getAllreceiptManagers = exports.getReceiptManager = void 0;
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const rewardDistributor_1 = require("../rewardDistributor");
 const constants_1 = require("./constants");

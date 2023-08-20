@@ -1,4 +1,4 @@
-import { BN } from "@project-serum/anchor";
+import { BN } from "@coral-xyz/anchor";
 import { getAccount, getAssociatedTokenAddressSync, getMint, } from "@solana/spl-token";
 import { sendAndConfirmRawTransaction } from "@solana/web3.js";
 import { getRewardEntries } from "./programs/rewardDistributor/accounts";

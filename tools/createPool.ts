@@ -1,5 +1,5 @@
 import { executeTransaction } from "@cardinal/common";
-import { BN, Wallet } from "@project-serum/anchor";
+import { BN, Wallet } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as dotenv from "dotenv";
 
@@ -69,10 +69,10 @@ const main = async () => {
     {
       requiresAuthorization: false,
       requiresCollections: [
-        new PublicKey("3TJmSoAkmf8gTYoybJrxLnUjLP5Kk3vBrzgFeuymvhyA"),
+        new PublicKey("FsXGF3wmZm4Ryi4CjcAfW5mrfwyBxs4qUCTmiYmvGbrg"),
       ],
       requiresCreators: [
-        new PublicKey("HK5Tf2wDXjvX1veuESXbcehaAjECcZdfnPCDfrcE7dAt"),
+        new PublicKey("594WQxpBu4vVDhhW2K7QoNMZaN6j9znxajcZX13as7HD"),
       ],
       cooldownSeconds: 0,
       minStakeSeconds: 0,

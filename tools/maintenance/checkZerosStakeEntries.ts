@@ -1,4 +1,4 @@
-import { BorshAccountsCoder, utils } from "@project-serum/anchor";
+import { BorshAccountsCoder, utils } from "@coral-xyz/anchor";
 import type { Connection } from "@solana/web3.js";
 import * as dotenv from "dotenv";
 

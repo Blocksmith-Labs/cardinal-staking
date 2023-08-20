@@ -1,5 +1,5 @@
 import type { AccountData } from "@cardinal/common";
-import { AnchorProvider, Program, utils, Wallet } from "@project-serum/anchor";
+import { AnchorProvider, Program, utils, Wallet } from "@coral-xyz/anchor";
 import { Keypair, Transaction } from "@solana/web3.js";
 
 import { executeTransaction } from "../../src";

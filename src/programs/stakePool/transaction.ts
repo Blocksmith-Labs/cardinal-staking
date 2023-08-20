@@ -4,9 +4,9 @@ import {
   tryGetAccount,
   withFindOrInitAssociatedTokenAccount,
 } from "@cardinal/common";
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
-import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
+import { ASSOCIATED_PROGRAM_ID } from "@coral-xyz/anchor/dist/cjs/utils/token";
 import {
   getAssociatedTokenAddressSync,
   TOKEN_PROGRAM_ID,

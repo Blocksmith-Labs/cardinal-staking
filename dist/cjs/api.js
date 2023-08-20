@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unstakeAll = exports.unstake = exports.stakeAll = exports.stake = exports.claimRewardsAll = exports.claimRewards = exports.createStakeEntryAndStakeMint = exports.authorizeStakeEntry = exports.initializeRewardEntry = exports.createStakeEntry = exports.createRewardDistributor = exports.createStakePool = void 0;
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const mpl_token_auth_rules_1 = require("@metaplex-foundation/mpl-token-auth-rules");
 const mpl_token_metadata_1 = require("@metaplex-foundation/mpl-token-metadata");
 const spl_token_1 = require("@solana/spl-token");

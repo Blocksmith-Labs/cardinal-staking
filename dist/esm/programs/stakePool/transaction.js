@@ -1,6 +1,6 @@
 import { findMintMetadataId, METADATA_PROGRAM_ID, tryGetAccount, withFindOrInitAssociatedTokenAccount, } from "@cardinal/common";
-import { BN } from "@project-serum/anchor";
-import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/token";
+import { BN } from "@coral-xyz/anchor";
+import { ASSOCIATED_PROGRAM_ID } from "@coral-xyz/anchor/dist/cjs/utils/token";
 import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID, } from "@solana/spl-token";
 import { Keypair, SystemProgram, SYSVAR_RENT_PUBKEY, SYSVAR_SLOT_HASHES_PUBKEY, } from "@solana/web3.js";
 import { TOKEN_MANAGER_ADDRESS } from "cardinal-token-manager/dist/cjs/programs/tokenManager";

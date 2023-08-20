@@ -10,8 +10,8 @@ import {
   tryGetAccount,
   tryNull,
 } from "@cardinal/common";
-import { BN } from "@project-serum/anchor";
-import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
+import { BN } from "@coral-xyz/anchor";
+import type { Wallet } from "@coral-xyz/anchor/dist/cjs/provider";
 import { PROGRAM_ID as TOKEN_AUTH_RULES_ID } from "@metaplex-foundation/mpl-token-auth-rules";
 import {
   Metadata,

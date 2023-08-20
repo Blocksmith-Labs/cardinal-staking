@@ -1,5 +1,5 @@
 import { emptyWallet } from "@cardinal/common";
-import { AnchorProvider, Program } from "@project-serum/anchor";
+import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as REWARD_DISTRIBUTOR_TYPES from "../../idl/cardinal_reward_distributor";
 export const REWARD_DISTRIBUTOR_ADDRESS = new PublicKey("6R3Qr96MtBW3qUfXerKAvxhsnFKt95BSkDq2y8ibKvhd");

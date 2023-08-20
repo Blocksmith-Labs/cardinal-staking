@@ -5,7 +5,7 @@ import {
   Program,
   utils,
   Wallet,
-} from "@project-serum/anchor";
+} from "@coral-xyz/anchor";
 import type { Connection } from "@solana/web3.js";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import * as dotenv from "dotenv";

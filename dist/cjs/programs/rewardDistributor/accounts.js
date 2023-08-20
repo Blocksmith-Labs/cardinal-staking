@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllRewardEntries = exports.getRewardEntriesForRewardDistributor = exports.getRewardDistributors = exports.getRewardDistributor = exports.getRewardEntries = exports.getRewardEntry = void 0;
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const _1 = require(".");
 const constants_1 = require("./constants");
 const getRewardEntry = async (connection, rewardEntryId, commitment) => {
