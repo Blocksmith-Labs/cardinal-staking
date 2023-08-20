@@ -8,7 +8,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import * as RECEIPT_MANAGER_TYPES from "../../idl/cardinal_receipt_manager";
 
 export const RECEIPT_MANAGER_ADDRESS = new PublicKey(
-  "DSWWnBAtCLcvyc1X2TajbFwE9LtTZ7XdNmvMiA58T4ST"
+  "G4NLUBtr4xqV895TYH6APr1MP8QSDNzSuekkBsBtALXT"
 );
 
 export const RECEIPT_MANAGER_SEED = "receipt-manager";

@@ -2,7 +2,7 @@ import { emptyWallet } from "@cardinal/common";
 import { AnchorProvider, Program } from "@coral-xyz/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as RECEIPT_MANAGER_TYPES from "../../idl/cardinal_receipt_manager";
-export const RECEIPT_MANAGER_ADDRESS = new PublicKey("DSWWnBAtCLcvyc1X2TajbFwE9LtTZ7XdNmvMiA58T4ST");
+export const RECEIPT_MANAGER_ADDRESS = new PublicKey("G4NLUBtr4xqV895TYH6APr1MP8QSDNzSuekkBsBtALXT");
 export const RECEIPT_MANAGER_SEED = "receipt-manager";
 export const REWARD_RECEIPT_SEED = "reward-receipt";
 export const RECEIPT_ENTRY_SEED = "receipt-entry";

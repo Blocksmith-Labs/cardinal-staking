@@ -8,7 +8,7 @@ import { Keypair, PublicKey } from "@solana/web3.js";
 import * as STAKE_POOL_TYPES from "../../idl/cardinal_stake_pool";
 
 export const STAKE_POOL_ADDRESS = new PublicKey(
-  "6G4cU9EyDs578zyUiCrDjJMnB1TYNi3bgVxgqVyysqx5"
+  "AeSwaZPtXrPH6gT1xemwBNWmMEaDHvSDTbbaLh98kSN3"
 );
 
 export const STAKE_POOL_SEED = "stake-pool";

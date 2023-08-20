@@ -6,6 +6,6 @@ cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [programs.localnet]
-cardinal_stake_pool = "6G4cU9EyDs578zyUiCrDjJMnB1TYNi3bgVxgqVyysqx5"
-cardinal_reward_distributor = "6R3Qr96MtBW3qUfXerKAvxhsnFKt95BSkDq2y8ibKvhd"
-cardinal_receipt_manager = "DSWWnBAtCLcvyc1X2TajbFwE9LtTZ7XdNmvMiA58T4ST"
+cardinal_stake_pool = "AeSwaZPtXrPH6gT1xemwBNWmMEaDHvSDTbbaLh98kSN3"
+cardinal_receipt_manager = "G4NLUBtr4xqV895TYH6APr1MP8QSDNzSuekkBsBtALXT"
+cardinal_reward_distributor = "FDmLdjbygTZ6tr1q8sycQ6daJ6t5CWvvGbzPRvGdykXZ"
