@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.calculatePendingRewards = exports.getRewardMap = exports.getPendingRewardsForPool = exports.getMintSupply = exports.executeTransaction = void 0;
+exports.getTokenAddress = exports.calculatePendingRewards = exports.getRewardMap = exports.getPendingRewardsForPool = exports.getMintSupply = exports.executeTransaction = void 0;
 const anchor_1 = require("@project-serum/anchor");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
@@ -144,4 +144,23 @@ const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEntry, rem
     return [rewardAmountToReceive, nextRewardsIn];
 };
 exports.calculatePendingRewards = calculatePendingRewards;
+const getTokenAddress = async (connection, mint, owner) => {
+    var _a;
+    const defaultAta = (0, spl_token_1.getAssociatedTokenAddressSync)(mint, owner, true);
+    try {
+        const defaultAccount = await (0, spl_token_1.getAccount)(connection, defaultAta);
+        if (defaultAccount.amount > 0) {
+            return defaultAta;
+        }
+    }
+    catch {
+    }
+    const largestHolders = await connection.getTokenLargestAccounts(mint);
+    const validHolders = largestHolders.value.filter(t => { var _a; return ((_a = t.uiAmount) !== null && _a !== void 0 ? _a : 0) > 0; });
+    if (validHolders.length == 0) {
+        return;
+    }
+    return (_a = validHolders[0]) === null || _a === void 0 ? void 0 : _a.address;
+};
+exports.getTokenAddress = getTokenAddress;
 //# sourceMappingURL=utils.js.map

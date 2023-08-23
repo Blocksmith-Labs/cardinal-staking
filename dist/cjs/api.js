@@ -19,6 +19,7 @@ const accounts_2 = require("./programs/stakePool/accounts");
 const pda_3 = require("./programs/stakePool/pda");
 const transaction_2 = require("./programs/stakePool/transaction");
 const utils_1 = require("./programs/stakePool/utils");
+const utils_2 = require("./utils");
 /**
  * Convenience call to create a stake pool
  * @param connection - Connection to use
@@ -528,13 +529,20 @@ exports.unstake = unstake;
 const unstakeAll = async (connection, wallet, params) => {
     var _a, _b, _c, _d, _e;
     /////// derive ids ///////
-    const mintInfos = params.mintInfos.map(({ mintId, fungible, stakeEntryId }) => ({
-        mintId,
-        fungible,
-        mintMetadataId: (0, common_1.findMintMetadataId)(mintId),
-        userOriginalMintTokenAccountId: (0, spl_token_1.getAssociatedTokenAddressSync)(mintId, wallet.publicKey),
-        stakeEntryId: stakeEntryId !== null && stakeEntryId !== void 0 ? stakeEntryId : (0, pda_3.findStakeEntryId)(wallet.publicKey, params.stakePoolId, mintId, fungible !== null && fungible !== void 0 ? fungible : false),
-    }));
+    let mintInfos = [];
+    for (const { mintId, fungible, stakeEntryId } of params.mintInfos) {
+        const userOriginalMintTokenAccountId = await (0, utils_2.getTokenAddress)(connection, mintId, wallet.publicKey);
+        if (!userOriginalMintTokenAccountId) {
+            continue;
+        }
+        mintInfos.push({
+            mintId,
+            fungible,
+            mintMetadataId: (0, common_1.findMintMetadataId)(mintId),
+            userOriginalMintTokenAccountId,
+            stakeEntryId: stakeEntryId !== null && stakeEntryId !== void 0 ? stakeEntryId : (0, pda_3.findStakeEntryId)(wallet.publicKey, params.stakePoolId, mintId, fungible !== null && fungible !== void 0 ? fungible : false),
+        });
+    }
     const rewardDistributorId = (0, pda_2.findRewardDistributorId)(params.stakePoolId);
     /////// get accounts ///////
     const accountData = await (0, common_1.fetchAccountDataById)(connection, [

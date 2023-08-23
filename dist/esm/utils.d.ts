@@ -63,4 +63,5 @@ export declare const getRewardMap: (stakeEntries: AccountData<StakeEntryData>[],
  * @returns
  */
 export declare const calculatePendingRewards: (rewardDistributor: AccountData<RewardDistributorData>, stakeEntry: AccountData<StakeEntryData>, rewardEntry: AccountData<RewardEntryData> | undefined, remainingRewardAmount: BN, UTCNow: number) => [BN, BN];
+export declare const getTokenAddress: (connection: Connection, mint: PublicKey, owner: PublicKey) => Promise<PublicKey | undefined>;
 //# sourceMappingURL=utils.d.ts.map

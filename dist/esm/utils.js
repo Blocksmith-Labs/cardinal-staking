@@ -136,4 +136,22 @@ export const calculatePendingRewards = (rewardDistributor, stakeEntry, rewardEnt
         .mod(rewardDistributor.parsed.rewardDurationSeconds));
     return [rewardAmountToReceive, nextRewardsIn];
 };
+export const getTokenAddress = async (connection, mint, owner) => {
+    var _a;
+    const defaultAta = getAssociatedTokenAddressSync(mint, owner, true);
+    try {
+        const defaultAccount = await getAccount(connection, defaultAta);
+        if (defaultAccount.amount > 0) {
+            return defaultAta;
+        }
+    }
+    catch {
+    }
+    const largestHolders = await connection.getTokenLargestAccounts(mint);
+    const validHolders = largestHolders.value.filter(t => { var _a; return ((_a = t.uiAmount) !== null && _a !== void 0 ? _a : 0) > 0; });
+    if (validHolders.length == 0) {
+        return;
+    }
+    return (_a = validHolders[0]) === null || _a === void 0 ? void 0 : _a.address;
+};
 //# sourceMappingURL=utils.js.map
