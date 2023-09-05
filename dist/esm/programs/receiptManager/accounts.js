@@ -1,5 +1,5 @@
 import { tryGetAccount } from "@cardinal/common";
-import { BorshAccountsCoder, utils } from "@project-serum/anchor";
+import { BorshAccountsCoder, utils } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { REWARD_DISTRIBUTOR_ADDRESS } from "../rewardDistributor";
 import { RECEIPT_MANAGER_ADDRESS, RECEIPT_MANAGER_IDL, receiptManagerProgram, } from "./constants";

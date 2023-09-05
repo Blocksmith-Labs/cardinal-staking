@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getGroupStakeEntries = exports.getGroupStakeEntry = exports.getAllGroupStakeEntries = exports.getGroupStakeEntriesForUser = exports.getStakeBooster = exports.getAllStakeEntries = exports.getStakePoolsByAuthority = exports.getStakeAuthorizationsForPool = exports.getStakeAuthorizations = exports.getStakeAuthorization = exports.getPoolIdentifier = exports.getStakeEntries = exports.getStakeEntry = exports.getActiveStakeEntryIdsForPool = exports.getActiveStakeEntriesForPool = exports.getAllStakeEntriesForPool = exports.getAllActiveStakeEntries = exports.getStakeEntriesForUser = exports.getAllStakePools = exports.getStakePools = exports.getStakePool = void 0;
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const _1 = require(".");
 const constants_1 = require("./constants");

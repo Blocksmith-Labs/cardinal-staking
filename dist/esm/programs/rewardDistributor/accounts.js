@@ -1,4 +1,4 @@
-import { BorshAccountsCoder, utils } from "@project-serum/anchor";
+import { BorshAccountsCoder, utils } from "@coral-xyz/anchor";
 import { REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_IDL } from ".";
 import { rewardDistributorProgram } from "./constants";
 export const getRewardEntry = async (connection, rewardEntryId, commitment) => {

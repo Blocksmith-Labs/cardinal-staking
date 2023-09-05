@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.rewardDistributorProgram = exports.RewardDistributorKind = exports.REWARD_DISTRIBUTOR_IDL = exports.REWARD_DISTRIBUTOR_SEED = exports.REWARD_ENTRY_SEED = exports.REWARD_MANAGER = exports.REWARD_DISTRIBUTOR_ADDRESS = void 0;
 const tslib_1 = require("tslib");
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(require("../../idl/cardinal_reward_distributor"));
 exports.REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey("6566pw1vumw5aw7FKX2iFydBzAF1ubuzPcGxH4vUD5XN");

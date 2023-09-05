@@ -1,5 +1,5 @@
 import { executeTransaction } from "@cardinal/common";
-import { BN, Wallet } from "@project-serum/anchor";
+import { BN, Wallet } from "@coral-xyz/anchor";
 import { PublicKey } from "@solana/web3.js";
 import * as dotenv from "dotenv";
 

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.receiptManagerProgram = exports.RECEIPT_MANAGER_PAYMENT_MANAGER = exports.RECEIPT_MANAGER_PAYMENT_MANAGER_NAME = exports.RECEIPT_MANAGER_IDL = exports.RECEIPT_ENTRY_SEED = exports.REWARD_RECEIPT_SEED = exports.RECEIPT_MANAGER_SEED = exports.RECEIPT_MANAGER_ADDRESS = void 0;
 const tslib_1 = require("tslib");
 const common_1 = require("@cardinal/common");
-const anchor_1 = require("@project-serum/anchor");
+const anchor_1 = require("@coral-xyz/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const RECEIPT_MANAGER_TYPES = tslib_1.__importStar(require("../../idl/cardinal_receipt_manager"));
 exports.RECEIPT_MANAGER_ADDRESS = new web3_js_1.PublicKey("znkZtiB14LyaNono9YiSupAf9EsWkPuFT6NzFB9F4MA");

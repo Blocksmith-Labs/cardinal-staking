@@ -1,5 +1,5 @@
 import type { AccountData } from "@cardinal/common";
-import { BorshAccountsCoder, utils } from "@project-serum/anchor";
+import { BorshAccountsCoder, utils } from "@coral-xyz/anchor";
 import type { Commitment, Connection, PublicKey } from "@solana/web3.js";
 
 import { REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_IDL } from ".";
