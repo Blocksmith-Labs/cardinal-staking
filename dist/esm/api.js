@@ -566,7 +566,16 @@ export const unstakeAll = async (connection, wallet, params) => {
         /////// start transaction ///////
         const tx = new Transaction();
         /////// init user token account ///////
-        tx.add(createAssociatedTokenAccountIdempotentInstruction(wallet.publicKey, userOriginalMintTokenAccountId, wallet.publicKey, originalMintId));
+        /*
+        tx.add(
+          createAssociatedTokenAccountIdempotentInstruction(
+            wallet.publicKey,
+            userOriginalMintTokenAccountId,
+            wallet.publicKey,
+            originalMintId
+          )
+        );
+        */
         if ((rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed) && userRewardTokenAccountId) {
             /////// update total stake seconds ///////
             const updateIx = await stakePoolProgram(connection, wallet)
