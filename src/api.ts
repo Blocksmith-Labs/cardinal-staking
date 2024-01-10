@@ -1047,8 +1047,6 @@ export const unstakeAll = async (
       }
     }
 
-    console.log("-------------------------");
-    console.log(mintMetadata?.tokenStandard);
     if (
       mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible
       // && mintMetadata.programmableConfig?.ruleSet
@@ -1060,6 +1058,8 @@ export const unstakeAll = async (
           units: 100000000,
         })
       );
+      console.log("-------------------------");
+      console.log(userOriginalMintTokenAccountId.toBase58());
       const ix = await stakePoolProgram(connection, wallet)
         .methods.unstakeProgrammable()
         .accounts({

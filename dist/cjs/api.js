@@ -636,8 +636,6 @@ const unstakeAll = async (connection, wallet, params) => {
                 tx.add(ix);
             }
         }
-        console.log("-------------------------");
-        console.log(mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible
         // && mintMetadata.programmableConfig?.ruleSet
         // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
@@ -646,6 +644,8 @@ const unstakeAll = async (connection, wallet, params) => {
             tx.add(web3_js_1.ComputeBudgetProgram.setComputeUnitLimit({
                 units: 100000000,
             }));
+            console.log("-------------------------");
+            console.log(userOriginalMintTokenAccountId.toBase58());
             const ix = await (0, stakePool_1.stakePoolProgram)(connection, wallet)
                 .methods.unstakeProgrammable()
                 .accounts({
