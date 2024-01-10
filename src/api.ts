@@ -93,6 +93,7 @@ import {
   remainingAccountsForInitStakeEntry,
   shouldReturnReceipt,
 } from "./programs/stakePool/utils";
+import { getTokenAddress } from "./utils";
 
 /**
  * Convenience call to create a stake pool
@@ -879,16 +880,22 @@ export const unstakeAll = async (
     }[];
   }
 ): Promise<{ tx: Transaction; signers?: Signer[] }[][]> => {
+
   /////// derive ids ///////
-  const mintInfos = params.mintInfos.map(
-    ({ mintId, fungible, stakeEntryId }) => ({
+  let mintInfos = [];
+
+  for (const { mintId, fungible, stakeEntryId } of params.mintInfos) {
+
+    const userOriginalMintTokenAccountId = await getTokenAddress(connection, mintId, wallet.publicKey);
+    if (!userOriginalMintTokenAccountId) {
+      continue;
+    }
+
+    mintInfos.push({
       mintId,
       fungible,
       mintMetadataId: findMintMetadataId(mintId),
-      userOriginalMintTokenAccountId: getAssociatedTokenAddressSync(
-        mintId,
-        wallet.publicKey
-      ),
+      userOriginalMintTokenAccountId,
       stakeEntryId:
         stakeEntryId ??
         findStakeEntryId(
@@ -897,8 +904,9 @@ export const unstakeAll = async (
           mintId,
           fungible ?? false
         ),
-    })
-  );
+    });
+  }
+
   const rewardDistributorId = findRewardDistributorId(params.stakePoolId);
 
   /////// get accounts ///////
@@ -959,8 +967,6 @@ export const unstakeAll = async (
     const tx = new Transaction();
 
     /////// init user token account ///////
-
-    /*
     tx.add(
       createAssociatedTokenAccountIdempotentInstruction(
         wallet.publicKey,
@@ -969,7 +975,6 @@ export const unstakeAll = async (
         originalMintId
       )
     );
-    */
 
     if (rewardDistributorData?.parsed && userRewardTokenAccountId) {
       /////// update total stake seconds ///////
