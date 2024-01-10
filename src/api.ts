@@ -959,7 +959,7 @@ export const unstakeAll = async (
     const tx = new Transaction();
 
     /////// init user token account ///////
-
+/*
     tx.add(
       createAssociatedTokenAccountIdempotentInstruction(
         wallet.publicKey,
@@ -968,7 +968,7 @@ export const unstakeAll = async (
         originalMintId
       )
     );
-
+*/
     if (rewardDistributorData?.parsed && userRewardTokenAccountId) {
       /////// update total stake seconds ///////
       const updateIx = await stakePoolProgram(connection, wallet)
