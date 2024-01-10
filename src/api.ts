@@ -1045,9 +1045,9 @@ export const unstakeAll = async (
       }
     }
     if (
-      mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible &&
-      // mintMetadata.programmableConfig?.ruleSet &&
-      tokenRecordData?.delegateRole === TokenDelegateRole.Staking
+      mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible 
+      // && mintMetadata.programmableConfig?.ruleSet &&
+      // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
       tx.add(
