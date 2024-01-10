@@ -275,3 +275,37 @@ export const calculatePendingRewards = (
 
   return [rewardAmountToReceive, nextRewardsIn];
 };
+
+
+export const getTokenAddress = async (
+  connection: Connection,
+  mint: PublicKey,
+  owner: PublicKey,
+): Promise<PublicKey | undefined> => {
+  const defaultAta = getAssociatedTokenAddressSync(
+    mint,
+    owner,
+    true
+  );
+
+  try {
+    const defaultAccount = await getAccount(
+      connection,
+      defaultAta
+    );
+    if (defaultAccount.amount > 0) {
+      return defaultAta;
+    }
+  }
+  catch {
+
+  }
+
+  const largestHolders = await connection.getTokenLargestAccounts(mint);
+  const validHolders = largestHolders.value.filter(t => (t.uiAmount ?? 0) > 0);
+  if (validHolders.length == 0) {
+    return;
+  }
+
+  return validHolders[0]?.address;
+};

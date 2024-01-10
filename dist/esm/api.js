@@ -18,6 +18,7 @@ import { getStakeEntry, getStakePool, } from "./programs/stakePool/accounts";
 import { findStakeEntryId } from "./programs/stakePool/pda";
 import { withAuthorizeStakeEntry, withInitStakeEntry, withInitStakeMint, withInitStakePool, withUpdateTotalStakeSeconds, } from "./programs/stakePool/transaction";
 import { findStakeEntryIdFromMint, remainingAccountsForInitStakeEntry, shouldReturnReceipt, } from "./programs/stakePool/utils";
+import { getTokenAddress } from "./utils";
 /**
  * Convenience call to create a stake pool
  * @param connection - Connection to use
@@ -516,13 +517,20 @@ export const unstake = async (connection, wallet, params) => {
 export const unstakeAll = async (connection, wallet, params) => {
     var _a, _b, _c, _d, _e;
     /////// derive ids ///////
-    const mintInfos = params.mintInfos.map(({ mintId, fungible, stakeEntryId }) => ({
-        mintId,
-        fungible,
-        mintMetadataId: findMintMetadataId(mintId),
-        userOriginalMintTokenAccountId: getAssociatedTokenAddressSync(mintId, wallet.publicKey),
-        stakeEntryId: stakeEntryId !== null && stakeEntryId !== void 0 ? stakeEntryId : findStakeEntryId(wallet.publicKey, params.stakePoolId, mintId, fungible !== null && fungible !== void 0 ? fungible : false),
-    }));
+    let mintInfos = [];
+    for (const { mintId, fungible, stakeEntryId } of params.mintInfos) {
+        const userOriginalMintTokenAccountId = await getTokenAddress(connection, mintId, wallet.publicKey);
+        if (!userOriginalMintTokenAccountId) {
+            continue;
+        }
+        mintInfos.push({
+            mintId,
+            fungible,
+            mintMetadataId: findMintMetadataId(mintId),
+            userOriginalMintTokenAccountId,
+            stakeEntryId: stakeEntryId !== null && stakeEntryId !== void 0 ? stakeEntryId : findStakeEntryId(wallet.publicKey, params.stakePoolId, mintId, fungible !== null && fungible !== void 0 ? fungible : false),
+        });
+    }
     const rewardDistributorId = findRewardDistributorId(params.stakePoolId);
     /////// get accounts ///////
     const accountData = await fetchAccountDataById(connection, [
@@ -558,7 +566,16 @@ export const unstakeAll = async (connection, wallet, params) => {
         /////// start transaction ///////
         const tx = new Transaction();
         /////// init user token account ///////
-        tx.add(createAssociatedTokenAccountIdempotentInstruction(wallet.publicKey, userOriginalMintTokenAccountId, wallet.publicKey, originalMintId));
+        /*
+        tx.add(
+          createAssociatedTokenAccountIdempotentInstruction(
+            wallet.publicKey,
+            userOriginalMintTokenAccountId,
+            wallet.publicKey,
+            originalMintId
+          )
+        );
+        */
         if ((rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed) && userRewardTokenAccountId) {
             /////// update total stake seconds ///////
             const updateIx = await stakePoolProgram(connection, wallet)
@@ -615,9 +632,9 @@ export const unstakeAll = async (connection, wallet, params) => {
                 tx.add(ix);
             }
         }
-        if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible &&
-            // mintMetadata.programmableConfig?.ruleSet &&
-            (tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === TokenDelegateRole.Staking) {
+        if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
+            // && mintMetadata.programmableConfig?.ruleSet
+            && (tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === TokenDelegateRole.Staking) {
             /////// programmable ///////
             tx.add(ComputeBudgetProgram.setComputeUnitLimit({
                 units: 100000000,
