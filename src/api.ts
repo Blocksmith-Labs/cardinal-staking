@@ -1148,6 +1148,7 @@ export const unstakeAll = async (
       const stakeEntryOriginalMintTokenAccountId =
         getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
       const program = stakePoolProgram(connection, wallet);
+      console.log(stakeEntryOriginalMintTokenAccountId.toBase58());
 
       if (tokenRecordData?.delegateRole === TokenDelegateRole.Migration) {
         const ix = await program.methods
