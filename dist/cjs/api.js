@@ -405,7 +405,6 @@ const stakeAll = async (connection, wallet, params) => {
                 .instruction();
             transaction.add(ix);
         }
-        console.log(mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible
         // && mintMetadata.programmableConfig?.ruleSet
         ) {
@@ -572,14 +571,14 @@ const unstakeAll = async (connection, wallet, params) => {
         const tx = new web3_js_1.Transaction();
         /////// init user token account ///////
         /*
-            tx.add(
-              createAssociatedTokenAccountIdempotentInstruction(
-                wallet.publicKey,
-                userOriginalMintTokenAccountId,
-                wallet.publicKey,
-                originalMintId
-              )
-            );
+        tx.add(
+          createAssociatedTokenAccountIdempotentInstruction(
+            wallet.publicKey,
+            userOriginalMintTokenAccountId,
+            wallet.publicKey,
+            originalMintId
+          )
+        );
         */
         if ((rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed) && userRewardTokenAccountId) {
             /////// update total stake seconds ///////
@@ -637,8 +636,10 @@ const unstakeAll = async (connection, wallet, params) => {
                 tx.add(ix);
             }
         }
+        console.log("-------------------------");
+        console.log(mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === mpl_token_metadata_1.TokenStandard.ProgrammableNonFungible
-        // && mintMetadata.programmableConfig?.ruleSet &&
+        // && mintMetadata.programmableConfig?.ruleSet
         // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
         ) {
             /////// programmable ///////
@@ -705,7 +706,6 @@ const unstakeAll = async (connection, wallet, params) => {
             }
             const stakeEntryOriginalMintTokenAccountId = (0, spl_token_1.getAssociatedTokenAddressSync)(originalMintId, stakeEntryId, true);
             const program = (0, stakePool_1.stakePoolProgram)(connection, wallet);
-            console.log(stakeEntryOriginalMintTokenAccountId.toBase58());
             if ((tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === mpl_token_metadata_1.TokenDelegateRole.Migration) {
                 const ix = await program.methods
                     .unstakeCustodialProgrammable()

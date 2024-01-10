@@ -694,7 +694,6 @@ export const stakeAll = async (
       transaction.add(ix);
     }
 
-    console.log(mintMetadata?.tokenStandard);
     if (
       mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible
       // && mintMetadata.programmableConfig?.ruleSet
@@ -960,7 +959,8 @@ export const unstakeAll = async (
     const tx = new Transaction();
 
     /////// init user token account ///////
-/*
+
+    /*
     tx.add(
       createAssociatedTokenAccountIdempotentInstruction(
         wallet.publicKey,
@@ -969,7 +969,8 @@ export const unstakeAll = async (
         originalMintId
       )
     );
-*/
+    */
+
     if (rewardDistributorData?.parsed && userRewardTokenAccountId) {
       /////// update total stake seconds ///////
       const updateIx = await stakePoolProgram(connection, wallet)
@@ -1045,9 +1046,12 @@ export const unstakeAll = async (
         tx.add(ix);
       }
     }
+
+    console.log("-------------------------");
+    console.log(mintMetadata?.tokenStandard);
     if (
-      mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible 
-      // && mintMetadata.programmableConfig?.ruleSet &&
+      mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible
+      // && mintMetadata.programmableConfig?.ruleSet
       // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
@@ -1149,7 +1153,6 @@ export const unstakeAll = async (
       const stakeEntryOriginalMintTokenAccountId =
         getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
       const program = stakePoolProgram(connection, wallet);
-      console.log(stakeEntryOriginalMintTokenAccountId.toBase58());
 
       if (tokenRecordData?.delegateRole === TokenDelegateRole.Migration) {
         const ix = await program.methods

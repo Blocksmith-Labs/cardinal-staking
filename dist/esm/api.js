@@ -395,7 +395,6 @@ export const stakeAll = async (connection, wallet, params) => {
                 .instruction();
             transaction.add(ix);
         }
-        console.log(mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
         // && mintMetadata.programmableConfig?.ruleSet
         ) {
@@ -560,14 +559,14 @@ export const unstakeAll = async (connection, wallet, params) => {
         const tx = new Transaction();
         /////// init user token account ///////
         /*
-            tx.add(
-              createAssociatedTokenAccountIdempotentInstruction(
-                wallet.publicKey,
-                userOriginalMintTokenAccountId,
-                wallet.publicKey,
-                originalMintId
-              )
-            );
+        tx.add(
+          createAssociatedTokenAccountIdempotentInstruction(
+            wallet.publicKey,
+            userOriginalMintTokenAccountId,
+            wallet.publicKey,
+            originalMintId
+          )
+        );
         */
         if ((rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed) && userRewardTokenAccountId) {
             /////// update total stake seconds ///////
@@ -625,8 +624,10 @@ export const unstakeAll = async (connection, wallet, params) => {
                 tx.add(ix);
             }
         }
+        console.log("-------------------------");
+        console.log(mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
-        // && mintMetadata.programmableConfig?.ruleSet &&
+        // && mintMetadata.programmableConfig?.ruleSet
         // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
         ) {
             /////// programmable ///////
@@ -693,7 +694,6 @@ export const unstakeAll = async (connection, wallet, params) => {
             }
             const stakeEntryOriginalMintTokenAccountId = getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
             const program = stakePoolProgram(connection, wallet);
-            console.log(stakeEntryOriginalMintTokenAccountId.toBase58());
             if ((tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === TokenDelegateRole.Migration) {
                 const ix = await program.methods
                     .unstakeCustodialProgrammable()
