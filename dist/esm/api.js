@@ -623,6 +623,8 @@ export const unstakeAll = async (connection, wallet, params) => {
                 tx.add(ix);
             }
         }
+        console.log("-------------------------");
+        console.log(tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
         // && mintMetadata.programmableConfig?.ruleSet
         // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking

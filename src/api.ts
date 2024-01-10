@@ -1052,6 +1052,8 @@ export const unstakeAll = async (
       }
     }
 
+    console.log("-------------------------");
+    console.log(tokenRecordData?.delegateRole);
     if (
       mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible
       // && mintMetadata.programmableConfig?.ruleSet
