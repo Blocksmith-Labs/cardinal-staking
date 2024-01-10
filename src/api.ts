@@ -1054,12 +1054,10 @@ export const unstakeAll = async (
       }
     }
 
-    console.log("-------------------------");
-    console.log(tokenRecordData?.delegateRole);
     if (
       mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible
       // && mintMetadata.programmableConfig?.ruleSet
-      // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
+      && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
     ) {
       /////// programmable ///////
       tx.add(
@@ -1067,8 +1065,6 @@ export const unstakeAll = async (
           units: 100000000,
         })
       );
-      console.log("-------------------------");
-      console.log(userOriginalMintTokenAccountId.toBase58());
       const ix = await stakePoolProgram(connection, wallet)
         .methods.unstakeProgrammable()
         .accounts({
