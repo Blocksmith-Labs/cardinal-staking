@@ -395,6 +395,7 @@ export const stakeAll = async (connection, wallet, params) => {
                 .instruction();
             transaction.add(ix);
         }
+        console.log(mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard);
         if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
         // && mintMetadata.programmableConfig?.ruleSet
         ) {
@@ -624,9 +625,10 @@ export const unstakeAll = async (connection, wallet, params) => {
                 tx.add(ix);
             }
         }
-        if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible &&
-            // mintMetadata.programmableConfig?.ruleSet &&
-            (tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === TokenDelegateRole.Staking) {
+        if ((mintMetadata === null || mintMetadata === void 0 ? void 0 : mintMetadata.tokenStandard) === TokenStandard.ProgrammableNonFungible
+        // && mintMetadata.programmableConfig?.ruleSet &&
+        // && tokenRecordData?.delegateRole === TokenDelegateRole.Staking
+        ) {
             /////// programmable ///////
             tx.add(ComputeBudgetProgram.setComputeUnitLimit({
                 units: 100000000,
@@ -691,6 +693,7 @@ export const unstakeAll = async (connection, wallet, params) => {
             }
             const stakeEntryOriginalMintTokenAccountId = getAssociatedTokenAddressSync(originalMintId, stakeEntryId, true);
             const program = stakePoolProgram(connection, wallet);
+            console.log(stakeEntryOriginalMintTokenAccountId.toBase58());
             if ((tokenRecordData === null || tokenRecordData === void 0 ? void 0 : tokenRecordData.delegateRole) === TokenDelegateRole.Migration) {
                 const ix = await program.methods
                     .unstakeCustodialProgrammable()

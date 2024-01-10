@@ -694,6 +694,7 @@ export const stakeAll = async (
       transaction.add(ix);
     }
 
+    console.log(mintMetadata?.tokenStandard);
     if (
       mintMetadata?.tokenStandard === TokenStandard.ProgrammableNonFungible
       // && mintMetadata.programmableConfig?.ruleSet
